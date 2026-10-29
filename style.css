@@ -1,14 +1,17 @@
-/* Phone Trigger — red keitai chassis + dialog top-layer mobile shell */
+/* Phone Trigger — Okabe's red keitai chassis + dialog top-layer mobile shell */
 
 :root {
-    --pp-red: #c4282d;
-    --pp-red-deep: #8e1518;
-    --pp-red-bright: #e03a3f;
+    --pp-red: #d3232a;
+    --pp-red-deep: #a0161b;
+    --pp-red-bright: #ec3b3f;
     --pp-red-edge: #5c0c0e;
+    --pp-truss: #26272b;
+    --pp-bezel: #4a4d53;
+    --pp-bezel-dark: #2c2e33;
     --pp-silver: #c5ccd4;
     --pp-silver-mid: #9aa3ad;
     --pp-silver-dark: #6d757e;
-    --pp-key-black: #121417;
+    --pp-key-black: #0a0b0d;
     --pp-key-face: #1a1d22;
     --pp-lcd-bg: #061530;
     --pp-lcd-fg: #e8f0ff;
@@ -245,8 +248,8 @@
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
     background: linear-gradient(180deg, var(--pp-red-bright) 0%, var(--pp-red) 55%, var(--pp-red-deep) 100%);
-    border-radius: 14px 14px 8px 8px;
-    padding: 6px 10px 8px;
+    border-radius: 6px 6px 8px 8px;
+    padding: 5px 8px 8px;
     box-shadow:
         inset 0 1px 0 rgba(255, 255, 255, 0.28),
         0 4px 10px rgba(0, 0, 0, 0.25),
@@ -255,10 +258,10 @@
 
 .pp-lid-back {
     position: absolute;
-    inset: 0;
-    border-radius: 14px 14px 8px 8px;
+    inset: var(--pp-truss-h) 0 0;
+    border-radius: 6px 6px 8px 8px;
     background:
-        linear-gradient(180deg, #6a1014 0%, #4a0a0c 100%);
+        linear-gradient(180deg, var(--pp-red-deep) 0%, #7a1014 100%);
     transform: rotateX(180deg) translateZ(1px);
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
@@ -291,17 +294,21 @@
     transform-style: preserve-3d;
 }
 
+/* Barrel hinge: silver key segments between ribbed end caps */
 .pp-shortcut-bar {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 2px;
-    padding: 7px 5px;
-    border-radius: 5px;
-    background: linear-gradient(180deg, #e8ecf0 0%, var(--pp-silver) 40%, var(--pp-silver-dark) 100%);
+    padding: 3px 16px;
+    border-radius: 6px;
+    background:
+        repeating-linear-gradient(90deg, #4a4e54 0 1px, #b4bac1 1px 3px) left / 14px 100% no-repeat,
+        repeating-linear-gradient(90deg, #4a4e54 0 1px, #b4bac1 1px 3px) right / 14px 100% no-repeat,
+        #3a3d42;
     box-shadow:
-        inset 0 2px 3px rgba(255, 255, 255, 0.5),
-        inset 0 -2px 3px rgba(0, 0, 0, 0.25),
-        0 2px 4px rgba(0, 0, 0, 0.28);
+        inset 0 3px 3px rgba(255, 255, 255, 0.35),
+        inset 0 -3px 4px rgba(0, 0, 0, 0.45),
+        0 2px 4px rgba(0, 0, 0, 0.35);
 }
 
 .pp-base {
@@ -319,58 +326,76 @@
         0 0 0 1px var(--pp-red-edge);
 }
 
-.pp-lattice {
-    display: flex;
-    justify-content: center;
-    gap: 3px;
-    margin: 0 auto 4px;
-    width: 42%;
-    padding: 3px 4px 2px;
-    background: #0a0a0c;
-    border-radius: 3px 3px 0 0;
-    box-shadow: inset 0 0 0 1px #222;
+/* Black truss frame crowning the lid (SG001 "antenna" lattice) */
+.pp-lid {
+    --pp-truss-h: 20px;
 }
 
-.pp-lattice span {
-    flex: 1;
-    height: 10px;
-    background: linear-gradient(180deg, #2a2a2e, #0a0a0c);
-    border-radius: 1px;
-    box-shadow: inset 0 0 0 1px #333;
+.pp-truss {
+    display: block;
+    width: calc(100% - 8px);
+    height: var(--pp-truss-h);
+    margin: 0 4px -2px;
+    padding-top: 2px;
+    box-sizing: border-box;
+    overflow: visible;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.45));
+}
+
+.pp-truss path {
+    fill: none;
+    stroke: var(--pp-truss);
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+}
+
+.pp-truss-frame {
+    stroke-width: 4px;
+}
+
+.pp-truss-web {
+    stroke-width: 3px;
 }
 
 .pp-ear-row {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    margin-bottom: 6px;
+    gap: 6px;
+    margin: 0 0 5px -12px;
 }
 
 .pp-sensor {
-    width: 5px;
-    height: 5px;
+    width: 4px;
+    height: 4px;
     border-radius: 50%;
     background: radial-gradient(circle at 35% 35%, #3a3a40, #050506);
     box-shadow: inset 0 0 0 1px #222;
 }
 
 .pp-speaker {
-    width: 52px;
-    height: 5px;
-    border-radius: 3px;
-    background: #050506;
-    background-image: repeating-linear-gradient(90deg, #050506 0 2px, #1c1c20 2px 3px);
+    width: 34px;
+    height: 4px;
+    border-radius: 2px;
+    background: #2a0608;
     box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.35);
 }
 
+/* Gunmetal bezel framing the LCD, with a grey chin below */
 .pp-screen {
-    background: #0a0c10;
-    border-radius: 4px;
-    padding: 3px;
+    background: linear-gradient(180deg, var(--pp-bezel) 0%, var(--pp-bezel-dark) 100%);
+    border-radius: 8px;
+    padding: 6px 6px 0;
     box-shadow:
-        inset 0 0 0 1px #000,
+        inset 0 1px 0 rgba(255, 255, 255, 0.18),
+        inset 0 0 0 1px rgba(0, 0, 0, 0.5),
         0 0 0 1px rgba(0, 0, 0, 0.35);
+}
+
+.pp-screen > .pp-status {
+    border-radius: 2px 2px 0 0;
 }
 
 .pp-status {
@@ -411,28 +436,40 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 7px;
-    padding: 5px 0 3px;
-    background: linear-gradient(180deg, #d0d6dc, var(--pp-silver-mid));
-    border-radius: 0 0 2px 2px;
+    gap: 6px;
+    margin: 0 -6px;
+    padding: 8px 0 7px;
+    background: linear-gradient(180deg, #8a8e94 0%, #6e7278 100%);
+    border-top: 1px solid #1a1b1e;
+    border-radius: 0 0 8px 8px;
 }
 
 .pp-vent-bar span {
+    width: 10px;
+    height: 2px;
+    border-radius: 1px;
+    background: #1d1e21;
+}
+
+.pp-vent-bar .pp-vent-dot {
     width: 5px;
     height: 5px;
     border-radius: 50%;
-    background: radial-gradient(circle at 40% 35%, #4a5058, #1a1c20);
-    box-shadow: inset 0 0 0 1px #2a2e34;
+    background: radial-gradient(circle at 40% 35%, #4a5058, #0e0f11);
 }
 
 /* Silver shortcut band (lives on hinge) */
 .pp-shortcut {
-    height: 26px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
     border: none;
-    border-radius: 3px;
-    background: transparent;
-    color: #1a1c20;
-    font-size: 13px;
+    border-radius: 4px;
+    background: linear-gradient(180deg, #8c9198 0%, #eef1f4 28%, #d4d9de 60%, #8a9097 100%);
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.25);
+    color: #2a2c30;
     line-height: 1;
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
@@ -440,15 +477,30 @@
 }
 
 .pp-shortcut:active {
-    background: rgba(0, 0, 0, 0.12);
+    background: linear-gradient(180deg, #7c8188 0%, #c8cdd2 40%, #a8aeb5 100%);
+}
+
+.pp-shortcut-icon {
+    width: 20px;
+    height: 16px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    pointer-events: none;
+}
+
+.pp-shortcut-icon circle[r="0.6"] {
+    fill: currentColor;
 }
 
 .pp-keydeck {
     margin-top: 2px;
     padding: 6px 4px 4px;
     border-radius: 6px;
-    background: linear-gradient(180deg, #1c1e22, var(--pp-key-black));
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 0 0 1px rgba(0, 0, 0, 0.35);
+    background: linear-gradient(180deg, #3a3c41, #2a2c30);
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(0, 0, 0, 0.45);
 }
 
 .pp-softkeys {
@@ -494,9 +546,9 @@
 .pp-nav-btn {
     width: 34px;
     height: 22px;
-    border: 1px solid #2a2e34;
-    border-radius: 3px;
-    background: linear-gradient(180deg, #2a2e34, #121417);
+    border: none;
+    border-radius: 2px;
+    background: linear-gradient(180deg, #1c1d20, #0b0c0e);
     color: #b0b8c0;
     cursor: pointer;
     font-size: 8px;
@@ -504,12 +556,18 @@
     touch-action: manipulation;
 }
 
+/* Wedge-cut d-pad like the SG001's angled keys */
+.pp-nav-btn[data-nav="up"] { clip-path: polygon(0 0, 100% 0, 82% 100%, 18% 100%); }
+.pp-nav-btn[data-nav="down"] { clip-path: polygon(18% 0, 82% 0, 100% 100%, 0 100%); }
+.pp-nav-btn[data-nav="left"] { clip-path: polygon(0 0, 100% 18%, 100% 82%, 0 100%); }
+.pp-nav-btn[data-nav="right"] { clip-path: polygon(0 18%, 100% 0, 100% 100%, 0 82%); }
+
 .pp-nav-ok {
-    width: 38px;
-    height: 26px;
-    border: 1px solid #3a4048;
-    border-radius: 50%;
-    background: linear-gradient(180deg, #2e3238, #141618);
+    width: 30px;
+    height: 24px;
+    border: 1px solid #4a4d53;
+    border-radius: 4px;
+    background: linear-gradient(180deg, #1c1d20, #0b0c0e);
     color: #d8dee4;
     font: 700 11px/1 var(--pp-font);
     cursor: pointer;
@@ -526,9 +584,10 @@
 
 .pp-call-btn {
     height: 22px;
-    border: 1px solid #2a2e34;
+    border: none;
     border-radius: 4px;
-    background: linear-gradient(180deg, #262a30, #121417);
+    background: linear-gradient(180deg, #1c1d20, #0b0c0e);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
     font-size: 11px;
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
@@ -685,10 +744,10 @@
 
 .pp-key {
     height: 30px;
-    border: 1px solid #2a2e34;
-    border-radius: 4px;
-    background: linear-gradient(180deg, #262a30, var(--pp-key-face));
-    color: #e8eef4;
+    border: none;
+    border-radius: 5px;
+    background: linear-gradient(180deg, #1c1d20, var(--pp-key-black));
+    color: #f2f4f6;
     cursor: pointer;
     display: flex;
     flex-direction: column;
@@ -702,7 +761,7 @@
 }
 
 .pp-key:active {
-    background: linear-gradient(180deg, #121417, #262a30);
+    background: linear-gradient(180deg, #08090a, #1c1d20);
 }
 
 .pp-key-num {
