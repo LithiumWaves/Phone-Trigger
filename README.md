@@ -5,7 +5,7 @@ SillyTavern extension that recreates the Steins;Gate **Phone Trigger** loop: ope
 ## Features
 
 - **Phone UI** — draggable MAIL chip, Extensions wand menu, `/phone`
-- **Handset chassis** — Okabe Rintarou's red keitai (truss crown, gunmetal bezel, barrel hinge keys) with working multi-tap keypad (T9-style Latin)
+- **Handset chassis** — Okabe Rintarou's SG001 (truss crown, grey screen panel, gunmetal barrel hinge, wedge-key cluster, kana-printed keypad) with working multi-tap keypad (T9-style Latin)
 - **Mobile** — `<dialog showModal()>` top layer + scale-to-fit (S25 Ultra–safe)
 - **Mail** — inbox / outbox / read / compose; optional tap-to-reply phrases; trash on open mail
 - **Calls** — dial a character and talk in the phone UI (not the main chat); optional call initiative (incoming rings); generation via unique prompt, main chat presets, or both
@@ -73,4 +73,5 @@ Focus a subject/body field, then use the chassis keys:
 - **Long-press** inserts the digit
 - **0** space (long-press = `0`)
 - **\*** toggles Aa / aa
-- **◀** soft-nav left = backspace
+- **Lower-centre wedge** (below the OK square) = backspace
+- **Upper-left / upper-right wedges** = soft keys (captions show at the bottom of the screen)

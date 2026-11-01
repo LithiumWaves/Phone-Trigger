@@ -1,18 +1,21 @@
-/* Phone Trigger — Okabe's red keitai chassis + dialog top-layer mobile shell */
+/* Phone Trigger — Okabe's SG001 chassis + dialog top-layer mobile shell */
 
 :root {
     --pp-red: #d3232a;
     --pp-red-deep: #a0161b;
     --pp-red-bright: #ec3b3f;
     --pp-red-edge: #5c0c0e;
-    --pp-truss: #26272b;
-    --pp-bezel: #4a4d53;
-    --pp-bezel-dark: #2c2e33;
-    --pp-silver: #c5ccd4;
-    --pp-silver-mid: #9aa3ad;
-    --pp-silver-dark: #6d757e;
-    --pp-key-black: #0a0b0d;
-    --pp-key-face: #1a1d22;
+    --pp-truss: #1d1c1e;
+    --pp-panel: #67646a;
+    --pp-panel-dark: #4f4c51;
+    --pp-chin: #77747a;
+    --pp-gun: #5d5c61;
+    --pp-gun-light: #7b7a80;
+    --pp-gun-dark: #3a393d;
+    --pp-deck: #232124;
+    --pp-key-rim: #6b686d;
+    --pp-key-print: #eceaec;
+    --pp-key-face: #1d1b1e;
     --pp-lcd-bg: #061530;
     --pp-lcd-fg: #e8f0ff;
     --pp-lcd-dim: #7a92b0;
@@ -215,17 +218,18 @@
     outline-offset: -2px;
 }
 
-/* —— Red keitai chassis with flip hinge —— */
+/* —— SG001 chassis (Okabe Rintarou's phone) ——
+   Truss crown → red lid with grey screen panel → gunmetal barrel hinge →
+   red base holding a black key panel. */
 .pp-chassis {
+    --pp-truss-h: calc(var(--pp-phone-w) * 0.155);
     position: relative;
     width: var(--pp-phone-w);
     perspective: 1600px;
     perspective-origin: 50% 35%;
     transform-style: preserve-3d;
-    border-radius: 14px 14px 18px 18px;
     padding: 0;
     background: transparent;
-    box-shadow: none;
     overflow: visible;
 }
 
@@ -243,159 +247,120 @@
     will-change: transform;
 }
 
+/* Closed: lid folds over keypad — translateZ keeps it from sinking into the base mid-swing */
+.pp-flip.is-closed .pp-lid,
+.pp-flip.is-closing .pp-lid {
+    transform: translateZ(20px) rotateX(-158deg);
+}
+
+.pp-flip.is-opening .pp-lid,
+.pp-flip.is-open .pp-lid {
+    transform: translateZ(0) rotateX(0deg);
+}
+
+/* Truss: posts + top rail + six struts, standing on the lid */
+.pp-truss {
+    display: block;
+    width: 100%;
+    height: var(--pp-truss-h);
+    margin-bottom: -1px;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    filter: drop-shadow(0 1px 0.5px rgba(0, 0, 0, 0.5));
+}
+
+.pp-truss-frame {
+    fill: var(--pp-truss);
+}
+
+.pp-truss line {
+    stroke: var(--pp-truss);
+    stroke-width: 5;
+    stroke-linecap: butt;
+}
+
 .pp-lid-face {
     position: relative;
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
-    background: linear-gradient(180deg, var(--pp-red-bright) 0%, var(--pp-red) 55%, var(--pp-red-deep) 100%);
-    border-radius: 6px 6px 8px 8px;
-    padding: 5px 8px 8px;
+    padding: 0 3.6% 3.2%;
+    border-radius: 9px 9px 4px 4px;
+    background: linear-gradient(180deg, var(--pp-red-bright) 0%, var(--pp-red) 40%, var(--pp-red-deep) 100%);
     box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.28),
-        0 4px 10px rgba(0, 0, 0, 0.25),
+        inset 0 1px 0 rgba(255, 255, 255, 0.35),
+        inset 1px 0 0 rgba(255, 255, 255, 0.12),
+        inset -1px 0 0 rgba(0, 0, 0, 0.2),
         0 0 0 1px var(--pp-red-edge);
 }
 
 .pp-lid-back {
     position: absolute;
     inset: var(--pp-truss-h) 0 0;
-    border-radius: 6px 6px 8px 8px;
-    background:
-        linear-gradient(180deg, var(--pp-red-deep) 0%, #7a1014 100%);
+    border-radius: 9px 9px 4px 4px;
+    background: linear-gradient(180deg, var(--pp-red-deep) 0%, #7a1014 100%);
     transform: rotateX(180deg) translateZ(1px);
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
     box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.35);
 }
 
-/* Closed: lid folds over keypad — translateZ keeps it from sinking into the base mid-swing */
-.pp-flip.is-closed .pp-lid {
-    transform: translateZ(20px) rotateX(-158deg);
-}
-
-.pp-flip.is-opening .pp-lid {
-    transform: translateZ(0) rotateX(0deg);
-}
-
-.pp-flip.is-open .pp-lid {
-    transform: translateZ(0) rotateX(0deg);
-}
-
-.pp-flip.is-closing .pp-lid {
-    transform: translateZ(20px) rotateX(-158deg);
-}
-
-/* Silver icon strip = the hinge */
-.pp-hinge {
-    position: relative;
-    z-index: 4;
-    margin: -1px 4px 0;
-    padding: 0;
-    transform-style: preserve-3d;
-}
-
-/* Barrel hinge: silver key segments between ribbed end caps */
-.pp-shortcut-bar {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 2px;
-    padding: 3px 16px;
-    border-radius: 6px;
-    background:
-        repeating-linear-gradient(90deg, #4a4e54 0 1px, #b4bac1 1px 3px) left / 14px 100% no-repeat,
-        repeating-linear-gradient(90deg, #4a4e54 0 1px, #b4bac1 1px 3px) right / 14px 100% no-repeat,
-        #3a3d42;
-    box-shadow:
-        inset 0 3px 3px rgba(255, 255, 255, 0.35),
-        inset 0 -3px 4px rgba(0, 0, 0, 0.45),
-        0 2px 4px rgba(0, 0, 0, 0.35);
-}
-
-.pp-base {
-    position: relative;
-    z-index: 2;
-    transform: translateZ(0);
-    background: linear-gradient(180deg, var(--pp-red) 0%, var(--pp-red-deep) 100%);
-    border-radius: 8px 8px 18px 18px;
-    padding: 6px 10px 10px;
-    margin-top: -1px;
-    box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.12),
-        inset 0 -2px 0 rgba(0, 0, 0, 0.25),
-        0 14px 32px rgba(0, 0, 0, 0.45),
-        0 0 0 1px var(--pp-red-edge);
-}
-
-/* Black truss frame crowning the lid (SG001 "antenna" lattice) */
-.pp-lid {
-    --pp-truss-h: 20px;
-}
-
-.pp-truss {
-    display: block;
-    width: calc(100% - 8px);
-    height: var(--pp-truss-h);
-    margin: 0 4px -2px;
-    padding-top: 2px;
-    box-sizing: border-box;
-    overflow: visible;
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-    filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.45));
-}
-
-.pp-truss path {
-    fill: none;
-    stroke: var(--pp-truss);
-    stroke-linejoin: round;
-    vector-effect: non-scaling-stroke;
-}
-
-.pp-truss-frame {
-    stroke-width: 4px;
-}
-
-.pp-truss-web {
-    stroke-width: 3px;
-}
-
+/* Earpiece pill with camera lens to its left */
 .pp-ear-row {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(var(--pp-phone-w) * 0.075);
+}
+
+.pp-earpiece {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 6px;
-    margin: 0 0 5px -12px;
-}
-
-.pp-sensor {
-    width: 4px;
-    height: 4px;
-    border-radius: 50%;
-    background: radial-gradient(circle at 35% 35%, #3a3a40, #050506);
-    box-shadow: inset 0 0 0 1px #222;
-}
-
-.pp-speaker {
-    width: 34px;
-    height: 4px;
-    border-radius: 2px;
-    background: #2a0608;
-    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.35);
-}
-
-/* Gunmetal bezel framing the LCD, with a grey chin below */
-.pp-screen {
-    background: linear-gradient(180deg, var(--pp-bezel) 0%, var(--pp-bezel-dark) 100%);
-    border-radius: 8px;
-    padding: 6px 6px 0;
+    width: 24%;
+    height: 42%;
+    border-radius: 999px;
+    background: linear-gradient(180deg, #b01c21, #e2393d);
     box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.18),
-        inset 0 0 0 1px rgba(0, 0, 0, 0.5),
-        0 0 0 1px rgba(0, 0, 0, 0.35);
+        inset 0 1px 1px rgba(0, 0, 0, 0.45),
+        0 1px 0 rgba(255, 255, 255, 0.25);
 }
 
-.pp-screen > .pp-status {
-    border-radius: 2px 2px 0 0;
+.pp-earpiece span {
+    width: 52%;
+    height: 32%;
+    border-radius: 999px;
+    background: #1a0506;
+}
+
+.pp-cam {
+    position: absolute;
+    left: 30%;
+    top: 50%;
+    width: calc(var(--pp-phone-w) * 0.03);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle at 50% 50%, #200607 0 38%, #9a1519 45% 100%);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.5), 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+/* Grey panel around the LCD, with the dash-dot chin */
+.pp-screen {
+    padding: 3.4% 3.4% 0;
+    border-radius: 7px;
+    background: linear-gradient(180deg, var(--pp-panel) 0%, var(--pp-panel-dark) 100%);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.16),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.3),
+        0 0 0 1px rgba(60, 8, 10, 0.55);
+}
+
+.pp-lcd {
+    overflow: hidden;
+    background: #000;
+    border-radius: 2px;
+    box-shadow: 0 0 0 1px #1b1a1b, 0 0 0 2px rgba(255, 255, 255, 0.08);
 }
 
 .pp-status {
@@ -432,170 +397,277 @@
     position: relative;
 }
 
-.pp-vent-bar {
+/* On-screen captions for the blank wedge soft keys */
+.pp-softbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 13px;
+    padding: 2px 7px;
+    font: 700 9px/1 var(--pp-font);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--pp-lcd-fg);
+    background: linear-gradient(180deg, #0a1c3c, #020814);
+    border-top: 1px solid rgba(158, 196, 255, 0.18);
+}
+
+.pp-chin {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 6px;
-    margin: 0 -6px;
-    padding: 8px 0 7px;
-    background: linear-gradient(180deg, #8a8e94 0%, #6e7278 100%);
-    border-top: 1px solid #1a1b1e;
-    border-radius: 0 0 8px 8px;
+    gap: 4.5%;
+    height: calc(var(--pp-phone-w) * 0.105);
+    margin: 3.4% -3.6% 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.45);
+    border-radius: 0 0 7px 7px;
+    background: linear-gradient(180deg, var(--pp-chin) 0%, var(--pp-panel-dark) 100%);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14);
 }
 
-.pp-vent-bar span {
-    width: 10px;
+.pp-chin i {
+    width: 4%;
     height: 2px;
     border-radius: 1px;
-    background: #1d1e21;
+    background: #121112;
 }
 
-.pp-vent-bar .pp-vent-dot {
-    width: 5px;
-    height: 5px;
+.pp-chin b {
+    width: calc(var(--pp-phone-w) * 0.03);
+    aspect-ratio: 1;
     border-radius: 50%;
-    background: radial-gradient(circle at 40% 35%, #4a5058, #0e0f11);
+    background: radial-gradient(circle at 38% 32%, #8a878a 0 12%, #2a282a 45%, #0b0a0b 100%);
 }
 
-/* Silver shortcut band (lives on hinge) */
-.pp-shortcut {
-    height: 28px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+/* Barrel hinge: ribbed end caps + four bevelled shortcut keys, wider than the body */
+.pp-hinge {
+    position: relative;
+    z-index: 4;
+    display: grid;
+    grid-template-columns: 0.62fr repeat(4, 1fr) 0.62fr;
+    gap: 3px;
+    height: calc(var(--pp-phone-w) * 0.19);
+    margin: -1px -2.2% 0;
     padding: 0;
-    border: none;
+    border-radius: 5px;
+    background: #2b2a2d;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.45), 0 -1px 2px rgba(0, 0, 0, 0.35);
+    transform-style: preserve-3d;
+}
+
+.pp-hinge-cap,
+.pp-shortcut {
     border-radius: 4px;
-    background: linear-gradient(180deg, #8c9198 0%, #eef1f4 28%, #d4d9de 60%, #8a9097 100%);
-    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.25);
-    color: #2a2c30;
-    line-height: 1;
+    background: linear-gradient(180deg,
+        var(--pp-gun-dark) 0%,
+        var(--pp-gun-light) 14%,
+        var(--pp-gun) 48%,
+        var(--pp-gun) 62%,
+        var(--pp-gun-dark) 100%);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.28),
+        inset 0 -2px 2px rgba(0, 0, 0, 0.35),
+        inset 0 0 0 1px rgba(0, 0, 0, 0.35);
+}
+
+.pp-hinge-cap-l {
+    border-radius: 6px 3px 3px 6px;
+    background:
+        repeating-linear-gradient(180deg, transparent 0 3px, rgba(0, 0, 0, 0.55) 3px 4px, rgba(255, 255, 255, 0.12) 4px 5px) left 0 top 18% / 22% 64% no-repeat,
+        linear-gradient(180deg, var(--pp-gun-dark) 0%, var(--pp-gun-light) 14%, var(--pp-gun) 55%, var(--pp-gun-dark) 100%);
+}
+
+.pp-hinge-cap-r {
+    border-radius: 3px 6px 6px 3px;
+    background:
+        repeating-linear-gradient(180deg, transparent 0 3px, rgba(0, 0, 0, 0.55) 3px 4px, rgba(255, 255, 255, 0.12) 4px 5px) right 0 top 18% / 22% 64% no-repeat,
+        linear-gradient(180deg, var(--pp-gun-dark) 0%, var(--pp-gun-light) 14%, var(--pp-gun) 55%, var(--pp-gun-dark) 100%);
+}
+
+.pp-shortcut {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 18% 0 0;
+    border: none;
+    color: #1d1c1e;
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
 }
 
 .pp-shortcut:active {
-    background: linear-gradient(180deg, #7c8188 0%, #c8cdd2 40%, #a8aeb5 100%);
+    filter: brightness(0.82);
 }
 
 .pp-shortcut-icon {
-    width: 20px;
-    height: 16px;
+    width: 46%;
+    max-width: 24px;
     fill: none;
     stroke: currentColor;
-    stroke-width: 1.3;
-    stroke-linecap: round;
+    stroke-width: 1.2;
     stroke-linejoin: round;
+    filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.25));
     pointer-events: none;
 }
 
-.pp-shortcut-icon circle[r="0.6"] {
+.pp-shortcut-icon .pp-icon-fill {
     fill: currentColor;
 }
 
+/* Base: red shell around the black key panel */
+.pp-base {
+    position: relative;
+    z-index: 2;
+    transform: translateZ(0);
+    margin-top: -1px;
+    padding: 3.2% 3.6% 4.4%;
+    border-radius: 4px 4px 12px 12px;
+    background: linear-gradient(180deg, var(--pp-red) 0%, var(--pp-red-deep) 100%);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.15),
+        inset 0 -2px 0 rgba(0, 0, 0, 0.25),
+        0 14px 32px rgba(0, 0, 0, 0.45),
+        0 0 0 1px var(--pp-red-edge);
+}
+
 .pp-keydeck {
-    margin-top: 2px;
-    padding: 6px 4px 4px;
-    border-radius: 6px;
-    background: linear-gradient(180deg, #3a3c41, #2a2c30);
-    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(0, 0, 0, 0.45);
+    padding: 4% 3.5% 5%;
+    border-radius: 9px;
+    background: linear-gradient(180deg, var(--pp-deck) 0%, #141314 100%);
+    box-shadow:
+        inset 0 2px 3px rgba(0, 0, 0, 0.7),
+        0 1px 0 rgba(255, 255, 255, 0.18);
 }
 
-.pp-softkeys {
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    gap: 2px;
-    padding: 0 2px 4px;
+/* Wedge keys: faces drawn in SVG, hit areas are clipped transparent buttons */
+.pp-nav-cluster {
+    position: relative;
+    aspect-ratio: 200 / 124;
+    margin: 0 1% 6%;
 }
 
-.pp-softkey {
+.pp-nav-faces {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+}
+
+.pp-nav-faces polygon {
+    fill: url(#pp-nav-sheen);
+    stroke: var(--pp-key-rim);
+    stroke-width: 1.4;
+    stroke-linejoin: round;
+    filter: drop-shadow(0 1.5px 1px rgba(0, 0, 0, 0.8));
+}
+
+.pp-pad {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    padding: 0;
     border: none;
     background: transparent;
-    color: #c8d0d8;
-    font: 600 9px/1.2 var(--pp-font);
     cursor: pointer;
-    padding: 4px 2px;
-    min-height: 18px;
-    text-transform: uppercase;
-    letter-spacing: 0.03em;
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
 }
 
-.pp-softkey-center {
-    width: 22px;
-    color: #e8eef4;
+.pp-pad:active {
+    background: rgba(255, 255, 255, 0.1);
 }
 
-.pp-nav-cluster {
+.pp-pad-mark {
+    position: absolute;
+    left: var(--cx);
+    top: var(--cy);
+    display: flex;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+
+.pp-pad-dash {
+    width: calc(var(--pp-phone-w) * 0.05);
+    height: 2px;
+    border-radius: 1px;
+    background: var(--pp-key-print);
+}
+
+.pp-pad-icon {
+    width: calc(var(--pp-phone-w) * 0.075);
+    fill: var(--pp-key-print);
+}
+
+/* Number keys: dash, kana, digit, sideways Latin letters */
+.pp-keypad {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 2px;
-    margin-bottom: 4px;
+    gap: 5px;
 }
 
-.pp-nav-mid {
-    display: flex;
-    gap: 2px;
-    align-items: center;
-}
-
-.pp-nav-btn {
-    width: 34px;
-    height: 22px;
-    border: none;
-    border-radius: 2px;
-    background: linear-gradient(180deg, #1c1d20, #0b0c0e);
-    color: #b0b8c0;
-    cursor: pointer;
-    font-size: 8px;
-    -webkit-tap-highlight-color: transparent;
-    touch-action: manipulation;
-}
-
-/* Wedge-cut d-pad like the SG001's angled keys */
-.pp-nav-btn[data-nav="up"] { clip-path: polygon(0 0, 100% 0, 82% 100%, 18% 100%); }
-.pp-nav-btn[data-nav="down"] { clip-path: polygon(18% 0, 82% 0, 100% 100%, 0 100%); }
-.pp-nav-btn[data-nav="left"] { clip-path: polygon(0 0, 100% 18%, 100% 82%, 0 100%); }
-.pp-nav-btn[data-nav="right"] { clip-path: polygon(0 18%, 100% 0, 100% 100%, 0 82%); }
-
-.pp-nav-ok {
-    width: 30px;
-    height: 24px;
-    border: 1px solid #4a4d53;
-    border-radius: 4px;
-    background: linear-gradient(180deg, #1c1d20, #0b0c0e);
-    color: #d8dee4;
-    font: 700 11px/1 var(--pp-font);
-    cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
-    touch-action: manipulation;
-}
-
-.pp-call-row {
+.pp-key-row {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(3, 1fr);
     gap: 6px;
-    padding: 0 10px 5px;
 }
 
-.pp-call-btn {
-    height: 22px;
-    border: none;
-    border-radius: 4px;
-    background: linear-gradient(180deg, #1c1d20, #0b0c0e);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
-    font-size: 11px;
+.pp-key {
+    position: relative;
+    height: 32px;
+    padding: 0;
+    border: 1px solid var(--pp-key-rim);
+    border-radius: 6px 6px 7px 7px;
+    background: linear-gradient(180deg, #3a383b 0%, var(--pp-key-face) 30%, #0f0e10 100%);
+    box-shadow: 0 1.5px 1px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    color: var(--pp-key-print);
     cursor: pointer;
+    line-height: 1;
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
 }
 
-.pp-call-answer { color: #7dcea0; }
-.pp-call-end { color: #e07070; }
+.pp-key:active {
+    background: linear-gradient(180deg, #0f0e10, var(--pp-key-face));
+}
+
+.pp-key-dash {
+    position: absolute;
+    top: 14%;
+    left: 50%;
+    width: 22%;
+    height: 2px;
+    border-radius: 1px;
+    background: var(--pp-key-print);
+    transform: translateX(-50%);
+}
+
+.pp-key-num {
+    position: absolute;
+    left: 50%;
+    top: 60%;
+    transform: translate(-50%, -50%);
+    font: 400 15px/1 "Helvetica Neue", Arial, sans-serif;
+}
+
+.pp-key-kana {
+    position: absolute;
+    left: 15%;
+    top: 62%;
+    transform: translateY(-50%);
+    font: 500 8px/1 "Hiragino Sans", "Yu Gothic", "Noto Sans JP", sans-serif;
+}
+
+.pp-key-latin {
+    position: absolute;
+    right: 9%;
+    top: 50%;
+    transform: translateY(-50%) rotate(90deg);
+    font: 600 5.5px/1 Arial, sans-serif;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+}
 
 .pp-view-home .pp-home-call {
     position: absolute;
@@ -727,51 +799,6 @@
 
 .pp-call-dial .pp-settings-note {
     margin-bottom: 0.6rem;
-}
-
-.pp-keypad {
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-    padding: 0 2px;
-}
-
-.pp-key-row {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 3px;
-}
-
-.pp-key {
-    height: 30px;
-    border: none;
-    border-radius: 5px;
-    background: linear-gradient(180deg, #1c1d20, var(--pp-key-black));
-    color: #f2f4f6;
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 0;
-    line-height: 1;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
-    -webkit-tap-highlight-color: transparent;
-    touch-action: manipulation;
-}
-
-.pp-key:active {
-    background: linear-gradient(180deg, #08090a, #1c1d20);
-}
-
-.pp-key-num {
-    font: 700 12px/1 var(--pp-font);
-}
-
-.pp-key-kana {
-    font: 500 7px/1 var(--pp-font);
-    color: #8a949e;
-    margin-top: 1px;
 }
 
 /* Screen content */
@@ -1558,15 +1585,13 @@
         --pp-phone-w: 232px;
     }
 
-    .pp-key { height: 28px; }
+    .pp-key { height: 29px; }
 }
 
 @media (max-height: 640px) {
     :root { --pp-view-h: 180px; }
-    .pp-key { height: 24px; }
-    .pp-key-kana { display: none; }
-    .pp-nav-btn { height: 18px; }
-    .pp-shortcut { height: 22px; font-size: 11px; }
+    .pp-key { height: 25px; }
+    .pp-key-latin { display: none; }
 }
 
 @media (orientation: landscape) and (max-height: 500px) {
@@ -1574,8 +1599,9 @@
         --pp-view-h: 140px;
         --pp-phone-w: 210px;
     }
-    .pp-key { height: 18px; }
-    .pp-key-kana { display: none; }
+    .pp-key { height: 20px; }
+    .pp-key-kana,
+    .pp-key-latin { display: none; }
 }
 
 /* —— Custom Steins;Gate notifications —— */
