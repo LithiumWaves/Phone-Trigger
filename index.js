@@ -127,6 +127,8 @@ function bindSettingsUi() {
     $('#pp_call_init_quiet_start').val(s.callInitiativeQuietStart ?? 23);
     $('#pp_call_init_quiet_end').val(s.callInitiativeQuietEnd ?? 8);
     $('#pp_dmail_sound').prop('checked', s.dmailSpectacleSound !== false);
+    $('#pp_dmail_live').prop('checked', s.dmailMeterLive !== false);
+    $('#pp_home_meter').prop('checked', s.homeDivergenceMeter !== false);
     $('#pp_inject_call_memory').prop('checked', Boolean(s.injectCallMemory));
     $('#pp_call_summarize').prop('checked', Boolean(s.callSummarizeOnEnd));
 
@@ -665,6 +667,8 @@ async function loadSettingsPanel() {
     });
 
     onToggle('dmailSpectacleSound', '#pp_dmail_sound');
+    onToggle('dmailMeterLive', '#pp_dmail_live');
+    onToggle('homeDivergenceMeter', '#pp_home_meter');
     onToggle('injectCallMemory', '#pp_inject_call_memory', (st) => {
         if (st.injectCallMemory) {
             updateCallMemoryPrompt();

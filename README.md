@@ -11,6 +11,7 @@ SillyTavern extension that recreates the Steins;Gate **Phone Trigger** loop: ope
 - **Calls** — dial a character and talk in the phone UI (not the main chat); optional call initiative (incoming rings); generation via unique prompt, main chat presets, or both
 - **Character initiative** — optional VN-style unsolicited mail with interval, chance, idle, caps, quiet hours, and contact rules (off by default)
 - **D-Mail** — permanent contact **PhoneWave (name subject to change)** (hideable); Spectacle (FX only) / Worldline / Propose / Apply; clearable worldline facts
+- **Divergence meter** — per-chat divergence picked by the AI for each D-Mail; live nixie-tube remake of the cutscene lands on the new value; meter on the phone home screen
 - **Strong Apply** — optional lorebook (pick which book) + optional smooth character-card rewrite (confirm screens; no chat paste, no worldline block dump)
 - **Call memory** — persist finished calls; optional inject; summarize on hang-up (or per-call Σ) for token-friendly recollection
 - **Do not reply** — compose toggle skips the AI reply so mail threads do not loop
@@ -29,7 +30,7 @@ SillyTavern extension that recreates the Steins;Gate **Phone Trigger** loop: ope
 1. Extensions → Install extension → `https://github.com/LithiumWaves/Phone-Trigger`
 2. Enable **Phone Trigger**
 3. Folder should be `scripts/extensions/third-party/Phone-Trigger` (legacy `Penumbra-Phantasm` still works for assets/settings fallback)
-4. Divergence clip: `lib/vid/divmeter.mp4`
+4. Divergence clip: `lib/vid/divmeter.mp4` (soundtrack for the live meter; played whole when Live meter is off)
 
 ## Commands
 
@@ -54,6 +55,10 @@ Body
 Mail replies are generated independently of the main chat character (To: contact card + editable prompt). A short delay (default 3–8s) runs before the reply arrives. Optional chat→mail summary keeps replies story-aware; optional mail→chat injection can be limited to the speaking character so group members do not share private mail.
 
 Mail to **PhoneWave (name subject to change)** is a D-Mail: no character reply. **Spectacle** plays the divergence meter cutscene (video + audio) in the browser top layer and does not create worldline facts. **Propose** opens an edit gate before writers run. **Worldline (soft)** injects facts into the LLM prompt only; **Apply (hard)** optionally confirms a lorebook write and/or a smooth character-card rewrite. Soft and hard can both be on; Propose delays writers until you confirm. Compose shows sender/participants, selectable past context, **36-character ASCII** limit (on by default), **redirect phone** (own inbox vs character mail memory), and optional **arrival datetime**. Deliveries are always **three split parts** (e.g. 36 → 12+12+12). Character-routed D-Mails land in that character’s Mail memory and stay unchecked by default. They stay out of the Outbox unless **Show in outbox** is enabled.
+
+### Divergence meter
+
+Each chat has a divergence reading (starts at `1.130426`). When a D-Mail produces a worldline fact, the AI picks the new value — small personal changes move only the last digits, drastic ones cross attractor fields (`0.x` ↔ `1.x`). **Spectacle** renders the meter live: tubes roll and lock left → right onto the new value, timed to the clip's soundtrack. Spectacle alone rolls back to the same reading. With **Propose**, the value is editable on the review screen and only committed on Continue. The phone's home screen shows the current reading; D-Mail settings can set it by hand, hide it, or switch the cutscene back to the original clip.
 
 ### Character initiative
 

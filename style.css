@@ -669,6 +669,24 @@
     white-space: nowrap;
 }
 
+/* Nixie divergence readout on the home screen */
+.pp-home-meter {
+    position: absolute;
+    top: 10px;
+    left: 8px;
+    right: 8px;
+    padding: 6px 6px 4px;
+    border-radius: 4px;
+    background: radial-gradient(ellipse at 50% 60%, rgba(60, 10, 6, 0.85), rgba(8, 2, 2, 0.92));
+    box-shadow: inset 0 0 0 1px rgba(255, 110, 40, 0.18), 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.pp-home-meter canvas {
+    display: block;
+    width: 100%;
+    height: 56px;
+}
+
 .pp-view-home .pp-home-call {
     position: absolute;
     left: 8px;
@@ -1994,6 +2012,17 @@ body:has(#pp-phone-root.pp-pos-left) .pp-notify-host {
     animation: pp-dmail-flash 0.9s ease-out forwards;
 }
 
+.pp-divmeter-canvas {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    display: block;
+    background: #000;
+}
+
+.pp-dmail-fx.pp-dmail-distort-on .pp-divmeter-canvas,
 .pp-dmail-fx.pp-dmail-distort-on .pp-dmail-video,
 .pp-dmail-fx.pp-dmail-distort-on .pp-dmail-fallback {
     animation: pp-dmail-glitch 0.85s steps(2, end) forwards;
