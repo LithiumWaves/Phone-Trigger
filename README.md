@@ -11,7 +11,7 @@ SillyTavern extension that recreates the Steins;Gate **Phone Trigger** loop: ope
 - **Calls** — dial a character and talk in the phone UI (not the main chat); optional call initiative (incoming rings); generation via unique prompt, main chat presets, or both
 - **Character initiative** — optional VN-style unsolicited mail with interval, chance, idle, caps, quiet hours, and contact rules (off by default)
 - **D-Mail** — permanent contact **PhoneWave (name subject to change)** (hideable); Spectacle (FX only) / Worldline / Propose / Apply; clearable worldline facts
-- **Divergence meter** — per-chat divergence picked by the AI for each D-Mail; live nixie-tube remake of the cutscene lands on the new value; meter on the phone home screen
+- **Divergence meter** — per-chat divergence picked by the AI for each D-Mail; choose the **Original** cutscene (default) or a **Progressive** nixie-tube remake that lands on the new value (asked once on first boot); meter on the phone home screen
 - **Strong Apply** — optional lorebook (pick which book) + optional smooth character-card rewrite (confirm screens; no chat paste, no worldline block dump)
 - **Call memory** — persist finished calls; optional inject; summarize on hang-up (or per-call Σ) for token-friendly recollection
 - **Do not reply** — compose toggle skips the AI reply so mail threads do not loop
@@ -30,7 +30,7 @@ SillyTavern extension that recreates the Steins;Gate **Phone Trigger** loop: ope
 1. Extensions → Install extension → `https://github.com/LithiumWaves/Phone-Trigger`
 2. Enable **Phone Trigger**
 3. Folder should be `scripts/extensions/third-party/Phone-Trigger` (legacy `Penumbra-Phantasm` still works for assets/settings fallback)
-4. Divergence clip: `lib/vid/divmeter.mp4` (soundtrack for the live meter; played whole when Live meter is off)
+4. Divergence clip: `lib/vid/divmeter.mp4` (the Original cutscene; also the Progressive cutscene's soundtrack)
 
 ## Commands
 
@@ -58,7 +58,12 @@ Mail to **PhoneWave (name subject to change)** is a D-Mail: no character reply. 
 
 ### Divergence meter
 
-Each chat has a divergence reading (starts at `1.130426`). When a D-Mail produces a worldline fact, the AI picks the new value — small personal changes move only the last digits, drastic ones cross attractor fields (`0.x` ↔ `1.x`). **Spectacle** renders the meter live: tubes roll and lock left → right onto the new value, timed to the clip's soundtrack. Spectacle alone rolls back to the same reading. With **Propose**, the value is editable on the review screen and only committed on Continue. The phone's home screen shows the current reading; D-Mail settings can set it by hand, hide it, or switch the cutscene back to the original clip.
+Each chat has a divergence reading (starts at `1.130426`). When a D-Mail produces a worldline fact, the AI picks the new value — small personal changes move only the last digits, drastic ones cross attractor fields (`0.x` ↔ `1.x`). Two cutscenes are available, chosen on first boot in a side-by-side comparison (re-open it from **Compare cutscenes** in the extension drawer or the phone's D-Mail settings):
+
+- **Original** (default) — the `divmeter.mp4` clip as-is. Its numbers are fixed (`1.130426 → 0.571024`), but the chat's divergence still updates and shows on the home screen.
+- **Progressive** — rendered live: tubes roll and lock left → right onto the new value, timed to the clip's soundtrack.
+
+Spectacle alone rolls back to the same reading. With **Propose**, the value is editable on the review screen and only committed on Continue. The phone's home screen shows the current reading; D-Mail settings can set it by hand or hide it.
 
 ### Character initiative
 

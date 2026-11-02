@@ -2092,3 +2092,296 @@ body:has(#pp-phone-root.pp-pos-left) .pp-notify-host {
     55% { opacity: 0.95; }
     100% { opacity: 0; }
 }
+
+/* —— Cutscene chooser (first boot) — Steins;Gate lab terminal —— */
+.pp-sg-prompt {
+    --sg-amber: #ffb54a;
+    --sg-orange: #ff6f1a;
+    --sg-ink: #e9ddcf;
+    --sg-dim: #9a8a7c;
+    --sg-line: rgba(255, 140, 60, 0.28);
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: max(12px, env(safe-area-inset-top, 0px)) 12px max(12px, env(safe-area-inset-bottom, 0px));
+    border: none;
+    z-index: 2147483001;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    background: transparent;
+    color: var(--sg-ink);
+    font-family: "IBM Plex Mono", "Consolas", "Lucida Console", monospace;
+    animation: pp-sg-in 0.35s ease-out;
+}
+
+.pp-sg-prompt:not([open]) {
+    display: none;
+}
+
+.pp-sg-prompt::backdrop {
+    background:
+        radial-gradient(ellipse at 50% 45%, rgba(70, 14, 6, 0.55), rgba(0, 0, 0, 0.92) 70%);
+    backdrop-filter: blur(3px);
+}
+
+.pp-sg-prompt.pp-sg-out {
+    opacity: 0;
+    transition: opacity 0.25s ease;
+}
+
+@keyframes pp-sg-in {
+    from { opacity: 0; transform: scale(0.98); }
+    to { opacity: 1; transform: none; }
+}
+
+.pp-sg-panel {
+    position: relative;
+    width: min(880px, 100%);
+    max-height: 100%;
+    overflow-y: auto;
+    padding: 22px 22px 16px;
+    box-sizing: border-box;
+    border: 1px solid var(--sg-line);
+    background:
+        repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.018) 0 1px, transparent 1px 3px),
+        radial-gradient(circle at 88% 12%, transparent 0 46px, rgba(255, 120, 40, 0.07) 47px 48px, transparent 49px 70px, rgba(255, 120, 40, 0.05) 71px 72px, transparent 73px),
+        radial-gradient(circle at 6% 92%, transparent 0 60px, rgba(255, 120, 40, 0.06) 61px 62px, transparent 63px 92px, rgba(255, 120, 40, 0.04) 93px 94px, transparent 95px),
+        linear-gradient(180deg, #140b08 0%, #0b0605 100%);
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.6), 0 24px 70px rgba(0, 0, 0, 0.7), inset 0 0 60px rgba(255, 90, 20, 0.05);
+    text-align: center;
+}
+
+.pp-sg-panel:focus {
+    outline: none; /* the dialog focuses its scroll container on open */
+}
+
+.pp-sg-corner {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--sg-orange);
+    pointer-events: none;
+}
+
+.pp-sg-tl { top: -1px; left: -1px; border-right: none; border-bottom: none; }
+.pp-sg-tr { top: -1px; right: -1px; border-left: none; border-bottom: none; }
+.pp-sg-bl { bottom: -1px; left: -1px; border-right: none; border-top: none; }
+.pp-sg-br { bottom: -1px; right: -1px; border-left: none; border-top: none; }
+
+.pp-sg-close {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    border: none;
+    background: transparent;
+    color: var(--sg-dim);
+    font-size: 22px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.pp-sg-close:hover {
+    color: var(--sg-amber);
+}
+
+.pp-sg-kicker {
+    margin: 0 0 10px;
+    padding: 0 30px;
+    font-size: 10px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--sg-dim);
+}
+
+.pp-sg-meter {
+    display: block;
+    width: min(300px, 80%);
+    height: 64px;
+    margin: 0 auto 6px;
+}
+
+.pp-sg-title {
+    margin: 0;
+    font: 700 clamp(20px, 4.4vw, 30px)/1.1 "Times New Roman", Georgia, serif;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--sg-amber);
+    text-shadow: 0 0 10px rgba(255, 120, 30, 0.75), 0 0 28px rgba(255, 80, 0, 0.35);
+}
+
+.pp-sg-sub {
+    margin: 8px 0 18px;
+    font-size: 13px;
+    color: var(--sg-ink);
+    opacity: 0.85;
+}
+
+.pp-sg-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 14px;
+    text-align: left;
+}
+
+.pp-sg-card {
+    display: flex;
+    flex-direction: column;
+    padding: 12px;
+    border: 1px solid var(--sg-line);
+    background: linear-gradient(180deg, rgba(40, 16, 10, 0.55), rgba(10, 5, 4, 0.7));
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.pp-sg-card:hover,
+.pp-sg-card-current {
+    border-color: rgba(255, 150, 60, 0.6);
+    box-shadow: 0 0 18px rgba(255, 100, 20, 0.12);
+}
+
+.pp-sg-card-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 9px;
+    letter-spacing: 0.24em;
+    color: var(--sg-dim);
+}
+
+.pp-sg-badge {
+    padding: 2px 6px;
+    border: 1px solid var(--sg-orange);
+    color: var(--sg-amber);
+    letter-spacing: 0.18em;
+}
+
+.pp-sg-card-title {
+    margin: 6px 0 8px;
+    font: 700 17px/1.2 "Times New Roman", Georgia, serif;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--sg-amber);
+}
+
+.pp-sg-gif-frame {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border: 1px solid rgba(0, 0, 0, 0.8);
+    background: #000;
+    box-shadow: 0 0 0 1px var(--sg-line);
+}
+
+.pp-sg-gif {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.pp-sg-points {
+    margin: 10px 0 8px;
+    padding: 0;
+    list-style: none;
+    font-size: 12px;
+    line-height: 1.45;
+}
+
+.pp-sg-points li {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 3px;
+}
+
+.pp-sg-mark {
+    flex: 0 0 10px;
+    color: var(--sg-orange);
+    font-weight: 700;
+}
+
+.pp-sg-example {
+    margin: 0 0 12px;
+    padding: 8px 10px;
+    border-left: 2px solid var(--sg-orange);
+    background: rgba(255, 110, 30, 0.06);
+    font-size: 11.5px;
+    line-height: 1.55;
+    color: var(--sg-dim);
+}
+
+.pp-sg-example b {
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--sg-amber);
+    text-shadow: 0 0 6px rgba(255, 110, 20, 0.6);
+}
+
+.pp-sg-example b.pp-sg-miss {
+    color: #ff8a7a;
+    text-shadow: none;
+    text-decoration: line-through rgba(255, 138, 122, 0.6);
+}
+
+.pp-sg-select {
+    margin-top: auto;
+    padding: 9px 12px;
+    border: 1px solid var(--sg-orange);
+    background: linear-gradient(180deg, rgba(255, 111, 26, 0.18), rgba(255, 111, 26, 0.06));
+    color: var(--sg-amber);
+    font: 700 12px/1 "IBM Plex Mono", "Consolas", monospace;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.pp-sg-select:hover,
+.pp-sg-select:focus-visible {
+    background: rgba(255, 111, 26, 0.3);
+    color: #fff1dc;
+    outline: none;
+}
+
+.pp-sg-foot {
+    margin: 16px 0 0;
+    font-size: 11px;
+    color: var(--sg-dim);
+}
+
+.pp-sg-sign {
+    display: block;
+    margin-top: 6px;
+    font-style: italic;
+    letter-spacing: 0.2em;
+    color: var(--sg-orange);
+}
+
+@media (max-width: 520px) {
+    .pp-sg-panel {
+        padding: 16px 12px 12px;
+    }
+
+    .pp-sg-kicker {
+        letter-spacing: 0.18em;
+    }
+
+    .pp-sg-meter {
+        height: 48px;
+    }
+
+    .pp-sg-sub {
+        margin-bottom: 12px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .pp-sg-prompt {
+        animation: none;
+    }
+}

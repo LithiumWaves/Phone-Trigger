@@ -550,11 +550,12 @@
                         <small>Plays the <code>divmeter.mp4</code> soundtrack during the cutscene (respects Sounds).</small>
                     </div>
                     <div class="pp-settings-block">
-                        <label>
-                            <input id="pp_dmail_live" type="checkbox" />
-                            <span>Live divergence meter</span>
-                        </label>
-                        <small>Rendered nixie meter that lands on the AI-picked divergence. Off = play the original clip.</small>
+                        <label for="pp_dmail_cutscene">D-Mail cutscene</label>
+                        <select id="pp_dmail_cutscene">
+                            <option value="original">Original (clip, fixed numbers)</option>
+                            <option value="progressive">Progressive (lands on the new divergence)</option>
+                        </select>
+                        <button id="pp_dmail_cutscene_compare" class="menu_button" type="button">Compare cutscenes</button>
                     </div>
                     <div class="pp-settings-block">
                         <label>

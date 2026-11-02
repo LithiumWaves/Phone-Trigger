@@ -25,6 +25,7 @@ import { getActiveCharacterName } from './lib/store.js';
 import { ensureNotifyHost } from './lib/notify.js';
 import { updateWorldlinePrompt } from './lib/dmail.js';
 import { updateCallMemoryPrompt } from './lib/callMemory.js';
+import { showCutscenePrompt, maybeShowFirstRunCutscenePrompt } from './lib/cutscenePrompt.js';
 import {
     syncInitiativeScheduler,
     noteInitiativeActivity,
@@ -127,7 +128,7 @@ function bindSettingsUi() {
     $('#pp_call_init_quiet_start').val(s.callInitiativeQuietStart ?? 23);
     $('#pp_call_init_quiet_end').val(s.callInitiativeQuietEnd ?? 8);
     $('#pp_dmail_sound').prop('checked', s.dmailSpectacleSound !== false);
-    $('#pp_dmail_live').prop('checked', s.dmailMeterLive !== false);
+    $('#pp_dmail_cutscene').val(s.dmailCutscene === 'progressive' ? 'progressive' : 'original');
     $('#pp_home_meter').prop('checked', s.homeDivergenceMeter !== false);
     $('#pp_inject_call_memory').prop('checked', Boolean(s.injectCallMemory));
     $('#pp_call_summarize').prop('checked', Boolean(s.callSummarizeOnEnd));
@@ -667,7 +668,16 @@ async function loadSettingsPanel() {
     });
 
     onToggle('dmailSpectacleSound', '#pp_dmail_sound');
-    onToggle('dmailMeterLive', '#pp_dmail_live');
+    $('#pp_dmail_cutscene').on('change', () => {
+        const st = getSettings();
+        st.dmailCutscene = $('#pp_dmail_cutscene').val() === 'progressive' ? 'progressive' : 'original';
+        st.dmailCutsceneChosen = true;
+        saveSettings();
+    });
+    $('#pp_dmail_cutscene_compare').on('click', async () => {
+        const choice = await showCutscenePrompt();
+        $('#pp_dmail_cutscene').val(choice);
+    });
     onToggle('homeDivergenceMeter', '#pp_home_meter');
     onToggle('injectCallMemory', '#pp_inject_call_memory', (st) => {
         if (st.injectCallMemory) {
@@ -975,6 +985,7 @@ jQuery(async () => {
     noteCallInitiativeActivity();
     syncInitiativeScheduler();
     syncCallInitiativeScheduler();
+    maybeShowFirstRunCutscenePrompt();
 
     console.log(LOG, 'loaded');
 });

@@ -7,6 +7,10 @@ Divergence meter clip used for D-Mail:
 
 When you send mail to **PhoneWave (name subject to change)**, Phone Trigger plays this video fullscreen (with its soundtrack when Sounds / Play cutscene audio are on), then applies a short screen distortion. If the file fails to load, a CSS divergence-meter fallback runs instead.
 
+Progressive mode reuses the clip's soundtrack and renders the meter itself (`lib/divmeter.js`).
+
+`meter-original.gif` / `meter-progressive.gif` are the previews shown in the first-boot cutscene chooser.
+
 Re-encode tip (keep audio):
 
 ```bash
