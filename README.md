@@ -11,6 +11,7 @@ SillyTavern extension that recreates the Steins;Gate **Phone Trigger** loop: ope
 - **Calls** — dial a character and talk in the phone UI (not the main chat); optional call initiative (incoming rings); generation via unique prompt, main chat presets, or both
 - **Character initiative** — optional VN-style unsolicited mail with interval, chance, idle, caps, quiet hours, and contact rules (off by default)
 - **D-Mail** — permanent contact **PhoneWave (name subject to change)** (hideable); Spectacle (FX only) / Worldline / Propose / Apply; clearable worldline facts
+- **Time Leap Machine** — call **PhoneWave** to open TLM.EXE; you or a character leaps back (48 h limit) to a chosen message, the chat branches there, and only the leaper remembers the abandoned future; **Original** or **Progressive** cutscene
 - **Divergence meter** — per-chat divergence picked by the AI for each D-Mail; choose the **Original** cutscene (default) or a **Progressive** nixie-tube remake that lands on the new value (asked once on first boot); meter on the phone home screen
 - **Strong Apply** — optional lorebook (pick which book) + optional smooth character-card rewrite (confirm screens; no chat paste, no worldline block dump)
 - **Call memory** — persist finished calls; optional inject; summarize on hang-up (or per-call Σ) for token-friendly recollection
@@ -31,6 +32,7 @@ SillyTavern extension that recreates the Steins;Gate **Phone Trigger** loop: ope
 2. Enable **Phone Trigger**
 3. Folder should be `scripts/extensions/third-party/Phone-Trigger` (legacy `Penumbra-Phantasm` still works for assets/settings fallback)
 4. Divergence clip: `lib/vid/divmeter.mp4` (the Original cutscene; also the Progressive cutscene's soundtrack)
+5. Time leap clip: `lib/vid/timeleap.mp4` (same roles for the time leap)
 
 ## Commands
 
@@ -39,6 +41,7 @@ SillyTavern extension that recreates the Steins;Gate **Phone Trigger** loop: ope
 | `/phone` | Toggle phone |
 | `/mail` | Open inbox |
 | `/mailsend subject="Hi" Hello` | Send mail (`reply=off` to skip AI reply) |
+| `/timeleap` (`/tlm`) | Open the Time Leap Machine |
 
 ## Character mail
 
@@ -64,6 +67,23 @@ Each chat has a divergence reading (starts at `1.130426`). When a D-Mail produce
 - **Progressive** — rendered live: tubes roll and lock left → right onto the new value, timed to the clip's soundtrack.
 
 Spectacle alone rolls back to the same reading. With **Propose**, the value is editable on the review screen and only committed on Continue. The phone's home screen shows the current reading; D-Mail settings can set it by hand or hide it.
+
+### Time Leap Machine
+
+Mail to PhoneWave is a D-Mail; **calling** PhoneWave (green ☎ → PhoneWave) boots **TLM.EXE**, the machine's configuration app:
+
+- **CONFIG** — the leaper (you or any character in the chat), the message to arrive at, the story-time **NOW** and **DESTINATION** (with −1/3/12/24/48 h steps and a flip-clock readout), the ΔT gauge against the 48-hour limit, and the cutscene.
+- **MEMORY** — **Compress memories** summarizes everything after the arrival message (chat, plus mail and calls from that future) into what the leaper remembers. Edit it, then **Execute time leap**.
+- **LOG** — past leaps on this timeline (forget one or all) and machine toggles.
+
+Executing plays the cutscene, then branches the chat at the arrival message (SillyTavern's `/branch-create`), so the abandoned future stays in its own chat file. The new branch keeps the worldline, divergence, D-Mails and earlier leaps; mail and calls from after the arrival point are dropped unless **Keep future phone** is on. A `/comment` arrival marker (not sent to the AI) notes the leap.
+
+Memories are injected per leaper: yours are always in the prompt, marked as known only to you. A character's are only present while that character is speaking, so the rest of the cast (and you) don't know unless they tell you. Leaps stack, as Okabe's do. Contradicting an earlier D-Mail is done the canonical way: send another D-Mail.
+
+Cutscenes (chosen on first boot, or **Compare cutscenes** under Extensions → Time Leap, or COMPARE in TLM.EXE):
+
+- **Original** (default) — `timeleap.mp4` as-is; its clock always reads `8/13 19:56 → 16:56`.
+- **Progressive** — rendered live: the flip clock counts back from your NOW to your DESTINATION (dates and weekdays roll over), with the HUD showing the leap's readout, timed to the clip's soundtrack.
 
 ### Character initiative
 

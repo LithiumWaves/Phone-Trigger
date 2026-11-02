@@ -16,3 +16,8 @@ Re-encode tip (keep audio):
 ```bash
 ffmpeg -i source.mp4 -c:v libx264 -profile:v main -pix_fmt yuv420p -movflags +faststart -c:a aac -b:a 160k lib/vid/divmeter.mp4
 ```
+
+## Time leap
+
+- **Clip:** `lib/vid/timeleap.mp4` (fallback `assets/timeleap.mp4`), played by the Original time leap cutscene; Progressive mode plays only its soundtrack and renders the scene itself (`lib/timeleapScene.js`).
+- `leap-original.gif` / `leap-progressive.gif` are the previews in the time leap cutscene chooser.

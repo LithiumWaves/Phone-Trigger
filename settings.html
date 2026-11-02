@@ -567,6 +567,58 @@
             </details>
 
             <details class="pp-drawer-cat">
+                <summary>Time Leap</summary>
+                <div class="pp-drawer-cat-body">
+                    <div class="pp-settings-block">
+                        <label>
+                            <input id="pp_timeleap_enabled" type="checkbox" />
+                            <span>Time Leap Machine</span>
+                        </label>
+                        <small>
+                            Call <b>PhoneWave</b> from the phone (or <code>/timeleap</code>) to open TLM.EXE: pick who leaps
+                            (you or a character), the message to arrive at, and the story times. The chat is branched at that
+                            message; the leaper keeps compressed memories of the abandoned future.
+                        </small>
+                    </div>
+                    <div class="pp-settings-block">
+                        <label>
+                            <input id="pp_timeleap_inject" type="checkbox" />
+                            <span>Inject leap memories</span>
+                        </label>
+                        <small>Your memories are always injected; a character's only while that character speaks.</small>
+                        <label for="pp_timeleap_depth">Inject depth</label>
+                        <input id="pp_timeleap_depth" type="number" min="0" max="99" step="1" class="text_pole" />
+                        <label for="pp_timeleap_max">Memories per leaper</label>
+                        <input id="pp_timeleap_max" type="number" min="1" max="20" step="1" class="text_pole" />
+                    </div>
+                    <div class="pp-settings-block">
+                        <label for="pp_timeleap_limit">Range limit (story hours, 0 = unlimited)</label>
+                        <input id="pp_timeleap_limit" type="number" min="0" max="8760" step="1" class="text_pole" />
+                        <label>
+                            <input id="pp_timeleap_keep_phone" type="checkbox" />
+                            <span>Keep future mail and calls on the new branch</span>
+                        </label>
+                        <label>
+                            <input id="pp_timeleap_marker" type="checkbox" />
+                            <span>Arrival marker (<code>/comment</code>, not sent to the AI)</span>
+                        </label>
+                    </div>
+                    <div class="pp-settings-block">
+                        <label>
+                            <input id="pp_timeleap_sound" type="checkbox" />
+                            <span>Play cutscene audio</span>
+                        </label>
+                        <label for="pp_timeleap_cutscene">Time leap cutscene</label>
+                        <select id="pp_timeleap_cutscene">
+                            <option value="original">Original (clip, fixed clock)</option>
+                            <option value="progressive">Progressive (counts back to your destination)</option>
+                        </select>
+                        <button id="pp_timeleap_cutscene_compare" class="menu_button" type="button">Compare cutscenes</button>
+                    </div>
+                </div>
+            </details>
+
+            <details class="pp-drawer-cat">
                 <summary>Call memory</summary>
                 <div class="pp-drawer-cat-body">
                     <div class="pp-settings-block">

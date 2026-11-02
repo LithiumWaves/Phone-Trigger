@@ -10,6 +10,7 @@ import {
     openInbox,
     isPhoneOpen,
     resetMailChipPosition,
+    openTimeleapMachine,
 } from './lib/phone.js';
 import {
     registerEmailTool,
@@ -25,6 +26,7 @@ import { getActiveCharacterName } from './lib/store.js';
 import { ensureNotifyHost } from './lib/notify.js';
 import { updateWorldlinePrompt } from './lib/dmail.js';
 import { updateCallMemoryPrompt } from './lib/callMemory.js';
+import { updateTimeleapPrompt } from './lib/timeleap.js';
 import { showCutscenePrompt, maybeShowFirstRunCutscenePrompt } from './lib/cutscenePrompt.js';
 import {
     syncInitiativeScheduler,
@@ -129,6 +131,15 @@ function bindSettingsUi() {
     $('#pp_call_init_quiet_end').val(s.callInitiativeQuietEnd ?? 8);
     $('#pp_dmail_sound').prop('checked', s.dmailSpectacleSound !== false);
     $('#pp_dmail_cutscene').val(s.dmailCutscene === 'progressive' ? 'progressive' : 'original');
+    $('#pp_timeleap_enabled').prop('checked', s.timeleapEnabled !== false);
+    $('#pp_timeleap_inject').prop('checked', s.timeleapInject !== false);
+    $('#pp_timeleap_depth').val(s.timeleapPromptDepth ?? 2);
+    $('#pp_timeleap_max').val(s.timeleapMaxMemories ?? 5);
+    $('#pp_timeleap_limit').val(s.timeleapLimitHours ?? 48);
+    $('#pp_timeleap_keep_phone').prop('checked', Boolean(s.timeleapKeepFuturePhone));
+    $('#pp_timeleap_marker').prop('checked', s.timeleapArrivalMarker !== false);
+    $('#pp_timeleap_sound').prop('checked', s.timeleapSound !== false);
+    $('#pp_timeleap_cutscene').val(s.timeleapCutscene === 'progressive' ? 'progressive' : 'original');
     $('#pp_home_meter').prop('checked', s.homeDivergenceMeter !== false);
     $('#pp_inject_call_memory').prop('checked', Boolean(s.injectCallMemory));
     $('#pp_call_summarize').prop('checked', Boolean(s.callSummarizeOnEnd));
@@ -678,6 +689,39 @@ async function loadSettingsPanel() {
         const choice = await showCutscenePrompt();
         $('#pp_dmail_cutscene').val(choice);
     });
+
+    onToggle('timeleapEnabled', '#pp_timeleap_enabled');
+    onToggle('timeleapInject', '#pp_timeleap_inject', () => updateTimeleapPrompt());
+    onToggle('timeleapKeepFuturePhone', '#pp_timeleap_keep_phone');
+    onToggle('timeleapArrivalMarker', '#pp_timeleap_marker');
+    onToggle('timeleapSound', '#pp_timeleap_sound');
+    const leapInt = (selector, key, min, max, fallback) => {
+        $(selector).on('change', () => {
+            const st = getSettings();
+            let n = Number($(selector).val());
+            if (!Number.isFinite(n)) {
+                n = fallback;
+            }
+            n = Math.max(min, Math.min(max, Math.floor(n)));
+            st[key] = n;
+            $(selector).val(n);
+            saveSettings();
+            updateTimeleapPrompt();
+        });
+    };
+    leapInt('#pp_timeleap_depth', 'timeleapPromptDepth', 0, 99, 2);
+    leapInt('#pp_timeleap_max', 'timeleapMaxMemories', 1, 20, 5);
+    leapInt('#pp_timeleap_limit', 'timeleapLimitHours', 0, 8760, 48);
+    $('#pp_timeleap_cutscene').on('change', () => {
+        const st = getSettings();
+        st.timeleapCutscene = $('#pp_timeleap_cutscene').val() === 'progressive' ? 'progressive' : 'original';
+        st.timeleapCutsceneChosen = true;
+        saveSettings();
+    });
+    $('#pp_timeleap_cutscene_compare').on('click', async () => {
+        const choice = await showCutscenePrompt({ kind: 'timeleap' });
+        $('#pp_timeleap_cutscene').val(choice);
+    });
     onToggle('homeDivergenceMeter', '#pp_home_meter');
     onToggle('injectCallMemory', '#pp_inject_call_memory', (st) => {
         if (st.injectCallMemory) {
@@ -792,6 +836,19 @@ function registerSlashCommands() {
     }));
 
     Parser.addCommandObject(SlashCommand.fromProps({
+        name: 'timeleap',
+        callback: () => {
+            if (!getSettings().enableSlashCommand) {
+                return 'Phone slash commands disabled';
+            }
+            openTimeleapMachine();
+            return 'Time Leap Machine opened';
+        },
+        aliases: ['tlm'],
+        helpString: 'Open the Time Leap Machine (same as calling PhoneWave).',
+    }));
+
+    Parser.addCommandObject(SlashCommand.fromProps({
         name: 'mailsend',
         callback: async (namedArgs, unnamedArgs) => {
             if (!getSettings().enableSlashCommand) {
@@ -856,6 +913,7 @@ function registerEvents() {
         if (getSettings().injectCallMemory) {
             updateCallMemoryPrompt();
         }
+        updateTimeleapPrompt();
         noteInitiativeActivity();
         noteCallInitiativeActivity();
         syncInitiativeScheduler();
@@ -870,6 +928,7 @@ function registerEvents() {
         if (getSettings().injectCallMemory) {
             updateCallMemoryPrompt();
         }
+        updateTimeleapPrompt();
         refreshIfOpen();
         noteInitiativeActivity();
         noteCallInitiativeActivity();
@@ -905,7 +964,9 @@ function registerEvents() {
     const refreshSpeakerMemory = (...args) => {
         try {
             const hint = args.find((a) => a && (typeof a === 'object' || typeof a === 'string')) || args[0];
-            updateMailPrompt(resolveSpeakingContact(hint));
+            const speaker = resolveSpeakingContact(hint);
+            updateMailPrompt(speaker);
+            updateTimeleapPrompt(speaker);
         } catch (err) {
             console.debug(LOG, 'mail memory refresh failed', err);
         }
@@ -976,6 +1037,7 @@ jQuery(async () => {
     if (getSettings().injectCallMemory) {
         updateCallMemoryPrompt();
     }
+    updateTimeleapPrompt();
     updateWandItem();
 
     // Retry wand item — menu may mount late
@@ -1001,6 +1063,7 @@ export function onActivate() {
     if (getSettings().injectCallMemory) {
         updateCallMemoryPrompt();
     }
+    updateTimeleapPrompt();
     noteInitiativeActivity();
     noteCallInitiativeActivity();
     syncInitiativeScheduler();

@@ -2385,3 +2385,421 @@ body:has(#pp-phone-root.pp-pos-left) .pp-notify-host {
         animation: none;
     }
 }
+
+/* —— Time Leap Machine: TLM.EXE (call PhoneWave) —— */
+.pp-view.pp-view-tlm {
+    background: #008080;
+    padding: 3px;
+    box-sizing: border-box;
+    --tlm-fg: #d8ffe0;
+    --tlm-green: #4cf04c;
+    --tlm-dim: #6f9a7a;
+    --tlm-bad: #ff5a4a;
+    --tlm-mono: "Share Tech Mono", "IBM Plex Mono", "Consolas", "Lucida Console", monospace;
+}
+
+.pp-tlm-win {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    background: #c0c0c0;
+    border: 1px solid;
+    border-color: #fff #404040 #404040 #fff;
+    box-shadow: inset -1px -1px 0 #808080, inset 1px 1px 0 #dfdfdf;
+    padding: 2px;
+    font-family: var(--tlm-mono);
+}
+
+.pp-tlm-titlebar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1px 3px;
+    background: linear-gradient(90deg, #000080, #1084d0);
+    color: #fff;
+    font: 700 9px/1.3 Tahoma, "MS Sans Serif", Verdana, sans-serif;
+    letter-spacing: 0.02em;
+    flex-shrink: 0;
+}
+
+.pp-tlm-wbtns {
+    font-size: 8px;
+    letter-spacing: 0.25em;
+    opacity: 0.9;
+}
+
+.pp-tlm-tabs {
+    display: flex;
+    gap: 1px;
+    padding: 2px 1px 0;
+    flex-shrink: 0;
+}
+
+.pp-tlm-tab {
+    flex: 1;
+    padding: 2px 0 1px;
+    font: 700 8px/1.2 Tahoma, "MS Sans Serif", Verdana, sans-serif;
+    color: #000;
+    background: #c0c0c0;
+    border: 1px solid;
+    border-color: #fff #404040 transparent #fff;
+    border-radius: 2px 2px 0 0;
+    cursor: pointer;
+}
+
+.pp-tlm-tab-on {
+    background: #04070b;
+    color: var(--tlm-green);
+    border-color: #808080 #404040 transparent #808080;
+}
+
+.pp-tlm-body,
+.pp-tlm-boot {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    margin: 0;
+    padding: 4px 5px 6px;
+    background:
+        repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.025) 0 1px, transparent 1px 3px),
+        #04070b;
+    color: var(--tlm-fg);
+    font: 9px/1.35 var(--tlm-mono);
+    border: 1px solid;
+    border-color: #404040 #fff #fff #404040;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+}
+
+.pp-tlm-boot {
+    color: var(--tlm-green);
+    white-space: pre-wrap;
+    text-shadow: 0 0 4px rgba(76, 240, 76, 0.5);
+    cursor: pointer;
+}
+
+.pp-tlm-status {
+    display: flex;
+    justify-content: space-between;
+    gap: 4px;
+    padding: 1px 3px;
+    margin-top: 2px;
+    font: 8px/1.3 Tahoma, "MS Sans Serif", Verdana, sans-serif;
+    color: #000;
+    border: 1px solid;
+    border-color: #808080 #fff #fff #808080;
+    flex-shrink: 0;
+}
+
+.pp-tlm-status span:first-child {
+    color: #006400;
+}
+
+.pp-tlm-field {
+    display: block;
+    margin-bottom: 4px;
+}
+
+.pp-tlm-field > span,
+.pp-tlm-sect {
+    display: block;
+    color: var(--tlm-green);
+    font-size: 8px;
+    letter-spacing: 0.12em;
+    margin: 4px 0 2px;
+}
+
+.pp-tlm-sect em {
+    float: right;
+    font-style: normal;
+    color: var(--tlm-dim);
+    letter-spacing: 0;
+}
+
+.pp-tlm-input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 2px 3px;
+    background: #000;
+    color: #fff;
+    font: 9px/1.3 var(--tlm-mono);
+    border: 1px solid #2f5a3a;
+    border-radius: 0;
+    color-scheme: dark;
+}
+
+.pp-tlm-input:focus {
+    outline: 1px solid var(--tlm-green);
+}
+
+.pp-tlm-mem {
+    resize: vertical;
+    min-height: 66px;
+    white-space: pre-wrap;
+}
+
+.pp-tlm-quote {
+    margin: -1px 0 4px;
+    padding: 2px 4px;
+    color: var(--tlm-dim);
+    border-left: 2px solid #2f5a3a;
+    max-height: 3.9em;
+    overflow: hidden;
+}
+
+/* Mini flip clock — the cutscene's clock in miniature */
+.pp-tlm-clock {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 1px;
+    margin: 3px 0 2px;
+    padding: 3px 2px;
+    background: linear-gradient(180deg, #19191c, #050506 50%, #151518);
+    border-top: 1px solid #77778a;
+    border-bottom: 1px solid #77778a;
+}
+
+.pp-tlm-clock b,
+.pp-tlm-clock s {
+    position: relative;
+    display: inline-block;
+    min-width: 1.15em;
+    padding: 1px 2px;
+    text-align: center;
+    text-decoration: none;
+    color: #f4f4f4;
+    background: linear-gradient(180deg, #1c1c1e 0 49%, #000 49% 52%, #111113 52%);
+    border-radius: 2px;
+    font: 700 13px/1.15 "Helvetica Neue", Helvetica, Arial, sans-serif;
+    letter-spacing: 0.04em;
+}
+
+.pp-tlm-clock s {
+    min-width: 2.2em;
+    margin: 0 2px;
+    font-size: 8px;
+    line-height: 1;
+    padding-top: 9px;
+    align-self: stretch;
+}
+
+.pp-tlm-clock i {
+    font: 700 7px/1 "Hiragino Sans", "Yu Gothic", "Noto Sans JP", sans-serif;
+    font-style: normal;
+    color: var(--tlm-green);
+    text-shadow: 0 0 3px rgba(76, 240, 76, 0.6);
+    margin-right: 1px;
+}
+
+.pp-tlm-clock-dest {
+    box-shadow: 0 0 0 1px rgba(76, 240, 76, 0.35);
+}
+
+.pp-tlm-steps {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px;
+    margin: 2px 0;
+}
+
+.pp-tlm-step,
+.pp-tlm-btn {
+    font: 700 8px/1.2 Tahoma, "MS Sans Serif", Verdana, sans-serif;
+    color: #000;
+    background: #c0c0c0;
+    border: 1px solid;
+    border-color: #fff #404040 #404040 #fff;
+    box-shadow: inset -1px -1px 0 #808080;
+    padding: 2px 4px;
+    cursor: pointer;
+}
+
+.pp-tlm-step {
+    flex: 1;
+}
+
+.pp-tlm-step:active,
+.pp-tlm-btn:active:not(:disabled),
+.pp-tlm-step-on {
+    border-color: #404040 #fff #fff #404040;
+    box-shadow: inset 1px 1px 0 #808080;
+    background: #a8a8a8;
+}
+
+.pp-tlm-btn {
+    display: block;
+    width: 100%;
+    margin: 6px 0 2px;
+    padding: 4px;
+    font-size: 9px;
+}
+
+.pp-tlm-btn:disabled {
+    color: #808080;
+    text-shadow: 1px 1px 0 #fff;
+    cursor: default;
+}
+
+.pp-tlm-exec:not(:disabled) {
+    color: #fff;
+    background: linear-gradient(180deg, #b0182a, #6a0a14);
+    text-shadow: 0 0 4px rgba(255, 120, 120, 0.8);
+}
+
+.pp-tlm-range {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin: 4px 0 2px;
+    color: var(--tlm-green);
+}
+
+.pp-tlm-gauge {
+    flex: 1;
+    height: 6px;
+    background: #000;
+    border: 1px solid #2f5a3a;
+    position: relative;
+}
+
+.pp-tlm-gauge i {
+    position: absolute;
+    inset: 0 auto 0 0;
+    background: repeating-linear-gradient(90deg, var(--tlm-green) 0 3px, transparent 3px 4px);
+}
+
+.pp-tlm-bad,
+.pp-tlm-warn {
+    color: var(--tlm-bad);
+}
+
+.pp-tlm-bad .pp-tlm-gauge i {
+    background: repeating-linear-gradient(90deg, var(--tlm-bad) 0 3px, transparent 3px 4px);
+}
+
+.pp-tlm-warn {
+    margin: 2px 0;
+    font-size: 8px;
+    animation: pp-tlm-blink 1s steps(2, start) infinite;
+}
+
+@keyframes pp-tlm-blink {
+    to { visibility: hidden; }
+}
+
+.pp-tlm-summary div {
+    display: flex;
+    gap: 6px;
+}
+
+.pp-tlm-summary span {
+    min-width: 4.4em;
+    color: var(--tlm-green);
+}
+
+.pp-tlm-summary em {
+    font-style: normal;
+    color: var(--tlm-dim);
+}
+
+.pp-tlm-note {
+    margin: 4px 0;
+    color: var(--tlm-dim);
+}
+
+.pp-tlm-log {
+    margin: 3px 0;
+    padding: 2px 3px;
+    border: 1px solid #1d3a26;
+}
+
+.pp-tlm-log-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 4px;
+    color: var(--tlm-green);
+}
+
+.pp-tlm-log-mem {
+    white-space: pre-wrap;
+    color: var(--tlm-dim);
+    max-height: 6.8em;
+    overflow-y: auto;
+}
+
+.pp-tlm-x {
+    background: none;
+    border: none;
+    color: var(--tlm-bad);
+    font: 700 10px/1 var(--tlm-mono);
+    cursor: pointer;
+    padding: 0 2px;
+}
+
+.pp-tlm-toggle {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    gap: 6px;
+    margin: 2px 0;
+    padding: 3px 4px;
+    text-align: left;
+    background: #000;
+    color: var(--tlm-dim);
+    border: 1px solid #1d3a26;
+    font: 9px/1.25 var(--tlm-mono);
+    cursor: pointer;
+}
+
+.pp-tlm-toggle b {
+    display: block;
+    color: var(--tlm-fg);
+    font-weight: 700;
+}
+
+.pp-tlm-toggle small {
+    display: block;
+    font-size: 8px;
+}
+
+.pp-tlm-toggle-on > span:last-child {
+    color: var(--tlm-green);
+}
+
+/* Cutscene chooser — Time Leap header clock */
+.pp-sg-leapclock {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 2px;
+    margin: 0 auto 8px;
+    padding: 6px 0;
+    background: linear-gradient(180deg, #19191c, #050506 50%, #151518);
+    border-top: 1px solid #77778a;
+    border-bottom: 1px solid #77778a;
+}
+
+.pp-sg-leapclock b {
+    padding: 2px 4px;
+    color: #f4f4f4;
+    background: linear-gradient(180deg, #1c1c1e 0 49%, #000 49% 52%, #111113 52%);
+    border-radius: 3px;
+    font: 700 26px/1.1 "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.pp-sg-leapclock i {
+    font: 700 11px/1 "Hiragino Sans", "Yu Gothic", "Noto Sans JP", sans-serif;
+    font-style: normal;
+    color: #4cf04c;
+    text-shadow: 0 0 4px rgba(76, 240, 76, 0.6);
+}
+
+.pp-sg-leapclock span {
+    align-self: flex-end;
+    margin: 0 4px;
+    color: #f4f4f4;
+    font: 700 11px/1 "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
