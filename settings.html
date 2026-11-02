@@ -398,6 +398,7 @@
                             <textarea id="pp_call_prompt" class="text_pole" rows="10" spellcheck="false"></textarea>
                             <small>
                                 Placeholders: <code>{{char}}</code> <code>{{user}}</code> <code>{{transcript}}</code>
+                                <code>{{cue}}</code> (your latest line, or "{{char}} speaks first")
                                 <code>{{last_user}}</code> <code>{{guidance}}</code> <code>{{char_card}}</code>
                                 <code>{{chat_summary}}</code>
                             </small>
@@ -518,6 +519,11 @@
                                 <span>→</span>
                                 <input id="pp_call_init_quiet_end" type="number" class="text_pole" min="0" max="23" step="1" style="max-width:4em;" />
                             </div>
+                        </div>
+                        <div class="pp-settings-block">
+                            <label for="pp_call_init_reason"><span>Why they call (optional)</span></label>
+                            <textarea id="pp_call_init_reason" class="text_pole" rows="2" spellcheck="true" placeholder="Blank = the character picks a reason from the story"></textarea>
+                            <small>The caller speaks first when you answer and gets to this reason. Not quoted.</small>
                         </div>
                         <div class="pp-settings-block">
                             <button id="pp_call_initiative_test" class="menu_button" type="button">Ring me now</button>

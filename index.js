@@ -123,6 +123,7 @@ function bindSettingsUi() {
     $('#pp_call_init_tab').prop('checked', s.callInitiativeRequireTabVisible !== false);
     $('#pp_call_init_skip_busy').prop('checked', s.callInitiativeSkipIfBusy !== false);
     $('#pp_call_init_auto_open').prop('checked', s.callInitiativeAutoOpen !== false);
+    $('#pp_call_init_reason').val(s.callInitiativeGuidance || '');
     $('#pp_call_init_contacts').val(
         ['active', 'all', 'weighted'].includes(s.callInitiativeContacts) ? s.callInitiativeContacts : 'active',
     );
@@ -650,6 +651,10 @@ async function loadSettingsPanel() {
     onToggle('callInitiativeRequireTabVisible', '#pp_call_init_tab');
     onToggle('callInitiativeSkipIfBusy', '#pp_call_init_skip_busy');
     onToggle('callInitiativeAutoOpen', '#pp_call_init_auto_open');
+    $('#pp_call_init_reason').on('input', () => {
+        getSettings().callInitiativeGuidance = String($('#pp_call_init_reason').val() || '');
+        saveSettings();
+    });
     $('#pp_call_init_contacts').on('change', () => {
         const s = getSettings();
         const v = String($('#pp_call_init_contacts').val() || 'active');
