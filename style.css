@@ -3569,27 +3569,23 @@ dialog.pp-menu.pp-menu-out .pp-menu-bg {
     pointer-events: none;
 }
 
-.pp-phone[data-finish="gloss"] .pp-lid-face::before,
-.pp-phone[data-finish="gloss"] .pp-base::before {
+.pp-phone[data-finish="gloss"] :is(.pp-lid-face, .pp-base, .pp-lid-back, .pp-back)::before {
     background: linear-gradient(160deg, rgba(255, 255, 255, 0.34) 0%, rgba(255, 255, 255, 0.07) 26%, transparent 44%, rgba(0, 0, 0, 0.14) 100%);
 }
 
-.pp-phone[data-finish="matte"] .pp-lid-face::before,
-.pp-phone[data-finish="matte"] .pp-base::before {
+.pp-phone[data-finish="matte"] :is(.pp-lid-face, .pp-base, .pp-lid-back, .pp-back)::before {
     background:
         radial-gradient(rgba(0, 0, 0, 0.07) 0.6px, transparent 0.8px) 0 0 / 3px 3px,
         linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(0, 0, 0, 0.08));
 }
 
-.pp-phone[data-finish="metallic"] .pp-lid-face::before,
-.pp-phone[data-finish="metallic"] .pp-base::before {
+.pp-phone[data-finish="metallic"] :is(.pp-lid-face, .pp-base, .pp-lid-back, .pp-back)::before {
     background:
         repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.07) 0 1px, rgba(0, 0, 0, 0.05) 1px 2px, transparent 2px 4px),
         linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, transparent 28%, rgba(255, 255, 255, 0.12) 58%, rgba(0, 0, 0, 0.2) 100%);
 }
 
-.pp-phone[data-finish="pearl"] .pp-lid-face::before,
-.pp-phone[data-finish="pearl"] .pp-base::before {
+.pp-phone[data-finish="pearl"] :is(.pp-lid-face, .pp-base, .pp-lid-back, .pp-back)::before {
     background:
         linear-gradient(160deg, rgba(255, 255, 255, 0.3) 0%, transparent 35%),
         linear-gradient(125deg, rgba(255, 190, 240, 0.24), rgba(190, 240, 255, 0.24) 35%, rgba(255, 255, 210, 0.2) 65%, rgba(215, 195, 255, 0.24));
@@ -3599,15 +3595,11 @@ dialog.pp-menu.pp-menu-out .pp-menu-bg {
 .pp-sticker {
     position: absolute;
     z-index: 3;
-    width: calc(var(--pp-phone-w) * 0.075);
-    filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.4));
+    height: auto;
+    overflow: visible;
+    filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.45));
     pointer-events: none;
 }
-
-.pp-sticker-lid-tl { top: 0.6%; left: 4%; transform: rotate(-14deg); }
-.pp-sticker-lid-tr { top: 0.6%; right: 4%; transform: rotate(12deg); }
-.pp-sticker-base-bl { bottom: 0.8%; left: 5%; transform: rotate(-10deg); }
-.pp-sticker-base-br { bottom: 0.8%; right: 5%; transform: rotate(16deg); }
 
 /* Strap charm */
 .pp-charm {
@@ -4025,4 +4017,404 @@ dialog.pp-menu .pp-pe-color input[type="color"] {
 
 .pp-x-call-missed span:first-child {
     color: var(--pp-danger);
+}
+
+/* —— Phone style v2: patterns, cover, keys, screen styles, deco —— */
+.pp-phone[data-custom] .pp-lid-face {
+    background:
+        var(--pp-pattern-shell, none),
+        linear-gradient(180deg, var(--pp-red-bright) 0%, var(--pp-red) 40%, var(--pp-red-deep) 100%);
+}
+
+.pp-phone[data-custom] .pp-base {
+    background:
+        var(--pp-pattern-shell, none),
+        linear-gradient(180deg, var(--pp-red) 0%, var(--pp-red-deep) 100%);
+}
+
+.pp-phone[data-custom] .pp-lid-back {
+    isolation: isolate;
+    background:
+        var(--pp-pattern-cover, none),
+        linear-gradient(180deg, var(--pp-red) 0%, var(--pp-red-deep) 100%);
+}
+
+.pp-phone[data-custom] .pp-lid-back::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    pointer-events: none;
+}
+
+/* More finishes (gloss/matte/metallic/pearl live above) */
+.pp-phone[data-finish] :is(.pp-lid-face, .pp-base, .pp-lid-back, .pp-back)::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    pointer-events: none;
+}
+
+.pp-phone[data-finish="glitter"] :is(.pp-lid-face, .pp-base, .pp-lid-back, .pp-back)::before {
+    background:
+        radial-gradient(circle, rgba(255, 255, 255, 0.9) 0.5px, transparent 1px) 0 0 / 7px 7px,
+        radial-gradient(circle, rgba(255, 255, 255, 0.6) 0.5px, transparent 1px) 3px 4px / 9px 9px,
+        radial-gradient(circle, rgba(255, 255, 255, 0.5) 0.6px, transparent 1.1px) 5px 1px / 13px 13px,
+        linear-gradient(160deg, rgba(255, 255, 255, 0.28), transparent 40%);
+    animation: pp-glitter 2.4s steps(3) infinite;
+}
+
+@keyframes pp-glitter {
+    33% { background-position: 2px 1px, 6px 2px, 1px 6px, 0 0; }
+    66% { background-position: 4px 3px, 1px 6px, 7px 3px, 0 0; }
+}
+
+.pp-phone[data-finish="holo"] :is(.pp-lid-face, .pp-base, .pp-lid-back, .pp-back)::before {
+    background: linear-gradient(115deg, rgba(255, 150, 230, 0.35), rgba(150, 240, 255, 0.32) 25%, rgba(255, 246, 150, 0.3) 45%, rgba(190, 160, 255, 0.34) 65%, rgba(160, 255, 210, 0.3) 85%, rgba(255, 150, 230, 0.35));
+    background-size: 200% 200%;
+    animation: pp-holo 6s ease-in-out infinite alternate;
+    mix-blend-mode: screen;
+}
+
+@keyframes pp-holo {
+    to { background-position: 100% 100%; }
+}
+
+.pp-phone[data-finish="candy"] :is(.pp-lid-face, .pp-base, .pp-lid-back, .pp-back)::before {
+    background:
+        linear-gradient(170deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0.1) 22%, transparent 40%),
+        radial-gradient(ellipse at 50% 120%, rgba(255, 255, 255, 0.35), transparent 60%);
+    box-shadow: inset 0 0 12px rgba(255, 255, 255, 0.35);
+}
+
+.pp-phone[data-finish="rubber"] :is(.pp-lid-face, .pp-base, .pp-lid-back, .pp-back)::before {
+    background: radial-gradient(rgba(0, 0, 0, 0.12) 0.6px, transparent 0.9px) 0 0 / 3px 3px, linear-gradient(180deg, rgba(0, 0, 0, 0.04), rgba(0, 0, 0, 0.18));
+    box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.25);
+}
+
+.pp-phone[data-finish="chrome"] :is(.pp-lid-face, .pp-base, .pp-lid-back, .pp-back)::before {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.1) 30%, rgba(0, 0, 0, 0.18) 48%, rgba(255, 255, 255, 0.45) 52%, rgba(255, 255, 255, 0.05) 75%, rgba(0, 0, 0, 0.2) 100%);
+}
+
+.pp-phone[data-finish="velvet"] :is(.pp-lid-face, .pp-base, .pp-lid-back, .pp-back)::before {
+    background:
+        radial-gradient(rgba(255, 255, 255, 0.05) 0.5px, transparent 0.8px) 0 0 / 2px 2px,
+        radial-gradient(ellipse at 30% 20%, rgba(255, 255, 255, 0.18), transparent 60%),
+        linear-gradient(180deg, transparent 50%, rgba(0, 0, 0, 0.25));
+}
+
+/* Rhinestone / pearl / stud borders */
+.pp-phone:is([data-gems="border"], [data-pearls], [data-studs]) :is(.pp-lid-face, .pp-base, .pp-lid-back, .pp-back)::after {
+    content: '';
+    position: absolute;
+    inset: 3px;
+    z-index: 4;
+    border-radius: inherit;
+    pointer-events: none;
+    border: calc(var(--pp-phone-w) * 0.014) dotted var(--pp-gem);
+    filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.9));
+}
+
+.pp-phone[data-studs] :is(.pp-lid-face, .pp-base, .pp-lid-back, .pp-back)::after {
+    border-color: #c9ced6;
+    filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.6)) drop-shadow(0 -1px 0 rgba(255, 255, 255, 0.6));
+}
+
+.pp-phone[data-pearls] :is(.pp-lid-face, .pp-base, .pp-lid-back, .pp-back)::after {
+    border-width: calc(var(--pp-phone-w) * 0.018);
+    border-color: #fbf6ee;
+    filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.35));
+}
+
+.pp-deco {
+    position: absolute;
+    z-index: 2;
+    pointer-events: none;
+    overflow: visible;
+}
+
+.pp-deco-center {
+    left: 15%;
+    top: 24%;
+    width: 70%;
+    filter: drop-shadow(0 0 1.5px rgba(255, 255, 255, 0.9));
+}
+
+.pp-deco-fill {
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* Cover prints and the outer display */
+.pp-cover-art {
+    position: absolute;
+    left: 50%;
+    top: 58%;
+    z-index: 1;
+    width: 58%;
+    transform: translate(-50%, -50%);
+    opacity: 0.92;
+    filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.25));
+    pointer-events: none;
+}
+
+.pp-outer {
+    position: absolute;
+    left: 50%;
+    top: 7%;
+    z-index: 2;
+    width: 44%;
+    aspect-ratio: 2 / 1;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2%;
+    border-radius: 4px;
+    background: radial-gradient(ellipse at 40% 30%, rgba(255, 255, 255, 0.14), transparent 60%), var(--pp-outer, #0a0f14);
+    box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.45), inset 0 2px 6px rgba(0, 0, 0, 0.6), 0 1px 0 rgba(255, 255, 255, 0.2);
+    color: #bfe3ff;
+    font: 600 calc(var(--pp-phone-w) * 0.055)/1 var(--pp-font);
+    text-shadow: 0 0 4px rgba(120, 190, 255, 0.7);
+    overflow: hidden;
+}
+
+.pp-outer-info {
+    font-size: 0.6em;
+    opacity: 0.85;
+    white-space: nowrap;
+}
+
+.pp-outer-round {
+    width: 30%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+}
+
+.pp-outer-heart,
+.pp-outer-star {
+    width: 34%;
+    aspect-ratio: 1;
+    border-radius: 0;
+    padding-bottom: 4%;
+}
+
+.pp-outer-heart {
+    clip-path: path('M50 92S6 64 6 34a22 22 0 0 1 44-12 22 22 0 0 1 44 12c0 30-44 58-44 58z');
+    clip-path: polygon(50% 95%, 8% 55%, 4% 30%, 15% 10%, 35% 6%, 50% 20%, 65% 6%, 85% 10%, 96% 30%, 92% 55%);
+}
+
+.pp-outer-star {
+    clip-path: polygon(50% 2%, 63% 36%, 98% 38%, 70% 60%, 80% 96%, 50% 75%, 20% 96%, 30% 60%, 2% 38%, 37% 36%);
+}
+
+.pp-outer.pp-outer-ringing .pp-outer-info {
+    animation: pp-tlm-blink 0.7s steps(2, start) infinite;
+    color: #9effb0;
+}
+
+/* Back panel (candybar / slider / touch); shown when the phone is turned over */
+.pp-back {
+    position: absolute;
+    inset: 0;
+    display: none;
+    isolation: isolate;
+    border-radius: 22px;
+    background:
+        var(--pp-pattern-cover, none),
+        linear-gradient(180deg, var(--pp-red) 0%, var(--pp-red-deep) 100%);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 0 0 1px var(--pp-red-edge), 0 14px 32px rgba(0, 0, 0, 0.45);
+    transform: rotateY(180deg);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+.pp-back-cam {
+    position: absolute;
+    left: 12%;
+    top: 5%;
+    width: calc(var(--pp-phone-w) * 0.13);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(circle at 40% 35%, #4a5a7a 0 18%, #0b0d12 30% 62%, var(--pp-gun-dark) 66% 100%);
+    box-shadow: 0 0 0 2px var(--pp-panel-dark), inset 0 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+.pp-back-brand {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 8%;
+    text-align: center;
+    font: 700 calc(var(--pp-phone-w) * 0.045)/1 "Helvetica Neue", Arial, sans-serif;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--pp-brand-ink, #fff);
+    opacity: 0.75;
+}
+
+/* Multiple charms */
+.pp-charm-1 {
+    right: -1%;
+    bottom: 3%;
+    width: calc(var(--pp-phone-w) * 0.1);
+    animation-delay: -1.2s;
+    animation-duration: 2.9s;
+}
+
+.pp-charm-2 {
+    right: -10%;
+    bottom: 14%;
+    width: calc(var(--pp-phone-w) * 0.11);
+    animation-delay: -2.1s;
+    animation-duration: 3.8s;
+}
+
+.pp-charm-1 .pp-charm-cord {
+    height: calc(var(--pp-phone-w) * 0.18);
+}
+
+.pp-charm-2 .pp-charm-cord {
+    height: calc(var(--pp-phone-w) * 0.09);
+}
+
+/* Key styles */
+.pp-phone[data-keys="candy"] .pp-key {
+    border-radius: 9px;
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.7) 0 16%, transparent 40%),
+        linear-gradient(180deg, var(--pp-key-hi), var(--pp-key-face) 60%, var(--pp-key-lo));
+    box-shadow: 0 1.5px 1px rgba(0, 0, 0, 0.45), inset 0 -2px 3px rgba(255, 255, 255, 0.35);
+}
+
+.pp-phone[data-keys="metal"] .pp-key,
+.pp-phone[data-keys="metal"] .pp-shortcut {
+    background: linear-gradient(180deg, #f4f6f8 0%, #c4cad2 42%, #8f959e 58%, #d4d8dc 100%);
+    border-color: #6a7078;
+    color: #1a1c20;
+}
+
+.pp-phone[data-keys="metal"] .pp-key-dash,
+.pp-phone[data-keys="metal"] .pp-pad-dash {
+    background: #1a1c20;
+}
+
+.pp-phone[data-keys="pearl"] .pp-key {
+    background: linear-gradient(135deg, #fff8fc 0%, #f0e4f6 35%, #e4f2fa 65%, #fff6ea 100%);
+    border-color: #d8ccd8;
+    color: #3a2a3a;
+}
+
+.pp-phone[data-keys="pearl"] .pp-key-dash {
+    background: #3a2a3a;
+}
+
+.pp-phone[data-keys="rainbow"] .pp-key {
+    border-color: rgba(255, 255, 255, 0.6);
+    color: #fff;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.6);
+}
+
+.pp-phone[data-keys="rainbow"] .pp-key-row:nth-child(1) .pp-key { background: linear-gradient(180deg, #ff8a9a, #ff5a6e); }
+.pp-phone[data-keys="rainbow"] .pp-key-row:nth-child(2) .pp-key { background: linear-gradient(180deg, #ffd08a, #ffb340); }
+.pp-phone[data-keys="rainbow"] .pp-key-row:nth-child(3) .pp-key { background: linear-gradient(180deg, #8ae6a4, #3fc768); }
+.pp-phone[data-keys="rainbow"] .pp-key-row:nth-child(4) .pp-key { background: linear-gradient(180deg, #a8c8ff, #6a8cff); }
+
+.pp-phone[data-keys="neon"] .pp-key {
+    background: linear-gradient(180deg, #1c1c1e, #0a0a0b);
+    border-color: var(--pp-accent);
+    color: var(--pp-accent);
+}
+
+.pp-phone[data-keys="neon"] .pp-key-dash {
+    background: var(--pp-accent);
+}
+
+.pp-phone[data-keys="neon"][data-glow] .pp-key {
+    box-shadow: 0 0 6px color-mix(in srgb, var(--pp-accent) 60%, transparent), inset 0 0 4px color-mix(in srgb, var(--pp-accent) 35%, transparent);
+    text-shadow: 0 0 5px var(--pp-accent);
+}
+
+.pp-phone[data-keys="gem"] .pp-key {
+    outline: calc(var(--pp-phone-w) * 0.008) dotted var(--pp-gem);
+    outline-offset: -3px;
+}
+
+/* Screen styles */
+.pp-phone[data-font="serif"] { --pp-font: "Georgia", "Times New Roman", "Hiragino Mincho ProN", serif; }
+.pp-phone[data-font="hand"] { --pp-font: "Segoe Print", "Chalkboard SE", "Comic Sans MS", cursive; }
+.pp-phone[data-font="bubble"] { --pp-font: "Arial Rounded MT Bold", "Varela Round", "M PLUS Rounded 1c", sans-serif; }
+
+.pp-phone[data-ui="cute"] .pp-row {
+    margin: 2px 4px;
+    width: calc(100% - 8px);
+    border: 1px solid color-mix(in srgb, var(--pp-accent) 30%, transparent);
+    border-radius: 9px;
+    background: color-mix(in srgb, var(--pp-accent) 8%, transparent);
+}
+
+.pp-phone[data-ui="cute"] .pp-title::before { content: '♡ '; color: var(--pp-accent); }
+
+.pp-phone[data-ui="bubble"] .pp-row {
+    margin: 3px 5px;
+    width: calc(100% - 10px);
+    border: 0;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--pp-accent) 14%, transparent);
+}
+
+.pp-phone[data-ui="bubble"] .pp-title {
+    margin: 4px 6px 2px;
+    border: 0;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--pp-accent) 28%, transparent);
+    text-align: center;
+}
+
+.pp-phone[data-ui="terminal"] .pp-title::before { content: '> '; }
+.pp-phone[data-ui="terminal"] .pp-view { text-transform: uppercase; letter-spacing: 0.03em; }
+.pp-phone[data-ui="terminal"] .pp-row { border-bottom-style: dashed; }
+
+.pp-phone[data-ui="neon"] .pp-view {
+    text-shadow: 0 0 4px color-mix(in srgb, var(--pp-accent) 70%, transparent);
+}
+
+.pp-phone[data-ui="neon"] .pp-title {
+    border-bottom: 1px solid var(--pp-accent);
+    box-shadow: 0 1px 6px color-mix(in srgb, var(--pp-accent) 50%, transparent);
+}
+
+.pp-phone[data-ui="lace"] .pp-title {
+    border-bottom: 3px dotted color-mix(in srgb, var(--pp-accent) 70%, transparent);
+}
+
+.pp-phone[data-ui="lace"] .pp-title::before,
+.pp-phone[data-ui="lace"] .pp-title::after {
+    content: ' ❦ ';
+    color: var(--pp-accent);
+}
+
+.pp-phone[data-ui="lace"] .pp-row {
+    border-bottom: 1px dashed color-mix(in srgb, var(--pp-accent) 35%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .pp-phone *::before {
+        animation: none !important;
+    }
+}
+
+.pp-phone[data-custom] .pp-lid-back {
+    inset: 0;
+    border-radius: 9px;
+}
+
+.pp-phone[data-custom][data-crown="truss"] .pp-lid-back {
+    inset: var(--pp-truss-h) 0 0;
+    border-radius: 9px 9px 4px 4px;
 }
