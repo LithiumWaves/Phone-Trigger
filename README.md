@@ -5,7 +5,7 @@ SillyTavern extension that recreates the Steins;Gate **Phone Trigger** loop: ope
 ## Features
 
 - **System menu** — every setting in a Steins;Gate-style full-screen menu (Extensions drawer → **Open Phone Trigger menu**, the wand menu, `/phonemenu`, or phone Settings → Full menu)
-- **Designed phones** — the AI designs a handset to suit you or any character: flip, candybar, slider or touchscreen, with colours, finish, charm, stickers, screen font and wallpaper; edit by hand or reset to the SG001
+- **Designed phones** — 24 fashion styles (Jirai-kei, Scene, Gyaru, Gothic Lolita, Decora…) or an AI design to suit you or any character: four bodies, prints, finishes, key styles, rhinestones, charms and draggable stickers on the cover, front and keypad; phones open shut so you see the cover, and swipe up to flip them open
 - **Other people's phones** — grab a character's phone (or anyone's, like FB) to read their mail and call log or send mail as them; characters can show you their phone with a `<phone>` tag
 - **Phone UI** — draggable MAIL chip, Extensions wand menu, `/phone`
 - **Handset chassis** — Okabe Rintarou's SG001 (truss crown, grey screen panel, gunmetal barrel hinge, wedge-key cluster, kana-printed keypad) with working multi-tap keypad (T9-style Latin)
@@ -75,9 +75,16 @@ Spectacle alone rolls back to the same reading. With **Propose**, the value is e
 
 ### Phones
 
-**Menu → Phones** lists your phone and every character in the chat. **Design with AI** (optionally with a hint such as "battered, covered in stickers") has the model pick a 2010-era handset that suits its owner: body (flip, candybar, slider, touchscreen), shell and key colours, finish (gloss, matte, metallic, pearl), screen colours and font, wallpaper, strap charm and stickers. **Edit** changes any of it by hand; **Back to SG001** / **Forget design** undoes it. Everything the model writes is validated, so a bad answer can't break the handset.
+**Menu → Phones** lists your phone and every character in the chat.
 
-Your designed phone replaces the SG001 everywhere — mail, calls, D-Mail and Time Leap all work on it. Touchscreen phones have no keypad: tap the on-screen soft keys and the home button, and type with your keyboard. Wallpaper → **This phone's** uses the design's own wallpaper.
+- **Styles** — 24 looks from 2010 fashion and subcultures: Jirai-kei, Yami-kawaii, Scene, Emo, Gyaru, Hime-gyaru, Decoden, Sweet Lolita, Gothic Lolita, Visual-kei, Decora, Fairy-kei, Mori-kei, Punk, Cyber-goth, Otaku, Y2K chrome, Kawaii mascot, Sporty, Rugged, Business, Lab, Retro cream, Plain. Click one to roll a phone in that style; **🎲 Shuffle** rolls another.
+- **Design with AI** (optionally pick a style and add a hint) — the model chooses the style that suits the owner and decorates it; anything it leaves out is filled in from the style.
+- **Edit → Look** — body (flip, candybar, slider, touchscreen), colours, shell print (zebra, leopard, tartan, lace, hearts, hazard, galaxy… 27 in all, on the shell, the cover or both), finish (gloss, matte, metallic, pearl, glitter, holo, candy, rubber, chrome, velvet), key style (candy, metal, rainbow, pearl, neon, gem), rhinestones, pearl trim, studs, cover print, outer display, screen colours/font/style, wallpaper and up to three charms.
+- **Edit → Stickers** — drag stickers around the cover (or back), the front and the keypad; use the corner handle, a pinch or the mouse wheel to resize and turn them; tap × or double-click to remove; add from a sheet of ~50 (the style's own first), recolour, or re-scatter a side in style.
+
+Opening the phone yourself shows it **shut first**: the decorated cover with its outer display (clock, unread mail, who is calling). Tap it, press any key, or swipe up — the lid follows your finger. Tap the phone's top edge (or long-press home on a touchscreen) to fold it shut again. Candybar, slider and touchscreen phones show their back and turn over instead. Turn this off with System → **Open shut first**.
+
+Your designed phone replaces the SG001 everywhere — mail, calls, D-Mail and Time Leap all work on it. Wallpaper → **This phone's** uses the design's own wallpaper. Everything the model writes is validated, so a bad answer can't break the handset.
 
 ### Other people's phones
 

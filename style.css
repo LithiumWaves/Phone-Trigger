@@ -4510,3 +4510,390 @@ dialog.pp-menu .pp-pe-color input[type="color"] {
     box-shadow: 0 0 0 0.5px rgba(255, 255, 255, 0.8), 0 1px 1px rgba(0, 0, 0, 0.4);
     pointer-events: none;
 }
+
+/* —— Menu → Phones v2: gallery, look editor, sticker editor —— */
+dialog.pp-menu .pp-pcard {
+    display: block;
+}
+
+.pp-pcard-top {
+    display: flex;
+    gap: 16px;
+}
+
+.pp-pcard-art {
+    flex: 0 0 168px;
+}
+
+.pp-phone-preview-both {
+    width: 168px;
+}
+
+.pp-pcard-hint {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+dialog.pp-menu .pp-pcard-hint select {
+    min-width: 0;
+    flex: 0 1 12em;
+}
+
+.pp-pcard-hint input {
+    flex: 1 1 14em;
+}
+
+.pp-pcard-styles-label {
+    margin: 10px 0 4px;
+    font: 700 10px/1 var(--m-mono);
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--m-dim);
+}
+
+.pp-styles {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    padding-bottom: 6px;
+    overscroll-behavior-x: contain;
+    scrollbar-width: thin;
+}
+
+dialog.pp-menu .pp-style-chip {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0;
+    padding: 5px 10px 5px 6px;
+    border: 1px solid var(--m-line);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--m-ink);
+    font: 600 11px/1 var(--m-head);
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: border-color 0.15s, background 0.15s, transform 0.15s;
+}
+
+dialog.pp-menu .pp-style-chip:hover {
+    border-color: var(--m-amber-dim);
+    transform: translateY(-1px);
+}
+
+dialog.pp-menu .pp-style-chip.pp-style-on {
+    border-color: var(--m-amber);
+    background: rgba(240, 166, 74, 0.16);
+}
+
+.pp-style-sw {
+    display: inline-flex;
+}
+
+.pp-style-sw i {
+    width: 9px;
+    height: 14px;
+    border: 1px solid rgba(0, 0, 0, 0.35);
+}
+
+.pp-style-sw i:first-child { border-radius: 7px 0 0 7px; }
+.pp-style-sw i:last-child { border-radius: 0 7px 7px 0; }
+
+.pp-pe-group {
+    margin: 10px 0 0;
+    padding: 6px 10px 10px;
+    border: 1px solid var(--m-line);
+    border-radius: 4px;
+}
+
+.pp-pe-group legend {
+    padding: 0 6px;
+    font: 700 10px/1 var(--m-mono);
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--m-amber);
+}
+
+.pp-pe-group .pp-pe-grid {
+    margin-bottom: 0;
+}
+
+dialog.pp-menu .pp-pe-check {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.pp-pe-charm {
+    display: grid;
+    grid-template-columns: 1.4fr 0.8fr 1fr auto;
+    gap: 8px;
+    align-items: end;
+    margin-bottom: 6px;
+}
+
+dialog.pp-menu .pp-pe-x {
+    margin: 0;
+    padding: 6px 10px;
+}
+
+/* Sticker editor */
+.pp-se-tabs {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin: 4px 0 8px;
+}
+
+dialog.pp-menu .pp-se-tab {
+    margin: 0;
+    padding: 6px 14px;
+    border: 1px solid var(--m-line);
+    border-radius: 14px;
+    background: transparent;
+    color: var(--m-dim);
+    font: 700 11px/1 var(--m-head);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+dialog.pp-menu .pp-se-tab-on {
+    border-color: var(--m-amber);
+    color: #fff;
+    background: rgba(240, 166, 74, 0.16);
+}
+
+.pp-se-count {
+    margin-left: auto;
+    font: 11px var(--m-mono);
+    color: var(--m-dim);
+}
+
+.pp-se-main {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.pp-se-stage {
+    position: relative;
+    width: min(260px, 70vw);
+    max-height: 520px;
+    flex-shrink: 0;
+    border-radius: 14px;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.5), 0 10px 26px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    overflow: hidden;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.pp-se-stage .pp-cover-art {
+    width: 58%;
+}
+
+.pp-se-outer {
+    position: absolute;
+    left: 50%;
+    top: 7%;
+    width: 44%;
+    aspect-ratio: 2 / 1;
+    transform: translateX(-50%);
+    display: grid;
+    place-items: center;
+    border-radius: 4px;
+    box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.45);
+    color: #bfe3ff;
+    font: 600 13px/1 var(--m-mono);
+    pointer-events: none;
+}
+
+.pp-se-outer.pp-outer-round { width: 30%; aspect-ratio: 1; border-radius: 50%; }
+.pp-se-outer.pp-outer-heart { width: 34%; aspect-ratio: 1; clip-path: polygon(50% 95%, 8% 55%, 4% 30%, 15% 10%, 35% 6%, 50% 20%, 65% 6%, 85% 10%, 96% 30%, 92% 55%); }
+.pp-se-outer.pp-outer-star { width: 34%; aspect-ratio: 1; clip-path: polygon(50% 2%, 63% 36%, 98% 38%, 70% 60%, 80% 96%, 50% 75%, 20% 96%, 30% 60%, 2% 38%, 37% 36%); }
+
+.pp-se-screen {
+    position: absolute;
+    left: 7%;
+    right: 7%;
+    top: 11%;
+    bottom: 13%;
+    border: 3px solid rgba(80, 80, 90, 0.9);
+    border-radius: 3px;
+    opacity: 0.85;
+    pointer-events: none;
+}
+
+.pp-se-keys {
+    position: absolute;
+    left: 8%;
+    right: 8%;
+    top: 10%;
+    bottom: 12%;
+    border-radius: 8px;
+    background:
+        radial-gradient(ellipse 12% 7% at 50% 50%, rgba(0, 0, 0, 0.55) 98%, transparent) 0 0 / 33.3% 16.6%,
+        rgba(0, 0, 0, 0.35);
+    pointer-events: none;
+}
+
+.pp-se-cam {
+    position: absolute;
+    left: 12%;
+    top: 5%;
+    width: 14%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(circle at 40% 35%, #4a5a7a 0 18%, #0b0d12 30% 62%, #333 66%);
+    pointer-events: none;
+}
+
+.pp-se-sticker {
+    position: absolute;
+    cursor: grab;
+    touch-action: none;
+}
+
+.pp-se-sticker svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+    filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.45));
+    pointer-events: none;
+}
+
+.pp-se-sticker.pp-se-sel {
+    outline: 1px dashed rgba(255, 255, 255, 0.9);
+    outline-offset: 3px;
+    z-index: 5;
+}
+
+.pp-se-handle,
+.pp-se-del {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+}
+
+.pp-se-handle {
+    right: -12px;
+    bottom: -12px;
+    background: var(--m-amber, #f0a64a);
+    cursor: nwse-resize;
+}
+
+.pp-se-del {
+    right: -12px;
+    top: -12px;
+    display: grid;
+    place-items: center;
+    background: #d83a3a;
+    color: #fff;
+    font: 700 13px/1 sans-serif;
+    cursor: pointer;
+}
+
+.pp-se-side {
+    flex: 1 1 200px;
+    min-width: 0;
+}
+
+.pp-se-props {
+    display: grid;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.pp-se-props-title {
+    font: 700 11px/1 var(--m-mono);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--m-amber);
+}
+
+dialog.pp-menu .pp-se-props label {
+    display: grid;
+    grid-template-columns: 5em 1fr;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    font-size: 12px;
+    color: var(--m-dim);
+}
+
+.pp-se-row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.pp-se-tip {
+    margin: 0 0 10px;
+    font-size: 12px;
+    color: var(--m-dim);
+}
+
+.pp-se-sheet-title {
+    margin: 14px 0 6px;
+    font: 700 10px/1 var(--m-mono);
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--m-dim);
+}
+
+.pp-se-sheet {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(44px, 1fr));
+    gap: 6px;
+    max-height: 210px;
+    overflow-y: auto;
+    padding: 8px;
+    border: 1px solid var(--m-line);
+    border-radius: 6px;
+    background: repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.02) 0 6px, transparent 6px 12px);
+}
+
+dialog.pp-menu .pp-se-pick {
+    margin: 0;
+    padding: 4px;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.04);
+    cursor: pointer;
+    transition: transform 0.12s, border-color 0.12s;
+}
+
+dialog.pp-menu .pp-se-pick:hover {
+    transform: scale(1.12) rotate(-4deg);
+    border-color: var(--m-amber-dim);
+}
+
+dialog.pp-menu .pp-se-pick.pp-se-fav {
+    background: rgba(240, 166, 74, 0.1);
+}
+
+.pp-se-pick svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+}
+
+@media (max-width: 760px) {
+    .pp-pcard-top {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .pp-pe-charm {
+        grid-template-columns: 1fr 1fr;
+    }
+}
