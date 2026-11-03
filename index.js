@@ -11,6 +11,7 @@ import {
     isPhoneOpen,
     resetMailChipPosition,
     openTimeleapMachine,
+    openCharacterPhone,
 } from './lib/phone.js';
 import {
     registerEmailTool,
@@ -21,6 +22,7 @@ import {
     setMailReceivedHandler,
     setMailOpenHandler,
     resolveSpeakingContact,
+    setPhoneShownHandler,
 } from './lib/email.js';
 import { getActiveCharacterName } from './lib/store.js';
 import { ensureNotifyHost } from './lib/notify.js';
@@ -28,7 +30,16 @@ import { updateWorldlinePrompt } from './lib/dmail.js';
 import { updateCallMemoryPrompt } from './lib/callMemory.js';
 import { updateTimeleapPrompt } from './lib/timeleap.js';
 import { mountMenu, openMenu, updateMenuStatus } from './lib/menu.js';
-import { registerPhonesMenu } from './lib/phonesMenu.js';
+import { registerPhonesMenu, registerPhoneCardAction } from './lib/phonesMenu.js';
+import {
+    resolveOwner,
+    addShownMails,
+    listOwnerMails,
+    logSnoop,
+    clearOwnerPhone,
+    updateSnoopPrompt,
+} from './lib/phoneData.js';
+import { USER_OWNER } from './lib/phoneSpec.js';
 import { showCutscenePrompt, maybeShowFirstRunCutscenePrompt } from './lib/cutscenePrompt.js';
 import {
     syncInitiativeScheduler,
@@ -135,6 +146,11 @@ function bindSettingsUi() {
     $('#pp_dmail_sound').prop('checked', s.dmailSpectacleSound !== false);
     $('#pp_dmail_cutscene').val(s.dmailCutscene === 'progressive' ? 'progressive' : 'original');
     $('#pp_timeleap_enabled').prop('checked', s.timeleapEnabled !== false);
+    $('#pp_phone_grab').prop('checked', s.phoneGrab !== false);
+    $('#pp_phone_show_tag').prop('checked', s.phoneShowTag !== false);
+    $('#pp_snoop_inject').prop('checked', s.snoopInject !== false);
+    $('#pp_snoop_max').val(s.snoopInjectMax ?? 8);
+    $('#pp_snoop_depth').val(s.snoopPromptDepth ?? 3);
     $('#pp_timeleap_inject').prop('checked', s.timeleapInject !== false);
     $('#pp_timeleap_depth').val(s.timeleapPromptDepth ?? 2);
     $('#pp_timeleap_max').val(s.timeleapMaxMemories ?? 5);
@@ -703,6 +719,19 @@ async function loadSettingsPanel() {
     });
 
     onToggle('timeleapEnabled', '#pp_timeleap_enabled');
+    onToggle('phoneGrab', '#pp_phone_grab', () => refreshIfOpen());
+    onToggle('phoneShowTag', '#pp_phone_show_tag', () => updateSnoopPrompt());
+    onToggle('snoopInject', '#pp_snoop_inject', () => updateSnoopPrompt());
+    for (const [sel, key, max, dflt] of [['#pp_snoop_max', 'snoopInjectMax', 20, 8], ['#pp_snoop_depth', 'snoopPromptDepth', 99, 3]]) {
+        $(sel).on('change', () => {
+            let n = Math.floor(Number($(sel).val()));
+            n = Number.isFinite(n) ? Math.max(key === 'snoopInjectMax' ? 1 : 0, Math.min(max, n)) : dflt;
+            getSettings()[key] = n;
+            $(sel).val(n);
+            saveSettings();
+            updateSnoopPrompt();
+        });
+    }
     onToggle('timeleapInject', '#pp_timeleap_inject', () => updateTimeleapPrompt());
     onToggle('timeleapKeepFuturePhone', '#pp_timeleap_keep_phone');
     onToggle('timeleapArrivalMarker', '#pp_timeleap_marker');
@@ -864,6 +893,31 @@ function registerSlashCommands() {
     }));
 
     Parser.addCommandObject(SlashCommand.fromProps({
+        name: 'grabphone',
+        callback: (_named, unnamed) => {
+            if (!getSettings().enableSlashCommand) {
+                return 'Phone slash commands disabled';
+            }
+            const owner = resolveOwner(String(unnamed || '').trim());
+            if (!owner) {
+                toast('Whose phone? /grabphone <name>', 'warning', 'PHONE');
+                return '';
+            }
+            openCharacterPhone(owner.key, owner.name);
+            return `Holding ${owner.name}'s phone`;
+        },
+        aliases: ['snoop'],
+        unnamedArgumentList: SlashCommandArgument?.fromProps ? [
+            SlashCommandArgument.fromProps({
+                description: 'Whose phone (a chat character, or any name from the story)',
+                typeList: [ARGUMENT_TYPE.STRING],
+                isRequired: true,
+            }),
+        ] : [],
+        helpString: 'Take a character\'s phone and look through it (or act as them).',
+    }));
+
+    Parser.addCommandObject(SlashCommand.fromProps({
         name: 'phonemenu',
         callback: () => {
             openMenu();
@@ -952,6 +1006,7 @@ function registerEvents() {
             updateCallMemoryPrompt();
         }
         updateTimeleapPrompt();
+        updateSnoopPrompt();
         noteInitiativeActivity();
         noteCallInitiativeActivity();
         syncInitiativeScheduler();
@@ -968,6 +1023,7 @@ function registerEvents() {
             updateCallMemoryPrompt();
         }
         updateTimeleapPrompt();
+        updateSnoopPrompt();
         refreshIfOpen();
         noteInitiativeActivity();
         noteCallInitiativeActivity();
@@ -1044,6 +1100,47 @@ function registerEvents() {
 
 setMailOpenHandler(() => openInbox());
 
+// A character shows their phone: <phone owner="…" show="latest"/> or with inline <mail> tags.
+setPhoneShownHandler(async (shows) => {
+    if (getSettings().phoneShowTag === false) {
+        return;
+    }
+    let last = null;
+    for (const show of shows) {
+        const owner = resolveOwner(show.owner);
+        if (!owner) {
+            continue;
+        }
+        const ids = await addShownMails(owner.key, owner.name, show.mails);
+        let mailId = ids[ids.length - 1] || '';
+        if (!mailId) {
+            const subject = show.show && show.show !== 'latest' ? show.show.toLowerCase() : '';
+            const mails = listOwnerMails(owner.key, owner.name);
+            mailId = (subject && mails.find((m) => m.subject.toLowerCase().includes(subject))?.id) || mails[0]?.id || '';
+        }
+        await logSnoop(owner.key, 'shown', `was shown ${owner.name}'s phone${mailId ? ' and read what was on screen' : ''}`);
+        last = { ...owner, mailId };
+    }
+    if (last) {
+        openCharacterPhone(last.key, last.name, last.mailId ? { mailId: last.mailId } : {});
+    }
+});
+
+registerPhoneCardAction('open', (owner) => (owner === USER_OWNER
+    ? ''
+    : '<button type="button" class="pp-menu-btn" data-phone-action="open">◆ Open phone</button><button type="button" class="pp-menu-btn" data-phone-action="clear">Clear contents</button>'), async (owner, action) => {
+    const who = resolveOwner(owner);
+    if (!who) {
+        return;
+    }
+    if (action === 'open') {
+        openCharacterPhone(who.key, who.name);
+    } else if (action === 'clear' && confirm(`Clear everything on ${who.name}'s phone in this chat? It will be regenerated next time.`)) {
+        await clearOwnerPhone(who.key);
+        toast(`${who.name}'s phone cleared`, 'info', 'PHONE');
+    }
+});
+
 setMailReceivedHandler((email) => {
     refreshIfOpen();
     updateFabVisibility();
@@ -1077,6 +1174,7 @@ jQuery(async () => {
         updateCallMemoryPrompt();
     }
     updateTimeleapPrompt();
+    updateSnoopPrompt();
     updateWandItem();
 
     // Retry wand item — menu may mount late
@@ -1103,6 +1201,7 @@ export function onActivate() {
         updateCallMemoryPrompt();
     }
     updateTimeleapPrompt();
+    updateSnoopPrompt();
     noteInitiativeActivity();
     noteCallInitiativeActivity();
     syncInitiativeScheduler();

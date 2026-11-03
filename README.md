@@ -4,6 +4,9 @@ SillyTavern extension that recreates the Steins;Gate **Phone Trigger** loop: ope
 
 ## Features
 
+- **System menu** — every setting in a Steins;Gate-style full-screen menu (Extensions drawer → **Open Phone Trigger menu**, the wand menu, `/phonemenu`, or phone Settings → Full menu)
+- **Designed phones** — the AI designs a handset to suit you or any character: flip, candybar, slider or touchscreen, with colours, finish, charm, stickers, screen font and wallpaper; edit by hand or reset to the SG001
+- **Other people's phones** — grab a character's phone (or anyone's, like FB) to read their mail and call log or send mail as them; characters can show you their phone with a `<phone>` tag
 - **Phone UI** — draggable MAIL chip, Extensions wand menu, `/phone`
 - **Handset chassis** — Okabe Rintarou's SG001 (truss crown, grey screen panel, gunmetal barrel hinge, wedge-key cluster, kana-printed keypad) with working multi-tap keypad (T9-style Latin)
 - **Mobile** — `<dialog showModal()>` top layer + scale-to-fit (S25 Ultra–safe)
@@ -42,6 +45,8 @@ SillyTavern extension that recreates the Steins;Gate **Phone Trigger** loop: ope
 | `/mail` | Open inbox |
 | `/mailsend subject="Hi" Hello` | Send mail (`reply=off` to skip AI reply) |
 | `/timeleap` (`/tlm`) | Open the Time Leap Machine |
+| `/grabphone <name>` (`/snoop`) | Take someone's phone and look through it |
+| `/phonemenu` (`/ptmenu`) | Open the settings menu |
 
 ## Character mail
 
@@ -67,6 +72,27 @@ Each chat has a divergence reading (starts at `1.130426`). When a D-Mail produce
 - **Progressive** — rendered live: tubes roll and lock left → right onto the new value, timed to the clip's soundtrack.
 
 Spectacle alone rolls back to the same reading. With **Propose**, the value is editable on the review screen and only committed on Continue. The phone's home screen shows the current reading; D-Mail settings can set it by hand or hide it.
+
+### Phones
+
+**Menu → Phones** lists your phone and every character in the chat. **Design with AI** (optionally with a hint such as "battered, covered in stickers") has the model pick a 2010-era handset that suits its owner: body (flip, candybar, slider, touchscreen), shell and key colours, finish (gloss, matte, metallic, pearl), screen colours and font, wallpaper, strap charm and stickers. **Edit** changes any of it by hand; **Back to SG001** / **Forget design** undoes it. Everything the model writes is validated, so a bad answer can't break the handset.
+
+Your designed phone replaces the SG001 everywhere — mail, calls, D-Mail and Time Leap all work on it. Touchscreen phones have no keypad: tap the on-screen soft keys and the home button, and type with your keyboard. Wallpaper → **This phone's** uses the design's own wallpaper.
+
+### Other people's phones
+
+**Grab a phone** on your home screen (or `/grabphone Moeka`) takes a character's phone — or anyone named in the story, such as `FB`. It opens in its owner's own handset. The first time in each chat it fills with mail threads and a call log written for that person from their card and the story; your own mail with them shows up from their side. **Check for new mail** adds more.
+
+On their phone you can read everything and **send mail as them**. Mail to you lands in your inbox as from them; mail to anyone else goes in their Sent, and that person's reply arrives in their inbox. The red key hands the phone back.
+
+Characters can show you their phone. They are told (unless you turn it off) that they may write:
+
+```text
+<phone owner="Moeka"><mail from="FB" subject="M3">Retrieve it. Tonight.</mail></phone>
+<phone owner="Moeka" show="latest"/>
+```
+
+The tag is removed from the message and the phone pops open on that mail. What you read or send on other people's phones is noted for the main chat ("Okabe read mail from FB on Moeka's phone…"); the owners only know if the story says so. Time leaps drop anything on those phones that has not happened yet.
 
 ### Time Leap Machine
 

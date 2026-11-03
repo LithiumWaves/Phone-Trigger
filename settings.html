@@ -629,6 +629,23 @@
 
             <section class="pp-menu-cat" data-cat="phones" data-title="Phones" data-icon="▯">
                 <p class="pp-menu-lead">Handsets for you and every character.</p>
+                    <h3 class="pp-menu-sub">Other people's phones</h3>
+                    <div class="pp-settings-block">
+                        <label><input id="pp_phone_grab" type="checkbox" /><span>Grab a phone</span></label>
+                        <small>"Grab a phone" on your home screen and <code>/grabphone &lt;name&gt;</code>: look through a character's mail and calls, or send mail as them.</small>
+                    </div>
+                    <div class="pp-settings-block">
+                        <label><input id="pp_phone_show_tag" type="checkbox" /><span>Characters can show you their phone</span></label>
+                        <small>Characters may write <code>&lt;phone owner="Name"&gt;&lt;mail from="…" subject="…"&gt;…&lt;/mail&gt;&lt;/phone&gt;</code>; their phone pops open on that mail.</small>
+                    </div>
+                    <div class="pp-settings-block">
+                        <label><input id="pp_snoop_inject" type="checkbox" /><span>Tell the chat what you saw</span></label>
+                        <small>A note in the prompt of what you read or sent on other phones. The owners only know if the story says so.</small>
+                        <label for="pp_snoop_max">Entries kept</label>
+                        <input id="pp_snoop_max" type="number" min="1" max="20" step="1" class="text_pole" style="max-width:5em;" />
+                        <label for="pp_snoop_depth">Inject depth</label>
+                        <input id="pp_snoop_depth" type="number" min="0" max="99" step="1" class="text_pole" style="max-width:5em;" />
+                    </div>
                     <div id="pp-menu-phones" class="pp-menu-phones"></div>
             </section>
 
