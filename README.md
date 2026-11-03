@@ -6,7 +6,7 @@ SillyTavern extension that recreates the Steins;Gate **Phone Trigger** loop: ope
 
 - **System menu** — every setting in a Steins;Gate-style full-screen menu (Extensions drawer → **Open Phone Trigger menu**, the wand menu, `/phonemenu`, or phone Settings → Full menu)
 - **Designed phones** — 24 fashion styles (Jirai-kei, Scene, Gyaru, Gothic Lolita, Decora…) or an AI design to suit you or any character: four bodies, prints, finishes, key styles, rhinestones, charms and draggable stickers on the cover, front and keypad; phones open shut so you see the cover, and swipe up to flip them open
-- **Other people's phones** — grab a character's phone (or anyone's, like FB) to read their mail and call log or send mail as them; characters can show you their phone with a `<phone>` tag
+- **Other people's phones** — grab a character's phone (or anyone's, like FB) to read, edit or delete their mail, check their call log, or send mail as them; characters can show you their phone with a `<phone>` tag
 - **Phone UI** — draggable MAIL chip, Extensions wand menu, `/phone`
 - **Handset chassis** — Okabe Rintarou's SG001 (truss crown, grey screen panel, gunmetal barrel hinge, wedge-key cluster, kana-printed keypad) with working multi-tap keypad (T9-style Latin)
 - **Mobile** — `<dialog showModal()>` top layer + scale-to-fit (S25 Ultra–safe)
@@ -91,7 +91,9 @@ Your designed phone replaces the SG001 everywhere — mail, calls, D-Mail and Ti
 
 **Grab a phone** on your home screen (or `/grabphone Moeka`) takes a character's phone — or anyone named in the story, such as `FB`. It opens in its owner's own handset. The first time in each chat it fills with mail threads and a call log written for that person from their card and the story; your own mail with them shows up from their side. **Check for new mail** adds more.
 
-On their phone you can read everything and **send mail as them**. Mail to you lands in your inbox as from them; mail to anyone else goes in their Sent, and that person's reply arrives in their inbox. The red key hands the phone back.
+On their phone you can read everything and **send mail as them**. Mail to you lands in your inbox as from them; mail to anyone else goes in their Sent, and that person's reply arrives in their inbox.
+
+Open any of their mails to **Edit** or **Delete** it. Your own mail with them changes only on their phone; your copy stays. With **Tell the chat what you saw** on, each edit or delete asks whether to tell the chat (it goes in the note of what you did on their phone) or keep it a hidden action; with it off, it is always hidden. The red key hands the phone back.
 
 Characters can show you their phone. They are told (unless you turn it off) that they may write:
 

@@ -5267,3 +5267,20 @@ dialog.pp-menu .pp-wd-del {
         var(--pp-pattern-cover, none),
         linear-gradient(180deg, var(--pp-red) 0%, var(--pp-red-deep) 100%);
 }
+
+/* Someone else's phone: edit / delete a mail */
+.pp-x-actions {
+    display: flex;
+    gap: 8px;
+    padding: 4px 10px 10px;
+}
+
+.pp-x-actions .pp-btn {
+    flex: 1;
+    margin: 0;
+}
+
+.pp-x-actions .pp-x-delete {
+    color: var(--pp-danger);
+    border-color: color-mix(in srgb, var(--pp-danger) 55%, transparent);
+}
