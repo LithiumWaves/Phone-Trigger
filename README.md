@@ -117,7 +117,7 @@ Optional VN-style unsolicited mail (Extensions drawer → **Character initiative
 
 ### Calls
 
-Calls live in the phone UI: green ☎ → pick a contact → talk in the call screen. The character always speaks first: they answer when you call, and when they call you they open with why (set an optional reason under Call initiative). Keep talking while they reply — lines said mid-reply get answered next — and they can hang up on you. A reply still generating when a call ends is dropped. Generation mode can be **unique call prompt**, **main chat completion presets** (`generateQuietPrompt`), or **both** (presets + full call template). Optional **Call initiative** rings you with mail-style throttling. Hang up with red ☎ or soft **End**.
+Calls live in the phone UI: green ☎ → pick a contact → talk in the call screen. The character always speaks first: they answer when you call, and when they call you they open with why (set an optional reason under Call initiative). To make someone ring you, tap the faint signal bars on the Call screen (or long-press its title), pick the caller and optionally guide why they call, then **Ring me**. Keep talking while they reply — lines said mid-reply get answered next — and they can hang up on you. A reply still generating when a call ends is dropped. Generation mode can be **unique call prompt**, **main chat completion presets** (`generateQuietPrompt`), or **both** (presets + full call template). Optional **Call initiative** rings you with mail-style throttling. Hang up with red ☎ or soft **End**.
 
 Mail is stored in chat metadata. Wallpaper / sounds / reply prompt are extension settings.
 
