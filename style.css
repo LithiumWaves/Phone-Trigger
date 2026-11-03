@@ -4418,3 +4418,95 @@ dialog.pp-menu .pp-pe-color input[type="color"] {
     inset: var(--pp-truss-h) 0 0;
     border-radius: 9px 9px 4px 4px;
 }
+
+/* —— Shut phone: cover up, tap or swipe to open —— */
+.pp-shut-hint {
+    display: none;
+}
+
+.pp-phone.pp-shut {
+    touch-action: none;
+    cursor: grab;
+}
+
+.pp-phone.pp-shut .pp-shut-hint {
+    display: block;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -6%;
+    text-align: center;
+    font: 600 11px/1 var(--pp-ui);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.55);
+    animation: pp-hint 1.6s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes pp-hint {
+    0%, 100% { opacity: 0.35; transform: translateY(0); }
+    50% { opacity: 0.85; transform: translateY(-4px); }
+}
+
+.pp-phone[data-body="flip"] .pp-flip {
+    transition: transform 0.62s cubic-bezier(0.33, 0.1, 0.25, 1);
+}
+
+.pp-phone[data-body="flip"] .pp-flip.is-shut {
+    transform: translateY(var(--pp-shut-shift, 0px));
+}
+
+.pp-phone[data-body="flip"] .pp-flip.is-shut .pp-lid {
+    transform: translateZ(20px) rotateX(-180deg);
+}
+
+/* Other bodies turn over to show their back */
+.pp-phone:not([data-body="flip"]) {
+    perspective: 1400px;
+}
+
+.pp-phone:not([data-body="flip"]) .pp-chassis {
+    transition: transform 0.6s cubic-bezier(0.3, 0.1, 0.2, 1);
+}
+
+.pp-phone.pp-shut:not([data-body="flip"]) .pp-chassis {
+    transform: rotateY(180deg);
+}
+
+.pp-phone:not([data-body="flip"]) .pp-back {
+    display: block;
+}
+
+.pp-phone:not([data-body="flip"]) .pp-flip {
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+.pp-phone:is([data-body="bar"], [data-body="touch"]) .pp-flip.is-shut {
+    transform: none;
+    opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .pp-shut-hint {
+        animation: none !important;
+    }
+}
+
+.pp-phone[data-body="flip"] .pp-flip.is-shut .pp-base {
+    clip-path: inset(0 0 var(--pp-shut-clip, 0px) 0);
+}
+
+.pp-gem {
+    position: absolute;
+    z-index: 2;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    background:
+        radial-gradient(circle at 35% 30%, #fff 0 18%, transparent 30%),
+        conic-gradient(from 20deg, var(--pp-gem), color-mix(in srgb, var(--pp-gem) 55%, #fff), var(--pp-gem), color-mix(in srgb, var(--pp-gem) 60%, #000), var(--pp-gem));
+    box-shadow: 0 0 0 0.5px rgba(255, 255, 255, 0.8), 0 1px 1px rgba(0, 0, 0, 0.4);
+    pointer-events: none;
+}

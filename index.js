@@ -12,6 +12,7 @@ import {
     resetMailChipPosition,
     openTimeleapMachine,
     openCharacterPhone,
+    userOpenPhone,
 } from './lib/phone.js';
 import {
     registerEmailTool,
@@ -63,6 +64,7 @@ function bindSettingsUi() {
     $('#pp_wand').prop('checked', s.showWandMenuItem);
     $('#pp_slash').prop('checked', s.enableSlashCommand);
     $('#pp_sound').prop('checked', s.soundEnabled);
+    $('#pp_open_shut').prop('checked', s.openShutFirst !== false);
     $('#pp_inject').prop('checked', s.injectPrompt);
     $('#pp_inject_worldline').prop('checked', s.dmailWorldline !== false);
     $('#pp_mail_memory_scope').val(s.mailMemoryScope === 'all' ? 'all' : 'speaker');
@@ -289,6 +291,7 @@ async function loadSettingsPanel() {
     onToggle('showWandMenuItem', '#pp_wand', () => updateWandItem());
     onToggle('enableSlashCommand', '#pp_slash');
     onToggle('soundEnabled', '#pp_sound');
+    onToggle('openShutFirst', '#pp_open_shut');
     onToggle('injectPrompt', '#pp_inject', () => {
         syncInjectFields();
         updateMailPrompt();
@@ -774,7 +777,7 @@ async function loadSettingsPanel() {
     onToggle('callSummarizeOnEnd', '#pp_call_summarize');
 
     $('#pp_open_phone_btn').on('click', () => {
-        openPhone();
+        userOpenPhone();
     });
     $('#pp_test_mail_btn').on('click', async () => {
         await receiveEmail({
@@ -814,7 +817,7 @@ function updateWandItem() {
         const open = (ev) => {
             ev?.preventDefault?.();
             ev?.stopPropagation?.();
-            openPhone();
+            userOpenPhone();
         };
         btn.addEventListener('click', open);
         wandRoot.appendChild(btn);
