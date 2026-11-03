@@ -28,6 +28,7 @@ import { updateWorldlinePrompt } from './lib/dmail.js';
 import { updateCallMemoryPrompt } from './lib/callMemory.js';
 import { updateTimeleapPrompt } from './lib/timeleap.js';
 import { mountMenu, openMenu, updateMenuStatus } from './lib/menu.js';
+import { registerPhonesMenu } from './lib/phonesMenu.js';
 import { showCutscenePrompt, maybeShowFirstRunCutscenePrompt } from './lib/cutscenePrompt.js';
 import {
     syncInitiativeScheduler,
@@ -245,6 +246,7 @@ async function loadSettingsPanel() {
     }
 
     // Settings sections live in the system menu dialog; move them before binding.
+    registerPhonesMenu();
     mountMenu();
     bindSettingsUi();
     $('#pp_open_menu_btn').on('click', () => openMenu());

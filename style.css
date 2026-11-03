@@ -329,7 +329,7 @@
     width: 24%;
     height: 42%;
     border-radius: 999px;
-    background: linear-gradient(180deg, #b01c21, #e2393d);
+    background: linear-gradient(180deg, var(--pp-ear-a, #b01c21), var(--pp-ear-b, #e2393d));
     box-shadow:
         inset 0 1px 1px rgba(0, 0, 0, 0.45),
         0 1px 0 rgba(255, 255, 255, 0.25);
@@ -350,7 +350,7 @@
     aspect-ratio: 1;
     border-radius: 50%;
     transform: translate(-50%, -50%);
-    background: radial-gradient(circle at 50% 50%, #200607 0 38%, #9a1519 45% 100%);
+    background: radial-gradient(circle at 50% 50%, #200607 0 38%, var(--pp-cam-ring, #9a1519) 45% 100%);
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.5), 0 1px 0 rgba(255, 255, 255, 0.25);
 }
 
@@ -379,7 +379,7 @@
     padding: 2px 6px;
     font: 600 9px/1 var(--pp-font);
     color: rgba(255, 255, 255, 0.85);
-    background: #020814;
+    background: var(--pp-status-bg, #020814);
     letter-spacing: 0.02em;
 }
 
@@ -417,7 +417,7 @@
     letter-spacing: 0.06em;
     text-transform: uppercase;
     color: var(--pp-lcd-fg);
-    background: linear-gradient(180deg, #0a1c3c, #020814);
+    background: linear-gradient(180deg, var(--pp-soft-a, #0a1c3c), var(--pp-status-bg, #020814));
     border-top: 1px solid rgba(158, 196, 255, 0.18);
 }
 
@@ -543,7 +543,7 @@
 .pp-keydeck {
     padding: 4% 3.5% 5%;
     border-radius: 9px;
-    background: linear-gradient(180deg, var(--pp-deck) 0%, #141314 100%);
+    background: linear-gradient(180deg, var(--pp-deck) 0%, var(--pp-deck-lo, #141314) 100%);
     box-shadow:
         inset 0 2px 3px rgba(0, 0, 0, 0.7),
         0 1px 0 rgba(255, 255, 255, 0.18);
@@ -628,7 +628,7 @@
     padding: 0;
     border: 1px solid var(--pp-key-rim);
     border-radius: 6px 6px 7px 7px;
-    background: linear-gradient(180deg, #3a383b 0%, var(--pp-key-face) 30%, #0f0e10 100%);
+    background: linear-gradient(180deg, var(--pp-key-hi, #3a383b) 0%, var(--pp-key-face) 30%, var(--pp-key-lo, #0f0e10) 100%);
     box-shadow: 0 1.5px 1px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.12);
     color: var(--pp-key-print);
     cursor: pointer;
@@ -638,7 +638,7 @@
 }
 
 .pp-key:active {
-    background: linear-gradient(180deg, #0f0e10, var(--pp-key-face));
+    background: linear-gradient(180deg, var(--pp-key-lo, #0f0e10), var(--pp-key-face));
 }
 
 .pp-key-dash {
@@ -3521,5 +3521,433 @@ dialog.pp-menu.pp-menu-out .pp-menu-bg {
     dialog.pp-menu *::after {
         animation: none !important;
         transition: none !important;
+    }
+}
+
+/* —— Generated phones (lib/phoneSpec.js + lib/chassis.js) ——
+   Only phones with data-custom get these; the SG001 is untouched. */
+.pp-home-btn {
+    display: none;
+}
+
+.pp-phone[data-font="round"] {
+    --pp-font: "M PLUS Rounded 1c", "Varela Round", "Nunito", "Segoe UI", sans-serif;
+}
+
+.pp-phone[data-font="pixel"] {
+    --pp-font: "DotGothic16", "PixelMplus10", "MS Gothic", "Courier New", monospace;
+}
+
+.pp-brand {
+    position: absolute;
+    right: 9%;
+    top: 50%;
+    transform: translateY(-50%);
+    font: 700 calc(var(--pp-phone-w) * 0.03)/1 "Helvetica Neue", Arial, sans-serif;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--pp-brand-ink, #fff);
+    opacity: 0.8;
+    white-space: nowrap;
+    max-width: 30%;
+    overflow: hidden;
+}
+
+/* Finish: a sheen layer between the shell colour and everything on it */
+.pp-phone[data-custom] .pp-lid-face,
+.pp-phone[data-custom] .pp-base {
+    isolation: isolate;
+}
+
+.pp-phone[data-custom] .pp-lid-face::before,
+.pp-phone[data-custom] .pp-base::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    pointer-events: none;
+}
+
+.pp-phone[data-finish="gloss"] .pp-lid-face::before,
+.pp-phone[data-finish="gloss"] .pp-base::before {
+    background: linear-gradient(160deg, rgba(255, 255, 255, 0.34) 0%, rgba(255, 255, 255, 0.07) 26%, transparent 44%, rgba(0, 0, 0, 0.14) 100%);
+}
+
+.pp-phone[data-finish="matte"] .pp-lid-face::before,
+.pp-phone[data-finish="matte"] .pp-base::before {
+    background:
+        radial-gradient(rgba(0, 0, 0, 0.07) 0.6px, transparent 0.8px) 0 0 / 3px 3px,
+        linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(0, 0, 0, 0.08));
+}
+
+.pp-phone[data-finish="metallic"] .pp-lid-face::before,
+.pp-phone[data-finish="metallic"] .pp-base::before {
+    background:
+        repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.07) 0 1px, rgba(0, 0, 0, 0.05) 1px 2px, transparent 2px 4px),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, transparent 28%, rgba(255, 255, 255, 0.12) 58%, rgba(0, 0, 0, 0.2) 100%);
+}
+
+.pp-phone[data-finish="pearl"] .pp-lid-face::before,
+.pp-phone[data-finish="pearl"] .pp-base::before {
+    background:
+        linear-gradient(160deg, rgba(255, 255, 255, 0.3) 0%, transparent 35%),
+        linear-gradient(125deg, rgba(255, 190, 240, 0.24), rgba(190, 240, 255, 0.24) 35%, rgba(255, 255, 210, 0.2) 65%, rgba(215, 195, 255, 0.24));
+}
+
+/* Stickers */
+.pp-sticker {
+    position: absolute;
+    z-index: 3;
+    width: calc(var(--pp-phone-w) * 0.075);
+    filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.4));
+    pointer-events: none;
+}
+
+.pp-sticker-lid-tl { top: 0.6%; left: 4%; transform: rotate(-14deg); }
+.pp-sticker-lid-tr { top: 0.6%; right: 4%; transform: rotate(12deg); }
+.pp-sticker-base-bl { bottom: 0.8%; left: 5%; transform: rotate(-10deg); }
+.pp-sticker-base-br { bottom: 0.8%; right: 5%; transform: rotate(16deg); }
+
+/* Strap charm */
+.pp-charm {
+    position: absolute;
+    right: -5%;
+    bottom: 9%;
+    z-index: 8;
+    width: calc(var(--pp-phone-w) * 0.12);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transform-origin: 50% 0;
+    animation: pp-charm-swing 3.4s ease-in-out infinite;
+    pointer-events: none;
+}
+
+.pp-charm-cord {
+    width: 2px;
+    height: calc(var(--pp-phone-w) * 0.13);
+    border-radius: 1px;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.6), var(--pp-charm, #fff));
+}
+
+.pp-charm-ornament {
+    width: 100%;
+    fill: var(--pp-charm, #fff);
+    filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.5));
+}
+
+.pp-charm-ornament .pp-charm-ink {
+    fill: rgba(0, 0, 0, 0.65);
+}
+
+.pp-charm-ornament .pp-charm-ring {
+    fill: none;
+    stroke: var(--pp-charm, #fff);
+}
+
+.pp-charm-label {
+    margin-top: 2px;
+    padding: 1px 4px;
+    border-radius: 3px;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    font: 700 7px/1.2 "Helvetica Neue", Arial, sans-serif;
+    white-space: nowrap;
+}
+
+@keyframes pp-charm-swing {
+    0%, 100% { transform: rotate(7deg); }
+    50% { transform: rotate(-7deg); }
+}
+
+/* Candybar & touch: one slab, rises into view instead of unfolding */
+.pp-phone:is([data-body="bar"], [data-body="touch"]) .pp-flip {
+    transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1), opacity 0.4s ease;
+}
+
+.pp-phone:is([data-body="bar"], [data-body="touch"]) .pp-flip:is(.is-closed, .is-closing) {
+    transform: translateY(60px) scale(0.94);
+    opacity: 0;
+}
+
+.pp-phone:is([data-body="bar"], [data-body="touch"]) .pp-flip:is(.is-opening, .is-open) {
+    transform: none;
+    opacity: 1;
+}
+
+.pp-phone:not([data-body="flip"]) .pp-flip .pp-lid {
+    transform: none;
+}
+
+.pp-phone:not([data-body="flip"]) .pp-lid-back {
+    display: none;
+}
+
+/* Candybar */
+.pp-phone[data-body="bar"] .pp-lid-face {
+    border-radius: 18px 18px 0 0;
+    padding-top: 2.5%;
+}
+
+.pp-phone:is([data-body="bar"], [data-body="slider"]) .pp-hinge {
+    margin: 0;
+    padding: 1.4% 5%;
+    height: calc(var(--pp-phone-w) * 0.12);
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+    border-radius: 0;
+    background: linear-gradient(180deg, var(--pp-red-deep), var(--pp-red));
+    box-shadow: none;
+}
+
+.pp-phone:is([data-body="bar"], [data-body="slider"]) .pp-hinge-cap {
+    display: none;
+}
+
+.pp-phone:is([data-body="bar"], [data-body="slider"]) .pp-shortcut {
+    padding-top: 6%;
+    border-radius: 5px;
+    background: linear-gradient(180deg, var(--pp-key-hi, #3a383b), var(--pp-key-face) 45%, var(--pp-key-lo, #0f0e10));
+    color: var(--pp-key-print);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.5), inset 0 0 0 1px var(--pp-key-rim);
+}
+
+.pp-phone:is([data-body="bar"], [data-body="slider"]) .pp-base {
+    margin-top: 0;
+    border-radius: 0 0 22px 22px;
+}
+
+/* Slider: the screen slab slides up to reveal the keys */
+.pp-phone[data-body="slider"] .pp-lid {
+    z-index: 6;
+    transition: transform 0.55s cubic-bezier(0.3, 0.1, 0.2, 1);
+}
+
+.pp-phone[data-body="slider"] .pp-flip:is(.is-closed, .is-closing) .pp-lid {
+    transform: translateY(calc(var(--pp-phone-w) * 0.72));
+}
+
+.pp-phone[data-body="slider"] .pp-flip:is(.is-opening, .is-open) .pp-lid {
+    transform: translateY(0);
+}
+
+.pp-phone[data-body="slider"] .pp-lid-face {
+    border-radius: 18px;
+    padding-top: 2.5%;
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.35),
+        0 0 0 1px var(--pp-red-edge),
+        0 8px 14px rgba(0, 0, 0, 0.55);
+}
+
+.pp-phone[data-body="slider"] .pp-hinge {
+    margin-top: -14px;
+    padding-top: calc(14px + 1.4%);
+    border-radius: 18px 18px 0 0;
+    background:
+        linear-gradient(90deg, rgba(0, 0, 0, 0.35) 0 3px, transparent 3px calc(100% - 3px), rgba(0, 0, 0, 0.35) calc(100% - 3px)),
+        linear-gradient(180deg, var(--pp-red-deep), var(--pp-red));
+}
+
+/* Touchscreen: tall glass, no keys; soft captions and the home button are tappable */
+.pp-phone[data-body="touch"] {
+    --pp-view-h: calc(var(--pp-phone-w) * 1.4);
+}
+
+.pp-phone[data-body="touch"] .pp-hinge,
+.pp-phone[data-body="touch"] .pp-base {
+    display: none;
+}
+
+.pp-phone[data-body="touch"] .pp-lid-face {
+    border-radius: 26px;
+    padding: 0 4% 0;
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.35),
+        0 0 0 1px var(--pp-red-edge),
+        0 14px 32px rgba(0, 0, 0, 0.45);
+}
+
+.pp-phone[data-body="touch"] .pp-ear-row {
+    height: calc(var(--pp-phone-w) * 0.1);
+}
+
+.pp-phone[data-body="touch"] .pp-screen {
+    padding: 2.4% 2.4% 0;
+    border-radius: 10px;
+    background: #050506;
+}
+
+.pp-phone[data-body="touch"] .pp-chin {
+    height: calc(var(--pp-phone-w) * 0.17);
+    margin: 0 -2.4%;
+    border: 0;
+    border-radius: 0 0 10px 10px;
+    background: transparent;
+    box-shadow: none;
+}
+
+.pp-phone[data-body="touch"] .pp-chin i,
+.pp-phone[data-body="touch"] .pp-chin b {
+    display: none;
+}
+
+.pp-phone[data-body="touch"] .pp-home-btn {
+    display: block;
+    width: calc(var(--pp-phone-w) * 0.11);
+    aspect-ratio: 1;
+    padding: 0;
+    border: 2px solid var(--pp-panel-dark);
+    border-radius: 50%;
+    background: radial-gradient(circle at 50% 40%, var(--pp-gun-light), var(--pp-gun-dark));
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.pp-phone[data-body="touch"] .pp-home-btn:active {
+    filter: brightness(0.8);
+}
+
+.pp-phone[data-body="touch"] .pp-softbar {
+    min-height: 22px;
+    padding: 3px 6px;
+}
+
+.pp-phone[data-body="touch"] .pp-softbar span:not(:empty) {
+    padding: 3px 10px;
+    border: 1px solid color-mix(in srgb, var(--pp-accent) 45%, transparent);
+    border-radius: 10px;
+    background: color-mix(in srgb, var(--pp-accent) 12%, transparent);
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.pp-phone[data-body="touch"] .pp-softbar span:active {
+    background: color-mix(in srgb, var(--pp-accent) 30%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .pp-charm {
+        animation: none;
+    }
+}
+
+/* Menu → Phones */
+.pp-pcard {
+    display: flex;
+    gap: 16px;
+    margin: 0 0 12px;
+    padding: 12px 14px;
+    border: 1px solid var(--m-line);
+    border-left: 2px solid var(--m-amber-dim);
+    background: linear-gradient(90deg, rgba(240, 166, 74, 0.05), transparent 60%);
+}
+
+.pp-pcard-busy .pp-pcard-art {
+    animation: pp-tlm-blink 0.9s steps(2, start) infinite;
+}
+
+.pp-pcard-art {
+    flex: 0 0 86px;
+}
+
+.pp-phone-preview {
+    display: block;
+    width: 86px;
+    height: auto;
+    filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.5));
+}
+
+.pp-pcard-body {
+    flex: 1;
+    min-width: 0;
+}
+
+.pp-pcard h4 {
+    margin: 0;
+    font: 700 15px/1.3 var(--m-head);
+    letter-spacing: 0.08em;
+    color: #fff;
+}
+
+.pp-pcard h4 em {
+    font-style: normal;
+    color: var(--m-amber);
+    font-size: 12px;
+}
+
+.pp-pcard-model {
+    font: 12px/1.4 var(--m-mono);
+    color: var(--m-amber);
+}
+
+.pp-pcard-blurb {
+    margin: 4px 0 0;
+    color: var(--m-dim);
+    font-size: 13px;
+}
+
+.pp-pcard-hint {
+    margin: 8px 0 2px;
+}
+
+.pp-pcard-hint input {
+    width: 100%;
+}
+
+.pp-pcard-actions {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.pp-pcard-actions button:disabled {
+    opacity: 0.6;
+    cursor: progress;
+}
+
+.pp-pe {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px dashed var(--m-line);
+}
+
+.pp-pe-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 8px 12px;
+    margin-bottom: 10px;
+}
+
+dialog.pp-menu .pp-pe-field {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 3px;
+    margin: 0;
+    font: 600 11px/1.2 var(--m-mono);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--m-dim);
+}
+
+dialog.pp-menu .pp-pe-field select,
+dialog.pp-menu .pp-pe-field input[type="text"] {
+    min-width: 0;
+    width: 100%;
+}
+
+dialog.pp-menu .pp-pe-color input[type="color"] {
+    width: 100%;
+    height: 28px;
+    padding: 2px;
+    cursor: pointer;
+}
+
+@media (max-width: 760px) {
+    .pp-pcard {
+        flex-direction: column;
+        align-items: flex-start;
     }
 }
