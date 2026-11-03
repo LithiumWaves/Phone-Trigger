@@ -3676,72 +3676,6 @@ dialog.pp-menu.pp-menu-out .pp-menu-bg {
     display: none;
 }
 
-/* Candybar */
-.pp-phone[data-body="bar"] .pp-lid-face {
-    border-radius: 18px 18px 0 0;
-    padding-top: 2.5%;
-}
-
-.pp-phone:is([data-body="bar"], [data-body="slider"]) .pp-hinge {
-    margin: 0;
-    padding: 1.4% 5%;
-    height: calc(var(--pp-phone-w) * 0.12);
-    grid-template-columns: repeat(4, 1fr);
-    gap: 6px;
-    border-radius: 0;
-    background: linear-gradient(180deg, var(--pp-red-deep), var(--pp-red));
-    box-shadow: none;
-}
-
-.pp-phone:is([data-body="bar"], [data-body="slider"]) .pp-hinge-cap {
-    display: none;
-}
-
-.pp-phone:is([data-body="bar"], [data-body="slider"]) .pp-shortcut {
-    padding-top: 6%;
-    border-radius: 5px;
-    background: linear-gradient(180deg, var(--pp-key-hi, #3a383b), var(--pp-key-face) 45%, var(--pp-key-lo, #0f0e10));
-    color: var(--pp-key-print);
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.5), inset 0 0 0 1px var(--pp-key-rim);
-}
-
-.pp-phone:is([data-body="bar"], [data-body="slider"]) .pp-base {
-    margin-top: 0;
-    border-radius: 0 0 22px 22px;
-}
-
-/* Slider: the screen slab slides up to reveal the keys */
-.pp-phone[data-body="slider"] .pp-lid {
-    z-index: 6;
-    transition: transform 0.55s cubic-bezier(0.3, 0.1, 0.2, 1);
-}
-
-.pp-phone[data-body="slider"] .pp-flip:is(.is-closed, .is-closing) .pp-lid {
-    transform: translateY(calc(var(--pp-phone-w) * 0.72));
-}
-
-.pp-phone[data-body="slider"] .pp-flip:is(.is-opening, .is-open) .pp-lid {
-    transform: translateY(0);
-}
-
-.pp-phone[data-body="slider"] .pp-lid-face {
-    border-radius: 18px;
-    padding-top: 2.5%;
-    box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.35),
-        0 0 0 1px var(--pp-red-edge),
-        0 8px 14px rgba(0, 0, 0, 0.55);
-}
-
-.pp-phone[data-body="slider"] .pp-hinge {
-    margin-top: -14px;
-    padding-top: calc(14px + 1.4%);
-    border-radius: 18px 18px 0 0;
-    background:
-        linear-gradient(90deg, rgba(0, 0, 0, 0.35) 0 3px, transparent 3px calc(100% - 3px), rgba(0, 0, 0, 0.35) calc(100% - 3px)),
-        linear-gradient(180deg, var(--pp-red-deep), var(--pp-red));
-}
-
 /* Touchscreen: tall glass, no keys; soft captions and the home button are tappable */
 .pp-phone[data-body="touch"] {
     --pp-view-h: calc(var(--pp-phone-w) * 1.4);
@@ -4999,4 +4933,325 @@ dialog.pp-menu .pp-wd-del {
     dialog.pp-menu .pp-wd-del {
         opacity: 1;
     }
+}
+
+/* —— Candybar & slider ——
+   Candybar: one unibody slab (the lower section lives inside the face, so shell
+   patterns and finishes run unbroken), screen behind a dark glass window,
+   a round D-pad and pill shortcut keys sitting flush in the shell.
+   Slider: the slab carries the screen and D-pad and slides up on metal rails
+   to reveal the keypad on a darker lower half. */
+.pp-mic,
+.pp-pad-arrow,
+.pp-pad-clear {
+    display: none;
+}
+
+.pp-phone:is([data-body="bar"], [data-body="slider"]) .pp-lid-face {
+    padding: 2% 5% 0;
+    border-radius: 24px;
+}
+
+.pp-phone[data-body="bar"] .pp-lid-face {
+    padding-bottom: 3%;
+    border-radius: 26px 26px 30px 30px;
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.35),
+        inset 1px 0 0 rgba(255, 255, 255, 0.12),
+        inset -1px 0 0 rgba(0, 0, 0, 0.2),
+        inset 0 -3px 0 rgba(0, 0, 0, 0.22),
+        0 0 0 1px var(--pp-red-edge),
+        0 14px 32px rgba(0, 0, 0, 0.45);
+}
+
+/* Earpiece: a slot grille, brand printed underneath */
+.pp-phone:is([data-body="bar"], [data-body="slider"]) .pp-ear-row {
+    height: calc(var(--pp-phone-w) * 0.13);
+    align-items: flex-start;
+    padding-top: calc(var(--pp-phone-w) * 0.025);
+    box-sizing: border-box;
+}
+
+.pp-phone:is([data-body="bar"], [data-body="slider"]) .pp-earpiece {
+    width: 20%;
+    height: calc(var(--pp-phone-w) * 0.022);
+    border-radius: 999px;
+    background:
+        repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.85) 0 2px, rgba(0, 0, 0, 0.35) 2px 4px),
+        #0c0c0e;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.7), 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.pp-phone:is([data-body="bar"], [data-body="slider"]) .pp-earpiece span {
+    display: none;
+}
+
+.pp-phone:is([data-body="bar"], [data-body="slider"]) .pp-cam {
+    left: auto;
+    right: 14%;
+    top: calc(var(--pp-phone-w) * 0.036);
+    width: calc(var(--pp-phone-w) * 0.026);
+    background: radial-gradient(circle at 40% 35%, #3a4a6a 0 20%, #07080b 36% 100%);
+    box-shadow: 0 0 0 1.5px rgba(0, 0, 0, 0.4), 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+.pp-phone:is([data-body="bar"], [data-body="slider"]) .pp-brand {
+    left: 0;
+    right: 0;
+    top: auto;
+    bottom: 12%;
+    max-width: none;
+    transform: none;
+    text-align: center;
+}
+
+/* Screen behind a dark glass window instead of the SG001's grey panel and chin */
+.pp-phone:is([data-body="bar"], [data-body="slider"]) .pp-screen {
+    position: relative;
+    padding: 2.6%;
+    border-radius: 12px;
+    background: linear-gradient(180deg, #1a1b20 0%, #08090b 100%);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.16),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.05),
+        0 0 0 1.5px var(--pp-red-edge),
+        0 1px 0 1.5px rgba(255, 255, 255, 0.18);
+}
+
+.pp-phone:is([data-body="bar"], [data-body="slider"]) .pp-screen::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(118deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.03) 34%, transparent 35%);
+    pointer-events: none;
+}
+
+.pp-phone:is([data-body="bar"], [data-body="slider"]) .pp-chin {
+    display: none;
+}
+
+/* Shortcut keys: four pills flush with the shell, no hinge band */
+.pp-phone:is([data-body="bar"], [data-body="slider"]) .pp-hinge {
+    margin: 0;
+    padding: 0 4%;
+    height: calc(var(--pp-phone-w) * 0.075);
+    grid-template-columns: repeat(4, 1fr);
+    gap: 9px;
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
+}
+
+.pp-phone:is([data-body="bar"], [data-body="slider"]) .pp-hinge-cap {
+    display: none;
+}
+
+.pp-phone:is([data-body="bar"], [data-body="slider"]) .pp-shortcut {
+    align-items: center;
+    padding: 0;
+    border-radius: 999px;
+    background: linear-gradient(180deg, var(--pp-key-hi, #3a383b), var(--pp-key-face) 50%, var(--pp-key-lo, #0f0e10));
+    color: var(--pp-key-print);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.5), inset 0 0 0 1px var(--pp-key-rim);
+}
+
+.pp-phone:is([data-body="bar"], [data-body="slider"]) .pp-shortcut-icon {
+    width: 34%;
+}
+
+/* Keys sit straight in the shell: no dark deck */
+.pp-phone:is([data-body="bar"], [data-body="slider"]) .pp-keydeck {
+    padding: 0 3%;
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
+}
+
+.pp-phone:is([data-body="bar"], [data-body="slider"]) .pp-keypad {
+    gap: 6px;
+}
+
+.pp-phone:is([data-body="bar"], [data-body="slider"]) .pp-key-row {
+    gap: 9px;
+}
+
+.pp-phone:is([data-body="bar"], [data-body="slider"]) .pp-key {
+    height: 29px;
+    border-radius: 10px;
+}
+
+.pp-phone:is([data-body="bar"], [data-body="slider"]) :is(.pp-key-kana, .pp-key-dash) {
+    display: none;
+}
+
+.pp-phone:is([data-body="bar"], [data-body="slider"]) .pp-key-num {
+    top: 42%;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.pp-phone:is([data-body="bar"], [data-body="slider"]) .pp-key-latin {
+    left: 50%;
+    right: auto;
+    top: 79%;
+    transform: translate(-50%, -50%);
+    font-size: 6px;
+    letter-spacing: 0.08em;
+    opacity: 0.8;
+}
+
+/* Microphone pinhole on the chin */
+.pp-phone:is([data-body="bar"], [data-body="slider"]) .pp-mic {
+    display: block;
+    width: calc(var(--pp-phone-w) * 0.022);
+    aspect-ratio: 1;
+    margin: calc(var(--pp-phone-w) * 0.035) auto 0;
+    border-radius: 50%;
+    background: #08080a;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.8), 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+/* Round D-pad */
+.pp-nav-cluster.is-dpad {
+    aspect-ratio: 200 / 122;
+    margin: 4% 1% 5%;
+}
+
+.pp-nav-cluster.is-dpad .pp-nav-well {
+    fill: rgba(0, 0, 0, 0.28);
+    stroke: rgba(255, 255, 255, 0.16);
+    stroke-width: 1;
+}
+
+.pp-nav-cluster.is-dpad .pp-nav-faces polygon {
+    stroke-width: 1.1;
+    filter: drop-shadow(0 1.2px 0.8px rgba(0, 0, 0, 0.55));
+}
+
+.pp-nav-cluster.is-dpad .pp-pad:active {
+    background: rgba(0, 0, 0, 0.16);
+}
+
+.pp-nav-cluster.is-dpad .pp-pad-arrow {
+    display: block;
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-bottom: 5px solid var(--pp-key-print);
+    opacity: 0.85;
+    transform: rotate(var(--rot, 0deg));
+}
+
+.pp-nav-cluster.is-dpad .pp-pad-clear {
+    display: block;
+    font: 700 9px/1 "Helvetica Neue", Arial, sans-serif;
+    color: var(--pp-key-print);
+}
+
+.pp-nav-cluster.is-dpad .pp-pad-icon {
+    width: calc(var(--pp-phone-w) * 0.085);
+}
+
+.pp-nav-cluster.is-dpad .pp-call-answer .pp-pad-icon {
+    fill: #2fb455;
+}
+
+.pp-nav-cluster.is-dpad .pp-call-end .pp-pad-icon {
+    fill: #e0393e;
+}
+
+/* Candybar: the lower section is part of the same slab */
+.pp-phone[data-body="bar"] .pp-base,
+.pp-phone[data-custom][data-body="bar"] .pp-base {
+    z-index: auto;
+    margin: 0;
+    padding: 0;
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
+    transform: none;
+}
+
+.pp-phone[data-body="bar"] .pp-base::before,
+.pp-phone[data-body="bar"] .pp-base::after {
+    display: none;
+}
+
+.pp-phone[data-body="bar"] .pp-hinge {
+    margin-top: 4%;
+}
+
+.pp-phone[data-body="bar"] .pp-nav-cluster.is-dpad {
+    margin-top: 3%;
+}
+
+/* Slider: the slab rides over the lower half */
+.pp-phone[data-body="slider"] .pp-lid {
+    z-index: 6;
+    transition: transform 0.55s cubic-bezier(0.3, 0.1, 0.2, 1);
+}
+
+.pp-phone[data-body="slider"] .pp-flip:is(.is-closed, .is-closing) .pp-lid {
+    transform: translateY(var(--pp-slide, calc(var(--pp-phone-w) * 0.86)));
+}
+
+.pp-phone[data-body="slider"] .pp-flip:is(.is-opening, .is-open) .pp-lid {
+    transform: translateY(0);
+}
+
+.pp-phone[data-body="slider"] .pp-lid-face {
+    padding-bottom: 1%;
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.4),
+        inset 0 -2px 0 rgba(0, 0, 0, 0.25),
+        0 0 0 1px var(--pp-red-edge),
+        0 0 0 2px rgba(255, 255, 255, 0.14),
+        0 9px 14px rgba(0, 0, 0, 0.6);
+}
+
+.pp-phone[data-body="slider"] .pp-nav-cluster.is-dpad {
+    margin: 4% 0 4%;
+}
+
+/* Lower half: darker body with chrome slide rails down both edges */
+.pp-phone[data-body="slider"] .pp-hinge,
+.pp-phone[data-body="slider"] .pp-base,
+.pp-phone[data-custom][data-body="slider"] .pp-base {
+    background:
+        linear-gradient(90deg, #6d737b 0, #e9ecf0 1.6%, #858b93 3.2%, rgba(0, 0, 0, 0.35) 3.2%, transparent 4.4% 95.6%, rgba(0, 0, 0, 0.35) 96.8%, #858b93 96.8%, #e9ecf0 98.4%, #6d737b 100%),
+        linear-gradient(180deg, color-mix(in srgb, var(--pp-red-deep) 62%, #000), color-mix(in srgb, var(--pp-red-deep) 48%, #000));
+}
+
+.pp-phone[data-body="slider"] .pp-hinge {
+    margin-top: -18px;
+    padding: calc(18px + 4%) 7% 0;
+    height: auto;
+    min-height: calc(18px + var(--pp-phone-w) * 0.11);
+    box-sizing: border-box;
+    border-radius: 20px 20px 0 0;
+    box-shadow: inset 0 0 0 1px var(--pp-red-edge);
+}
+
+.pp-phone[data-body="slider"] .pp-base {
+    margin-top: 0;
+    padding: 4% 7% 5%;
+    border-radius: 0 0 24px 24px;
+    box-shadow:
+        inset 0 -2px 0 rgba(0, 0, 0, 0.3),
+        0 0 0 1px var(--pp-red-edge),
+        0 14px 32px rgba(0, 0, 0, 0.45);
+}
+
+.pp-phone[data-body="bar"] .pp-back {
+    border-radius: 26px 26px 30px 30px;
+}
+
+/* Slider back: the seam where the slab rides over the lower half */
+.pp-phone[data-body="slider"] .pp-back {
+    background:
+        linear-gradient(180deg, transparent calc(58% - 1px), rgba(0, 0, 0, 0.4) calc(58% - 1px) 58%, rgba(255, 255, 255, 0.18) 58% calc(58% + 1px), transparent calc(58% + 1px)),
+        var(--pp-pattern-cover, none),
+        linear-gradient(180deg, var(--pp-red) 0%, var(--pp-red-deep) 100%);
 }
