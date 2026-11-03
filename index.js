@@ -149,6 +149,7 @@ function bindSettingsUi() {
     $('#pp_dmail_cutscene').val(s.dmailCutscene === 'progressive' ? 'progressive' : 'original');
     $('#pp_timeleap_enabled').prop('checked', s.timeleapEnabled !== false);
     $('#pp_phone_grab').prop('checked', s.phoneGrab !== false);
+    $('#pp_phone_ai_mode').val(s.phoneAiMode === 'free' ? 'free' : 'style');
     $('#pp_phone_show_tag').prop('checked', s.phoneShowTag !== false);
     $('#pp_snoop_inject').prop('checked', s.snoopInject !== false);
     $('#pp_snoop_max').val(s.snoopInjectMax ?? 8);
@@ -723,6 +724,10 @@ async function loadSettingsPanel() {
 
     onToggle('timeleapEnabled', '#pp_timeleap_enabled');
     onToggle('phoneGrab', '#pp_phone_grab', () => refreshIfOpen());
+    $('#pp_phone_ai_mode').on('change', () => {
+        getSettings().phoneAiMode = $('#pp_phone_ai_mode').val() === 'free' ? 'free' : 'style';
+        saveSettings();
+    });
     onToggle('phoneShowTag', '#pp_phone_show_tag', () => updateSnoopPrompt());
     onToggle('snoopInject', '#pp_snoop_inject', () => updateSnoopPrompt());
     for (const [sel, key, max, dflt] of [['#pp_snoop_max', 'snoopInjectMax', 20, 8], ['#pp_snoop_depth', 'snoopPromptDepth', 99, 3]]) {
