@@ -27,6 +27,7 @@ import { ensureNotifyHost } from './lib/notify.js';
 import { updateWorldlinePrompt } from './lib/dmail.js';
 import { updateCallMemoryPrompt } from './lib/callMemory.js';
 import { updateTimeleapPrompt } from './lib/timeleap.js';
+import { mountMenu, openMenu, updateMenuStatus } from './lib/menu.js';
 import { showCutscenePrompt, maybeShowFirstRunCutscenePrompt } from './lib/cutscenePrompt.js';
 import {
     syncInitiativeScheduler,
@@ -243,7 +244,11 @@ async function loadSettingsPanel() {
         }
     }
 
+    // Settings sections live in the system menu dialog; move them before binding.
+    mountMenu();
     bindSettingsUi();
+    $('#pp_open_menu_btn').on('click', () => openMenu());
+    updateMenuStatus();
 
     onToggle('enabled', '#pp_enabled', (s) => {
         updateFabVisibility();
@@ -737,7 +742,9 @@ async function loadSettingsPanel() {
     });
     onToggle('callSummarizeOnEnd', '#pp_call_summarize');
 
-    $('#pp_open_phone_btn').on('click', () => openPhone());
+    $('#pp_open_phone_btn').on('click', () => {
+        openPhone();
+    });
     $('#pp_test_mail_btn').on('click', async () => {
         await receiveEmail({
             from: getActiveCharacterName() || 'Unknown',
@@ -755,6 +762,7 @@ function updateWandItem() {
     const show = s.enabled && s.showWandMenuItem;
     if (!show) {
         existing?.remove();
+        document.getElementById('pp-wand-menu-item')?.remove();
         return;
     }
     if (existing) {
@@ -779,6 +787,19 @@ function updateWandItem() {
         };
         btn.addEventListener('click', open);
         wandRoot.appendChild(btn);
+
+        const menuBtn = document.createElement('div');
+        menuBtn.id = 'pp-wand-menu-item';
+        menuBtn.className = 'list-group-item flex-container flexGap5 interactable';
+        menuBtn.title = 'Phone Trigger settings';
+        menuBtn.setAttribute('tabindex', '0');
+        menuBtn.innerHTML = `<div class="fa-solid fa-gear extensionsMenuExtensionButton"></div><span>Phone Trigger menu</span>`;
+        menuBtn.addEventListener('click', (ev) => {
+            ev.preventDefault();
+            ev.stopPropagation();
+            openMenu();
+        });
+        wandRoot.appendChild(menuBtn);
         return;
     }
 
@@ -838,6 +859,16 @@ function registerSlashCommands() {
         },
         aliases: ['email', 'inbox'],
         helpString: 'Open the phone e-mail inbox.',
+    }));
+
+    Parser.addCommandObject(SlashCommand.fromProps({
+        name: 'phonemenu',
+        callback: () => {
+            openMenu();
+            return 'Phone Trigger menu opened';
+        },
+        aliases: ['ptmenu'],
+        helpString: 'Open the Phone Trigger settings menu.',
     }));
 
     Parser.addCommandObject(SlashCommand.fromProps({
@@ -926,6 +957,7 @@ function registerEvents() {
     });
 
     eventSource.on(event_types.CHAT_CHANGED, () => {
+        updateMenuStatus();
         updateMailPrompt();
         if (getSettings().dmailWorldline !== false) {
             updateWorldlinePrompt();

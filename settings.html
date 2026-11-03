@@ -5,16 +5,27 @@
             <div class="inline-drawer-icon fa-solid fa-circle-chevron-down down"></div>
         </div>
         <div class="inline-drawer-content">
+            <div class="pp-settings-block">
+                <label>
+                    <input id="pp_enabled" type="checkbox" />
+                    <span>Enable</span>
+                </label>
+            </div>
+            <div class="pp-settings-block">
+                <button id="pp_open_menu_btn" class="menu_button pp-launch-menu" type="button">
+                    <span class="fa-solid fa-gear"></span> Open Phone Trigger menu
+                </button>
+                <small id="pp_drawer_status" class="pp-drawer-status"></small>
+            </div>
+        </div>
+    </div>
+</div>
 
-            <details class="pp-drawer-cat" open>
-                <summary>Extension &amp; UI</summary>
-                <div class="pp-drawer-cat-body">
-                    <div class="pp-settings-block">
-                        <label>
-                            <input id="pp_enabled" type="checkbox" />
-                            <span>Enable</span>
-                        </label>
-                    </div>
+<!-- Moved into the Steins;Gate system menu dialog (lib/menu.js) on load. -->
+<div id="pp-menu-sections" hidden>
+            <section class="pp-menu-cat" data-cat="system" data-title="System" data-icon="⚙">
+                <p class="pp-menu-lead">Launchers, sounds and alerts.</p>
+                    <h3 class="pp-menu-sub">Extension &amp; UI</h3>
                     <div class="pp-settings-block">
                         <label>
                             <input id="pp_show_chip" type="checkbox" />
@@ -44,12 +55,7 @@
                             <span>Sounds</span>
                         </label>
                     </div>
-                </div>
-            </details>
-
-            <details class="pp-drawer-cat">
-                <summary>Notifications</summary>
-                <div class="pp-drawer-cat-body">
+                    <h3 class="pp-menu-sub">Notifications</h3>
                     <div class="pp-settings-block">
                         <label>
                             <input id="pp_auto_open" type="checkbox" />
@@ -63,12 +69,76 @@
                         </label>
                         <small>Steins;Gate-styled alerts when mail arrives (tap to open inbox).</small>
                     </div>
-                </div>
-            </details>
+            </section>
 
-            <details class="pp-drawer-cat">
-                <summary>Mail → chat memory</summary>
-                <div class="pp-drawer-cat-body">
+            <section class="pp-menu-cat" data-cat="mail" data-title="Mail" data-icon="✉">
+                <p class="pp-menu-lead">How mail replies are written.</p>
+                    <h3 class="pp-menu-sub">Generation</h3>
+                    <div class="pp-settings-block">
+                        <label for="pp_mail_backend"><span>Mail generation backend</span></label>
+                        <select id="pp_mail_backend">
+                            <option value="main">Main LLM / API</option>
+                            <option value="openrouter">OpenRouter</option>
+                        </select>
+                    </div>
+                    <div class="pp-settings-block pp-openrouter-only">
+                        <label for="pp_or_key"><span>OpenRouter API key</span></label>
+                        <input id="pp_or_key" type="password" class="text_pole" autocomplete="off" spellcheck="false" />
+                    </div>
+                    <div class="pp-settings-block pp-openrouter-only">
+                        <label for="pp_or_model"><span>OpenRouter model</span></label>
+                        <input id="pp_or_model" type="text" class="text_pole" placeholder="openai/gpt-4o-mini" />
+                    </div>
+                    <div class="pp-settings-block">
+                        <label for="pp_mail_delay_min"><span>Reply delay (seconds)</span></label>
+                        <div class="flex-container flexGap5" style="align-items:center;flex-wrap:wrap;">
+                            <input id="pp_mail_delay_min" type="number" class="text_pole" min="0" max="120" step="1" style="max-width:5em;" />
+                            <span>–</span>
+                            <input id="pp_mail_delay_max" type="number" class="text_pole" min="0" max="300" step="1" style="max-width:5em;" />
+                        </div>
+                        <small>Independent of the main chat. Reply fires after a random delay in this range.</small>
+                    </div>
+                    <div class="pp-settings-block">
+                        <label for="pp_mail_reply_prompt"><span>Mail reply prompt</span></label>
+                        <textarea id="pp_mail_reply_prompt" class="text_pole" rows="12" spellcheck="false"></textarea>
+                        <small>
+                            Placeholders: <code>{{char}}</code> <code>{{user}}</code> <code>{{subject}}</code>
+                            <code>{{body}}</code> <code>{{char_card}}</code> <code>{{chat_summary}}</code>
+                            <code>{{description}}</code> <code>{{personality}}</code> <code>{{scenario}}</code>
+                        </small>
+                        <div style="margin-top:0.4em;">
+                            <button id="pp_mail_prompt_reset" class="menu_button" type="button">Reset reply prompt</button>
+                        </div>
+                    </div>
+                    <div class="pp-settings-block">
+                        <label for="pp_mail_force_prompt"><span>Forced mail prompt</span></label>
+                        <textarea id="pp_mail_force_prompt" class="text_pole" rows="10" spellcheck="false"></textarea>
+                        <small>
+                            Used when receiving guided mail from the inbox signal control.
+                            Placeholders: <code>{{char}}</code> <code>{{user}}</code> <code>{{guidance}}</code>
+                            <code>{{subject}}</code> <code>{{char_card}}</code> <code>{{chat_summary}}</code>
+                        </small>
+                        <div style="margin-top:0.4em;">
+                            <button id="pp_mail_force_reset" class="menu_button" type="button">Reset force prompt</button>
+                        </div>
+                    </div>
+                    <h3 class="pp-menu-sub">Chat → mail</h3>
+                    <div class="pp-settings-block">
+                        <label>
+                            <input id="pp_inject_chat_mail" type="checkbox" />
+                            <span>Inject main chat summary into email prompt</span>
+                        </label>
+                        <small>Gives mail replies story awareness via <code>{{chat_summary}}</code>.</small>
+                    </div>
+                    <div class="pp-settings-block pp-chat-summary-only">
+                        <label for="pp_chat_summary_n"><span>Chat messages in mail summary</span></label>
+                        <input id="pp_chat_summary_n" type="number" class="text_pole" min="1" max="40" step="1" style="max-width:5em;" />
+                    </div>
+            </section>
+
+            <section class="pp-menu-cat" data-cat="memory" data-title="Memory" data-icon="◎">
+                <p class="pp-menu-lead">What the main chat remembers from the phone.</p>
+                    <h3 class="pp-menu-sub">Mail → chat</h3>
                     <div class="pp-settings-block">
                         <label>
                             <input id="pp_inject" type="checkbox" />
@@ -126,84 +196,26 @@
                         <textarea id="pp_mail_memory_send" class="text_pole" rows="3" spellcheck="false"></textarea>
                         <small>Inserted as <code>{{send_instructions}}</code>. Leave blank to omit.</small>
                     </div>
-                </div>
-            </details>
-
-            <details class="pp-drawer-cat">
-                <summary>Chat → mail</summary>
-                <div class="pp-drawer-cat-body">
+                    <h3 class="pp-menu-sub">Calls → chat</h3>
                     <div class="pp-settings-block">
                         <label>
-                            <input id="pp_inject_chat_mail" type="checkbox" />
-                            <span>Inject main chat summary into email prompt</span>
+                            <input id="pp_inject_call_memory" type="checkbox" />
+                            <span>Inject call memory into chat</span>
                         </label>
-                        <small>Gives mail replies story awareness via <code>{{chat_summary}}</code>.</small>
+                        <small>Same as phone Settings → Call memory. Summaries/transcripts of finished calls.</small>
                     </div>
-                    <div class="pp-settings-block pp-chat-summary-only">
-                        <label for="pp_chat_summary_n"><span>Chat messages in mail summary</span></label>
-                        <input id="pp_chat_summary_n" type="number" class="text_pole" min="1" max="40" step="1" style="max-width:5em;" />
+                    <div class="pp-settings-block">
+                        <label>
+                            <input id="pp_call_summarize" type="checkbox" />
+                            <span>Summarize calls on hang-up</span>
+                        </label>
+                        <small>LLM-compacts the transcript after each call (keeps summary, drops full turns).</small>
                     </div>
-                </div>
-            </details>
+            </section>
 
-            <details class="pp-drawer-cat">
-                <summary>Mail generation</summary>
-                <div class="pp-drawer-cat-body">
-                    <div class="pp-settings-block">
-                        <label for="pp_mail_backend"><span>Mail generation backend</span></label>
-                        <select id="pp_mail_backend">
-                            <option value="main">Main LLM / API</option>
-                            <option value="openrouter">OpenRouter</option>
-                        </select>
-                    </div>
-                    <div class="pp-settings-block pp-openrouter-only">
-                        <label for="pp_or_key"><span>OpenRouter API key</span></label>
-                        <input id="pp_or_key" type="password" class="text_pole" autocomplete="off" spellcheck="false" />
-                    </div>
-                    <div class="pp-settings-block pp-openrouter-only">
-                        <label for="pp_or_model"><span>OpenRouter model</span></label>
-                        <input id="pp_or_model" type="text" class="text_pole" placeholder="openai/gpt-4o-mini" />
-                    </div>
-                    <div class="pp-settings-block">
-                        <label for="pp_mail_delay_min"><span>Reply delay (seconds)</span></label>
-                        <div class="flex-container flexGap5" style="align-items:center;flex-wrap:wrap;">
-                            <input id="pp_mail_delay_min" type="number" class="text_pole" min="0" max="120" step="1" style="max-width:5em;" />
-                            <span>–</span>
-                            <input id="pp_mail_delay_max" type="number" class="text_pole" min="0" max="300" step="1" style="max-width:5em;" />
-                        </div>
-                        <small>Independent of the main chat. Reply fires after a random delay in this range.</small>
-                    </div>
-                    <div class="pp-settings-block">
-                        <label for="pp_mail_reply_prompt"><span>Mail reply prompt</span></label>
-                        <textarea id="pp_mail_reply_prompt" class="text_pole" rows="12" spellcheck="false"></textarea>
-                        <small>
-                            Placeholders: <code>{{char}}</code> <code>{{user}}</code> <code>{{subject}}</code>
-                            <code>{{body}}</code> <code>{{char_card}}</code> <code>{{chat_summary}}</code>
-                            <code>{{description}}</code> <code>{{personality}}</code> <code>{{scenario}}</code>
-                        </small>
-                        <div style="margin-top:0.4em;">
-                            <button id="pp_mail_prompt_reset" class="menu_button" type="button">Reset reply prompt</button>
-                        </div>
-                    </div>
-                    <div class="pp-settings-block">
-                        <label for="pp_mail_force_prompt"><span>Forced mail prompt</span></label>
-                        <textarea id="pp_mail_force_prompt" class="text_pole" rows="10" spellcheck="false"></textarea>
-                        <small>
-                            Used when receiving guided mail from the inbox signal control.
-                            Placeholders: <code>{{char}}</code> <code>{{user}}</code> <code>{{guidance}}</code>
-                            <code>{{subject}}</code> <code>{{char_card}}</code> <code>{{chat_summary}}</code>
-                        </small>
-                        <div style="margin-top:0.4em;">
-                            <button id="pp_mail_force_reset" class="menu_button" type="button">Reset force prompt</button>
-                        </div>
-                    </div>
-                </div>
-            </details>
-
-            <details class="pp-drawer-cat" open>
-                <summary>Character initiative</summary>
-                <div class="pp-drawer-cat-body">
-                    <p class="pp-drawer-lead">
+            <section class="pp-menu-cat" data-cat="initiative" data-title="Initiative" data-icon="✦">
+                <p class="pp-menu-lead">Characters mailing you on their own.</p>
+                    <p class="pp-menu-lead pp-menu-lead-sub">
                         Characters may send unsolicited mail on their own (VN-style), with heavy throttling so it stays optional.
                         Off by default.
                     </p>
@@ -347,13 +359,11 @@
                             <small>Bypasses chance / idle / grace / quiet hours; still respects unread and contact rules.</small>
                         </div>
                     </div>
-                </div>
-            </details>
+            </section>
 
-            <details class="pp-drawer-cat" open>
-                <summary>Calls</summary>
-                <div class="pp-drawer-cat-body">
-                    <p class="pp-drawer-lead">
+            <section class="pp-menu-cat" data-cat="calls" data-title="Calls" data-icon="☎">
+                <p class="pp-menu-lead">Live voice calls on the handset.</p>
+                    <p class="pp-menu-lead pp-menu-lead-sub">
                         Voice calls: talk inside the phone UI with one character.
                         Conversation stays on the phone — not the main chat log.
                     </p>
@@ -407,13 +417,11 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </details>
+            </section>
 
-            <details class="pp-drawer-cat">
-                <summary>Call initiative</summary>
-                <div class="pp-drawer-cat-body">
-                    <p class="pp-drawer-lead">
+            <section class="pp-menu-cat" data-cat="callinit" data-title="Incoming" data-icon="☏">
+                <p class="pp-menu-lead">Characters ringing you on their own.</p>
+                    <p class="pp-menu-lead pp-menu-lead-sub">
                         Characters may ring you unsolicited (VN-style), with the same style of throttling as mail initiative.
                         Off by default.
                     </p>
@@ -530,12 +538,10 @@
                             <small>Bypasses chance / idle / grace / quiet hours.</small>
                         </div>
                     </div>
-                </div>
-            </details>
+            </section>
 
-            <details class="pp-drawer-cat">
-                <summary>D-Mail</summary>
-                <div class="pp-drawer-cat-body">
+            <section class="pp-menu-cat" data-cat="dmail" data-title="D-Mail" data-icon="⌁">
+                <p class="pp-menu-lead">Mail to the past through PhoneWave.</p>
                     <div class="pp-settings-block">
                         <label>
                             <input id="pp_inject_worldline" type="checkbox" />
@@ -569,12 +575,10 @@
                             <span>Divergence meter on home screen</span>
                         </label>
                     </div>
-                </div>
-            </details>
+            </section>
 
-            <details class="pp-drawer-cat">
-                <summary>Time Leap</summary>
-                <div class="pp-drawer-cat-body">
+            <section class="pp-menu-cat" data-cat="timeleap" data-title="Time Leap" data-icon="⟲">
+                <p class="pp-menu-lead">Memories sent back through PhoneWave.</p>
                     <div class="pp-settings-block">
                         <label>
                             <input id="pp_timeleap_enabled" type="checkbox" />
@@ -621,32 +625,15 @@
                         </select>
                         <button id="pp_timeleap_cutscene_compare" class="menu_button" type="button">Compare cutscenes</button>
                     </div>
-                </div>
-            </details>
+            </section>
 
-            <details class="pp-drawer-cat">
-                <summary>Call memory</summary>
-                <div class="pp-drawer-cat-body">
-                    <div class="pp-settings-block">
-                        <label>
-                            <input id="pp_inject_call_memory" type="checkbox" />
-                            <span>Inject call memory into chat</span>
-                        </label>
-                        <small>Same as phone Settings → Call memory. Summaries/transcripts of finished calls.</small>
-                    </div>
-                    <div class="pp-settings-block">
-                        <label>
-                            <input id="pp_call_summarize" type="checkbox" />
-                            <span>Summarize calls on hang-up</span>
-                        </label>
-                        <small>LLM-compacts the transcript after each call (keeps summary, drops full turns).</small>
-                    </div>
-                </div>
-            </details>
+            <section class="pp-menu-cat" data-cat="phones" data-title="Phones" data-icon="▯">
+                <p class="pp-menu-lead">Handsets for you and every character.</p>
+                    <div id="pp-menu-phones" class="pp-menu-phones"></div>
+            </section>
 
-            <details class="pp-drawer-cat">
-                <summary>Actions &amp; help</summary>
-                <div class="pp-drawer-cat-body">
+            <section class="pp-menu-cat" data-cat="help" data-title="Lab notes" data-icon="✎">
+                <p class="pp-menu-lead">Shortcuts and commands.</p>
                     <div class="pp-settings-block">
                         <button id="pp_open_phone_btn" class="menu_button" type="button">Open phone</button>
                         <button id="pp_test_mail_btn" class="menu_button" type="button">Test mail</button>
@@ -655,9 +642,5 @@
                         <code>/phone</code> · <code>/mail</code> · <code>/mailsend subject=…</code> ·
                         <code>send_email</code> tool · <code>&lt;email&gt;</code> tags
                     </p>
-                </div>
-            </details>
-
-        </div>
-    </div>
+            </section>
 </div>
