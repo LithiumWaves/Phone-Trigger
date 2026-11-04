@@ -33,6 +33,7 @@ import { updateTimeleapPrompt } from './lib/timeleap.js';
 import { initMailUi } from './lib/mailUi.js';
 import { initConsequences, refreshConsequences, updateIgnorePrompt } from './lib/consequences.js';
 import { initFakeCallUi, onFakeCallMessage, openFakeCall } from './lib/fakeCall.js';
+import { initBoardUi, resetBoardNav, openBoardApp } from './lib/board.js';
 import { initWorldlineUi, refreshWorldlinePanels, setConvergenceChangeHandler } from './lib/worldline.js';
 import { initStoryClockUi, syncStoryClockFlow, noteStoryMessage, onStoryChatChanged, updateStoryClockPrompt, storyTimeCommand } from './lib/storyClock.js';
 import { mountMenu, openMenu, updateMenuStatus } from './lib/menu.js';
@@ -1089,6 +1090,13 @@ function registerSlashCommands() {
         (await import('./lib/worldlineMap.js')).openWorldlineMap();
         return '';
     }, 'Open the worldline map.', ['wlmap']);
+    simple('board', async (text) => {
+        if (getSettings().boardEnabled === false) {
+            return 'The board app is off';
+        }
+        await openBoardApp(text);
+        return '';
+    }, 'Open the @channel board app (optionally a board, e.g. <code>/board occult</code>).', ['atchannel']);
     simple('fakecall', (text) => {
         openFakeCall(text);
         return '';
@@ -1252,6 +1260,7 @@ function initFeatureUi() {
         () => initMailUi(),
         () => initConsequences(),
         () => initFakeCallUi(),
+        () => initBoardUi(),
         () => initWorldlineUi(() => updateWorldlinePrompt()),
         () => setConvergenceChangeHandler(() => updateWorldlinePrompt()),
         () => document.getElementById('pp_open_worldline_map')?.addEventListener('click', () => {
@@ -1297,6 +1306,7 @@ function registerEvents() {
     eventSource.on(event_types.CHAT_CHANGED, () => {
         onStoryChatChanged();
         refreshConsequences();
+        resetBoardNav();
         refreshWorldlinePanels();
         updateMenuStatus();
         updateMailPrompt();

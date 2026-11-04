@@ -853,6 +853,42 @@
                     </div>
             </section>
 
+            <section class="pp-menu-cat" data-cat="board" data-title="@channel" data-icon="＠">
+                <p class="pp-menu-lead">An anonymous textboard on the phone. Posts are written only when you open a board or thread, or press Load more.</p>
+                    <div class="pp-settings-block">
+                        <label>
+                            <input id="pp_board_on" type="checkbox" />
+                            <span>Board app on the home screen</span>
+                        </label>
+                        <label for="pp_board_name">Site name</label>
+                        <input id="pp_board_name" type="text" class="text_pole" maxlength="24" />
+                        <small>Also <code>/board</code> or <code>/board occult</code>. Make your own boards from its front page — a board's topic steers everything posted there.</small>
+                    </div>
+                    <h3 class="pp-menu-sub">Who posts</h3>
+                    <div class="pp-settings-block">
+                        <label>
+                            <input id="pp_board_chars" type="checkbox" />
+                            <span>Characters post too</span>
+                        </label>
+                        <small>Their cards decide whether they'd use the site and under what handle (or anonymously). Regulars turn up in replies in their own voice; <b>Post as…</b> makes anyone post. Change it per character:</small>
+                        <div id="pp_board_regulars" class="pp-board-regulars"></div>
+                        <label>
+                            <input id="pp_board_traveler" type="checkbox" />
+                            <span>A poster from the future</span>
+                        </label>
+                        <small>Now and then a tripcode poster claims to be a time traveler — and seems to know your worldline.</small>
+                        <label for="pp_board_traveler_handle">Their handle</label>
+                        <input id="pp_board_traveler_handle" type="text" class="text_pole" maxlength="40" />
+                    </div>
+                    <h3 class="pp-menu-sub">Story</h3>
+                    <div class="pp-settings-block">
+                        <label>
+                            <input id="pp_board_story" type="checkbox" />
+                            <span>Threads react to the story</span>
+                        </label>
+                        <small>Recent chat, the worldline and the story time feed the board, so rumors of what you've been up to can surface.</small>
+                    </div>
+            </section>
             <section class="pp-menu-cat" data-cat="phones" data-title="Phones" data-icon="▯">
                 <p class="pp-menu-lead">Handsets for you and every character.</p>
                     <h3 class="pp-menu-sub">Other people's phones</h3>
