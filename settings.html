@@ -917,8 +917,45 @@
                         <small>Each phone's own dropdown can still pick a specific style, the AI's choice, or freeform.</small>
                     </div>
                     <div id="pp-menu-phones" class="pp-menu-phones"></div>
+                                <h3 class="pp-menu-sub">Lab members</h3>
+                    <div class="pp-settings-block">
+                        <div id="pp_labmem_panel" class="pp-labmem-panel"></div>
+                        <small>Member numbers show as badges on their mail. Also <code>/labmem Kurisu 4 Assistant</code>.</small>
+                        <label>
+                            <input id="pp_labmem_inject" type="checkbox" />
+                            <span>Tell the AI who the lab members are</span>
+                        </label>
+                    </div>
             </section>
 
+            <section class="pp-menu-cat" data-cat="tips" data-title="TIPS" data-icon="?">
+                <p class="pp-menu-lead">The glossary. Terms the story mentions get a short entry, as in the VN.</p>
+                    <div class="pp-settings-block">
+                        <label>
+                            <input id="pp_tips_on" type="checkbox" />
+                            <span>Collect TIPS</span>
+                        </label>
+                        <small>Every few character messages, one short check looks for new terms in the categories below. Entries are for you only — nothing is sent to the roleplay.</small>
+                        <label for="pp_tips_every">Check every (character messages)</label>
+                        <input id="pp_tips_every" type="number" min="1" max="50" step="1" class="text_pole" />
+                    </div>
+                    <h3 class="pp-menu-sub">What gets explained</h3>
+                    <div class="pp-settings-block">
+                        <div id="pp_tips_cats" class="pp-tips-cats"></div>
+                        <label for="pp_tips_custom">More categories (comma-separated)</label>
+                        <input id="pp_tips_custom" type="text" class="text_pole" placeholder="e.g. Food, Military" />
+                    </div>
+                    <h3 class="pp-menu-sub">Entries</h3>
+                    <div class="pp-settings-block">
+                        <div class="pp-tips-explain">
+                            <input id="pp_tips_explain" type="text" class="text_pole" placeholder="Explain a term…" />
+                            <select id="pp_tips_explain_cat"></select>
+                            <button type="button" class="menu_button" id="pp_tips_explain_go">Explain</button>
+                            <button type="button" class="menu_button" id="pp_tips_scan" title="Look through the recent chat now">Scan chat</button>
+                        </div>
+                        <div id="pp_tips_list" class="pp-tips-list"></div>
+                    </div>
+            </section>
             <section class="pp-menu-cat" data-cat="help" data-title="Lab notes" data-icon="✎">
                 <p class="pp-menu-lead">Shortcuts and commands.</p>
                     <div class="pp-settings-block">

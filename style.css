@@ -8222,3 +8222,134 @@ dialog.pp-menu .pp-wd-del {
     width: 100%;
     box-sizing: border-box;
 }
+
+/* ═══════════ TIPS & lab members ═══════════ */
+.pp-tips-cats {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 6px;
+}
+
+.pp-tips-cat {
+    display: grid !important;
+    grid-template-columns: auto 1fr;
+    gap: 0 6px;
+    align-items: center;
+}
+
+.pp-tips-cat small {
+    grid-column: 2;
+    opacity: 0.6;
+}
+
+.pp-tips-explain {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 8px;
+}
+
+.pp-tips-explain input {
+    flex: 1 1 180px;
+}
+
+.pp-tips-tools input {
+    width: 100%;
+    max-width: 420px;
+    box-sizing: border-box;
+}
+
+.pp-tips-group h4 {
+    margin: 12px 0 4px;
+    color: #ffaa55;
+    font-size: 0.8em;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+}
+
+.pp-tips-group h4 small {
+    opacity: 0.6;
+}
+
+.pp-tip {
+    max-width: 680px;
+    margin-bottom: 4px;
+    border-left: 2px solid rgba(255, 170, 85, 0.6);
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.pp-tip summary {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 5px 8px;
+    cursor: pointer;
+}
+
+.pp-tip-term {
+    font-weight: 700;
+}
+
+.pp-tip-meta {
+    opacity: 0.5;
+    font-family: "IBM Plex Mono", Consolas, monospace;
+    font-size: 0.8em;
+}
+
+.pp-tip-text {
+    padding: 0 10px 6px;
+    line-height: 1.5;
+}
+
+.pp-tip-text textarea {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.pp-tip-actions {
+    display: flex;
+    gap: 6px;
+    padding: 0 10px 8px;
+}
+
+.pp-tips-empty {
+    opacity: 0.65;
+}
+
+.pp-labmem-table {
+    width: 100%;
+    max-width: 560px;
+    border-collapse: collapse;
+}
+
+.pp-labmem-table th,
+.pp-labmem-table td {
+    padding: 3px 6px;
+    text-align: left;
+}
+
+.pp-labmem-table input[type="number"] {
+    width: 64px;
+}
+
+.pp-labmem-table input[type="text"] {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.pp-labmem {
+    display: inline-block;
+    margin-left: 5px;
+    padding: 0 3px;
+    border: 1px solid rgba(255, 170, 85, 0.6);
+    border-radius: 2px;
+    color: #ffc58a;
+    font: 600 7px/1.4 var(--pp-font);
+    letter-spacing: 0.05em;
+    vertical-align: middle;
+}
+
+.pp-tips-group h4 small {
+    display: inline;
+    margin-left: 6px;
+}

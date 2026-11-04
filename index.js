@@ -34,6 +34,8 @@ import { initMailUi } from './lib/mailUi.js';
 import { initConsequences, refreshConsequences, updateIgnorePrompt } from './lib/consequences.js';
 import { initFakeCallUi, onFakeCallMessage, openFakeCall } from './lib/fakeCall.js';
 import { initBoardUi, resetBoardNav, openBoardApp } from './lib/board.js';
+import { initTipsUi, refreshTips, noteTipsMessage, openTips } from './lib/tips.js';
+import { initLabUi, refreshLab, labMemCommand } from './lib/labMembers.js';
 import { initWorldlineUi, refreshWorldlinePanels, setConvergenceChangeHandler } from './lib/worldline.js';
 import { initStoryClockUi, syncStoryClockFlow, noteStoryMessage, onStoryChatChanged, updateStoryClockPrompt, storyTimeCommand } from './lib/storyClock.js';
 import { mountMenu, openMenu, updateMenuStatus } from './lib/menu.js';
@@ -1097,6 +1099,12 @@ function registerSlashCommands() {
         await openBoardApp(text);
         return '';
     }, 'Open the @channel board app (optionally a board, e.g. <code>/board occult</code>).', ['atchannel']);
+    simple('tips', async () => {
+        await openTips();
+        return '';
+    }, 'Open the TIPS glossary.');
+    simple('labmem', (text) => labMemCommand(text),
+        'Lab members. <code>/labmem</code> lists them; <code>/labmem Kurisu 4 Assistant</code> sets a number and title.');
     simple('fakecall', (text) => {
         openFakeCall(text);
         return '';
@@ -1261,6 +1269,8 @@ function initFeatureUi() {
         () => initConsequences(),
         () => initFakeCallUi(),
         () => initBoardUi(),
+        () => initTipsUi(),
+        () => initLabUi(),
         () => initWorldlineUi(() => updateWorldlinePrompt()),
         () => setConvergenceChangeHandler(() => updateWorldlinePrompt()),
         () => document.getElementById('pp_open_worldline_map')?.addEventListener('click', () => {
@@ -1307,6 +1317,8 @@ function registerEvents() {
         onStoryChatChanged();
         refreshConsequences();
         resetBoardNav();
+        refreshTips();
+        refreshLab();
         refreshWorldlinePanels();
         updateMenuStatus();
         updateMailPrompt();
@@ -1334,6 +1346,7 @@ function registerEvents() {
             // A character spoke: now and then, does anyone have reason to reach into the past?
             const msg = getContext().chat?.[Number(messageId)];
             if (msg && !msg.is_user && !msg.is_system) {
+                noteTipsMessage();
                 noteCharacterMessage(resolveSpeakingContact(msg) || null);
             }
         } catch (err) {
