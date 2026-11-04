@@ -169,6 +169,34 @@
                         <label for="pp_chat_summary_n"><span>Chat messages in mail summary</span></label>
                         <input id="pp_chat_summary_n" type="number" class="text_pole" min="1" max="40" step="1" style="max-width:5em;" />
                     </div>
+                    <h3 class="pp-menu-sub">On the handset</h3>
+                    <div class="pp-settings-block">
+                        <label>
+                            <input id="pp_mail_keywords" type="checkbox" />
+                            <span>Tappable keywords (Phone Trigger)</span>
+                        </label>
+                        <small>Characters underline a few words in their mail. Tap one and your reply is written about it, as in the VN.</small>
+                        <label for="pp_keyword_mode">Tapping a keyword</label>
+                        <select id="pp_keyword_mode">
+                            <option value="prefill">Drafts the reply (you can edit, then send)</option>
+                            <option value="send">Sends the reply right away</option>
+                        </select>
+                        <label>
+                            <input id="pp_mail_receive_anim" type="checkbox" />
+                            <span>"Receiving…" bar when mail arrives</span>
+                        </label>
+                    </div>
+                    <h3 class="pp-menu-sub">Photos</h3>
+                    <div class="pp-settings-block">
+                        <label>
+                            <input id="pp_char_photos" type="checkbox" />
+                            <span>Characters can send photos</span>
+                        </label>
+                        <small>They may attach a described photo now and then. With SillyTavern's image generation installed (<code>/sd</code>), it's developed into a picture; otherwise the description shows.</small>
+                        <label for="pp_photo_max_kb">Max size of a photo you attach (KB)</label>
+                        <input id="pp_photo_max_kb" type="number" min="40" max="2000" step="10" class="text_pole" />
+                        <small>Photos are shrunk to fit and stored in the chat file.</small>
+                    </div>
             </section>
 
             <section class="pp-menu-cat" data-cat="memory" data-title="Memory" data-icon="◎">

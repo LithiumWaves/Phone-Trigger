@@ -30,6 +30,7 @@ import { ensureNotifyHost } from './lib/notify.js';
 import { updateWorldlinePrompt } from './lib/dmail.js';
 import { updateCallMemoryPrompt } from './lib/callMemory.js';
 import { updateTimeleapPrompt } from './lib/timeleap.js';
+import { initMailUi } from './lib/mailUi.js';
 import { initStoryClockUi, syncStoryClockFlow, noteStoryMessage, onStoryChatChanged, updateStoryClockPrompt, storyTimeCommand } from './lib/storyClock.js';
 import { mountMenu, openMenu, updateMenuStatus } from './lib/menu.js';
 import { registerPhonesMenu, registerPhoneCardAction } from './lib/phonesMenu.js';
@@ -1237,6 +1238,7 @@ function initFeatureUi() {
         () => initStoryClockUi(),
         () => syncStoryClockFlow(),
         () => updateStoryClockPrompt(),
+        () => initMailUi(),
     ];
     for (const step of steps) {
         try {
