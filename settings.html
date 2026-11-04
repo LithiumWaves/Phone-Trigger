@@ -197,6 +197,21 @@
                         <input id="pp_photo_max_kb" type="number" min="40" max="2000" step="10" class="text_pole" />
                         <small>Photos are shrunk to fit and stored in the chat file.</small>
                     </div>
+                                <h3 class="pp-menu-sub">People notice</h3>
+                    <div class="pp-settings-block">
+                        <label>
+                            <input id="pp_ignore_on" type="checkbox" />
+                            <span>Ignored mail and calls have consequences</span>
+                        </label>
+                        <small>Mail you leave unread and calls you don't return, counted in story hours (needs the story clock), become a note for the AI — and characters may mail you about it.</small>
+                        <label for="pp_ignore_hours">After (story hours)</label>
+                        <input id="pp_ignore_hours" type="number" min="0.25" max="240" step="0.5" class="text_pole" />
+                        <label>
+                            <input id="pp_closeness_on" type="checkbox" />
+                            <span>Track closeness</span>
+                        </label>
+                        <small>The words you tap, your replies and the tone of their mail move a closeness meter per person, shown on their mail and told to the AI.</small>
+                    </div>
             </section>
 
             <section class="pp-menu-cat" data-cat="memory" data-title="Memory" data-icon="◎">
@@ -479,6 +494,19 @@
                                 <button id="pp_call_prompt_reset" class="menu_button" type="button">Reset call prompt</button>
                             </div>
                         </div>
+                    </div>
+                                <h3 class="pp-menu-sub">Fake call</h3>
+                    <div class="pp-settings-block">
+                        <label>
+                            <input id="pp_fakecall_on" type="checkbox" />
+                            <span>Fake call on the dial screen</span>
+                        </label>
+                        <small>Talk into the phone with nobody on the line. Afterwards the people around you hear your side (<code>/fakecall</code> too).</small>
+                        <label for="pp_fakecall_note">They hear about it as</label>
+                        <select id="pp_fakecall_note">
+                            <option value="hidden">A hidden note for the next reply</option>
+                            <option value="visible">A narrator line in the chat</option>
+                        </select>
                     </div>
             </section>
 

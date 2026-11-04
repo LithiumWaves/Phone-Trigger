@@ -31,6 +31,8 @@ import { updateWorldlinePrompt } from './lib/dmail.js';
 import { updateCallMemoryPrompt } from './lib/callMemory.js';
 import { updateTimeleapPrompt } from './lib/timeleap.js';
 import { initMailUi } from './lib/mailUi.js';
+import { initConsequences, refreshConsequences, updateIgnorePrompt } from './lib/consequences.js';
+import { initFakeCallUi, onFakeCallMessage, openFakeCall } from './lib/fakeCall.js';
 import { initWorldlineUi, refreshWorldlinePanels, setConvergenceChangeHandler } from './lib/worldline.js';
 import { initStoryClockUi, syncStoryClockFlow, noteStoryMessage, onStoryChatChanged, updateStoryClockPrompt, storyTimeCommand } from './lib/storyClock.js';
 import { mountMenu, openMenu, updateMenuStatus } from './lib/menu.js';
@@ -1087,6 +1089,10 @@ function registerSlashCommands() {
         (await import('./lib/worldlineMap.js')).openWorldlineMap();
         return '';
     }, 'Open the worldline map.', ['wlmap']);
+    simple('fakecall', (text) => {
+        openFakeCall(text);
+        return '';
+    }, 'Take a fake phone call (optional: who you pretend to talk to).');
     simple('storytime', (text) => storyTimeCommand(text),
         'Story clock. No argument reports it; <code>pass 2h</code>, <code>sleep</code>, <code>set 2010-08-13 19:56</code>, <code>day 3</code>.',
         ['clock']);
@@ -1244,6 +1250,8 @@ function initFeatureUi() {
         () => syncStoryClockFlow(),
         () => updateStoryClockPrompt(),
         () => initMailUi(),
+        () => initConsequences(),
+        () => initFakeCallUi(),
         () => initWorldlineUi(() => updateWorldlinePrompt()),
         () => setConvergenceChangeHandler(() => updateWorldlinePrompt()),
         () => document.getElementById('pp_open_worldline_map')?.addEventListener('click', () => {
@@ -1288,6 +1296,7 @@ function registerEvents() {
 
     eventSource.on(event_types.CHAT_CHANGED, () => {
         onStoryChatChanged();
+        refreshConsequences();
         refreshWorldlinePanels();
         updateMenuStatus();
         updateMailPrompt();
@@ -1308,6 +1317,7 @@ function registerEvents() {
 
     eventSource.on(event_types.MESSAGE_RECEIVED, async (messageId) => {
         noteStoryMessage();
+        onFakeCallMessage();
         noteInitiativeActivity();
         noteCallInitiativeActivity();
         try {
@@ -1354,6 +1364,7 @@ function registerEvents() {
     };
     if (event_types.GENERATION_STARTED) {
         eventSource.on(event_types.GENERATION_STARTED, (...args) => {
+            updateIgnorePrompt();
             setInitiativeGenerationBusy(true);
             setCallInitiativeGenerationBusy(true);
             setWorldGenerationBusy(true);
