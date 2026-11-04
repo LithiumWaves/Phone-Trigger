@@ -36,6 +36,7 @@ import { initFakeCallUi, onFakeCallMessage, openFakeCall } from './lib/fakeCall.
 import { initBoardUi, resetBoardNav, openBoardApp } from './lib/board.js';
 import { initTipsUi, refreshTips, noteTipsMessage, openTips } from './lib/tips.js';
 import { initLabUi, refreshLab, labMemCommand } from './lib/labMembers.js';
+import { initCardHistoryUi, cardUndoCommand } from './lib/cardHistory.js';
 import { initWorldlineUi, refreshWorldlinePanels, setConvergenceChangeHandler } from './lib/worldline.js';
 import { initStoryClockUi, syncStoryClockFlow, noteStoryMessage, onStoryChatChanged, updateStoryClockPrompt, storyTimeCommand } from './lib/storyClock.js';
 import { mountMenu, openMenu, updateMenuStatus } from './lib/menu.js';
@@ -1105,6 +1106,8 @@ function registerSlashCommands() {
     }, 'Open the TIPS glossary.');
     simple('labmem', (text) => labMemCommand(text),
         'Lab members. <code>/labmem</code> lists them; <code>/labmem Kurisu 4 Assistant</code> sets a number and title.');
+    simple('cardundo', (text) => cardUndoCommand(text),
+        'Undo Phone Trigger\'s last rewrite of a character card (the active character, or a name).');
     simple('fakecall', (text) => {
         openFakeCall(text);
         return '';
@@ -1271,6 +1274,7 @@ function initFeatureUi() {
         () => initBoardUi(),
         () => initTipsUi(),
         () => initLabUi(),
+        () => initCardHistoryUi(),
         () => initWorldlineUi(() => updateWorldlinePrompt()),
         () => setConvergenceChangeHandler(() => updateWorldlinePrompt()),
         () => document.getElementById('pp_open_worldline_map')?.addEventListener('click', () => {

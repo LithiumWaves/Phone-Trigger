@@ -722,6 +722,11 @@
                         </label>
                         <small>After a D-Mail, recent mail is rewritten to match the new past (one extra generation). You keep what you remember: ◇ on a mail shows the old version; mail that never existed hides under the inbox. Undoing the D-Mail puts it all back.</small>
                     </div>
+                    <h3 class="pp-menu-sub">Card history</h3>
+                    <div class="pp-settings-block">
+                        <small>Every time Apply rewrites a character card, the text it replaced is kept here so you can undo it (or go back to the original). Stored only in this SillyTavern's extension settings — never inside the card file, so exporting or sharing a card doesn't carry it. Undoing a D-Mail also offers to restore the card it changed. <code>/cardundo [name]</code></small>
+                        <div id="pp_card_history" class="pp-card-history"></div>
+                    </div>
                     <h3 class="pp-menu-sub">Convergence</h3>
                     <div class="pp-settings-block">
                         <div id="pp_convergence_panel" class="pp-convergence-panel"></div>

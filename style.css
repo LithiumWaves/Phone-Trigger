@@ -8353,3 +8353,107 @@ dialog.pp-menu .pp-wd-del {
     display: inline;
     margin-left: 6px;
 }
+
+/* ═══════════ Card history ═══════════ */
+.pp-card-history {
+    display: grid;
+    gap: 6px;
+    max-width: 720px;
+    margin-top: 6px;
+}
+
+.pp-ch-char {
+    border-left: 2px solid rgba(255, 170, 85, 0.6);
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.pp-ch-char summary {
+    padding: 6px 10px;
+    cursor: pointer;
+}
+
+.pp-ch-char summary small {
+    margin-left: 6px;
+    opacity: 0.6;
+}
+
+.pp-ch-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 0 10px 6px;
+}
+
+.pp-ch-list {
+    display: grid;
+    gap: 6px;
+    margin: 0;
+    padding: 0 10px 10px;
+    list-style: none;
+}
+
+.pp-ch-entry {
+    padding: 6px 8px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 3px;
+}
+
+.pp-ch-current {
+    border-color: rgba(255, 170, 85, 0.45);
+}
+
+.pp-ch-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    font-size: 0.9em;
+}
+
+.pp-ch-fact {
+    margin: 3px 0;
+    color: #ffcf9a;
+    font-size: 0.9em;
+}
+
+.pp-ch-diff,
+.pp-card-diff {
+    line-height: 1.5;
+    font-size: 0.92em;
+}
+
+.pp-ch-diff del,
+.pp-card-diff del {
+    background: rgba(232, 93, 93, 0.18);
+    color: #ffb4b4;
+}
+
+.pp-ch-diff ins,
+.pp-card-diff ins {
+    background: rgba(120, 220, 140, 0.16);
+    color: #c8f5d0;
+    text-decoration: none;
+}
+
+.pp-ch-arrow {
+    opacity: 0.6;
+}
+
+.pp-ch-empty,
+.pp-ch-same {
+    opacity: 0.65;
+}
+
+.pp-view .pp-card-diff {
+    margin: 0 10px 8px;
+    padding: 6px;
+    border: 1px solid rgba(158, 196, 255, 0.18);
+    border-radius: 3px;
+    font: 400 9px/1.45 var(--pp-font);
+    color: var(--pp-lcd-fg);
+}
+
+.pp-warn-note {
+    color: #ffcf7a !important;
+}
