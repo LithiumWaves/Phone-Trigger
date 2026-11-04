@@ -1083,6 +1083,10 @@ function registerSlashCommands() {
             helpString,
         }));
     };
+    simple('worldlines', async () => {
+        (await import('./lib/worldlineMap.js')).openWorldlineMap();
+        return '';
+    }, 'Open the worldline map.', ['wlmap']);
     simple('storytime', (text) => storyTimeCommand(text),
         'Story clock. No argument reports it; <code>pass 2h</code>, <code>sleep</code>, <code>set 2010-08-13 19:56</code>, <code>day 3</code>.',
         ['clock']);
