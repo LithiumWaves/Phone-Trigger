@@ -5409,7 +5409,10 @@ dialog.pp-menu .pp-wd-del {
     }
 }
 
-/* —— Lab Radio: music player over Dynamic Audio —— */
+/* —— Lab Radio: music player over Dynamic Audio ——
+   A physical deck: brushed gunmetal case with screws, an engraved brass nameplate,
+   a speaker grille, a recessed CRT under curved glass, a smoked VFD window,
+   nixie-tube clocks, a machined slider in a groove and chunky transport keys. */
 .pp-radio,
 .pp-radio-list {
     --sg-amber: #ffb54a;
@@ -5420,24 +5423,37 @@ dialog.pp-menu .pp-wd-del {
 }
 
 .pp-radio {
+    --rd-metal-hi: #4a4e55;
+    --rd-metal: #2f3237;
+    --rd-metal-lo: #1d1f22;
+    --rd-glow: #ffa23a;
     position: fixed;
     left: 10px;
     top: 56px;
     z-index: 3000;
-    width: 260px;
+    width: 300px;
     box-sizing: border-box;
-    border: 1px solid var(--sg-line);
+    padding: 0 14px 20px;
+    border-radius: 16px;
     background:
-        repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.02) 0 1px, transparent 1px 3px),
-        linear-gradient(180deg, #140b08 0%, #0b0605 100%);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55), inset 0 0 40px rgba(255, 90, 20, 0.05);
+        repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.022) 0 1px, transparent 1px 2px, rgba(0, 0, 0, 0.03) 2px 3px),
+        linear-gradient(180deg, #44474d 0%, #2c2f33 38%, #222427 70%, #1a1b1e 100%);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.22),
+        inset 0 -2px 0 rgba(0, 0, 0, 0.55),
+        inset 1px 0 0 rgba(255, 255, 255, 0.06),
+        inset -1px 0 0 rgba(0, 0, 0, 0.35),
+        0 0 0 1px #0b0c0e,
+        0 4px 8px rgba(0, 0, 0, 0.45),
+        0 22px 44px rgba(0, 0, 0, 0.55);
     color: var(--sg-ink);
     font-family: "IBM Plex Mono", Consolas, "Lucida Console", monospace;
     opacity: 0;
-    transform: translateX(-16px);
+    transform: translateX(-18px) scale(0.98);
     pointer-events: none;
-    transition: opacity 0.3s ease, transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
     user-select: none;
+    -webkit-user-select: none;
 }
 
 .pp-radio.pp-radio-on {
@@ -5446,95 +5462,219 @@ dialog.pp-menu .pp-wd-del {
     pointer-events: auto;
 }
 
-.pp-radio .pp-sg-corner {
+/* Corner screws */
+.pp-radio-screw {
     position: absolute;
-    width: 10px;
-    height: 10px;
-    border: 2px solid var(--sg-orange);
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #eef1f4 0%, #a3a9b1 38%, #5a6068 72%, #3a3e44 100%);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.7), inset 0 0 0 0.5px rgba(0, 0, 0, 0.5);
     pointer-events: none;
 }
 
-.pp-radio-head {
+.pp-radio-screw::after {
+    content: '';
+    position: absolute;
+    left: 1.5px;
+    right: 1.5px;
+    top: 50%;
+    height: 1.4px;
+    margin-top: -0.7px;
+    border-radius: 1px;
+    background: rgba(20, 22, 26, 0.85);
+    box-shadow: 0 0.5px 0 rgba(255, 255, 255, 0.35);
+}
+
+.pp-radio-screw-tl { left: 7px; top: 7px; transform: rotate(28deg); }
+.pp-radio-screw-tr { right: 7px; top: 7px; transform: rotate(-52deg); }
+.pp-radio-screw-bl { left: 7px; bottom: 7px; transform: rotate(-14deg); }
+.pp-radio-screw-br { right: 7px; bottom: 7px; transform: rotate(71deg); }
+
+/* Engraved brass nameplate (also the drag handle) */
+.pp-radio-plate {
     display: flex;
     align-items: center;
-    gap: 6px;
-    padding: 6px 6px 5px 9px;
-    border-bottom: 1px solid var(--sg-line);
-    font-size: 10px;
-    letter-spacing: 0.18em;
+    gap: 7px;
+    margin: 11px 10px 10px;
+    padding: 5px 5px 5px 9px;
+    border-radius: 5px;
+    background:
+        repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.07) 0 1px, transparent 1px 3px),
+        linear-gradient(180deg, #e3cd96 0%, #c4a565 45%, #9f7f45 100%);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 248, 220, 0.7),
+        inset 0 -1px 0 rgba(70, 45, 10, 0.6),
+        0 0 0 1px rgba(30, 20, 5, 0.75),
+        0 2px 3px rgba(0, 0, 0, 0.5);
     cursor: grab;
     touch-action: none;
 }
 
-.pp-radio-brand {
-    color: var(--sg-orange);
+.pp-radio-plate:active {
+    cursor: grabbing;
 }
 
-.pp-radio-list-name {
-    flex: 1;
-    overflow: hidden;
-    color: var(--sg-dim);
-    letter-spacing: 0.06em;
-    text-overflow: ellipsis;
+.pp-radio-brand,
+.pp-radio-model {
+    font: 700 8.5px/1 "Helvetica Neue", Arial, sans-serif;
+    letter-spacing: 0.16em;
+    color: rgba(52, 33, 8, 0.88);
+    text-shadow: 0 1px 0 rgba(255, 244, 210, 0.55), 0 -0.5px 0 rgba(40, 24, 4, 0.4);
     white-space: nowrap;
 }
 
-.pp-radio-lamp {
+.pp-radio-model {
+    flex: 1;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    opacity: 0.75;
+    text-align: right;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.pp-radio-cap {
+    display: grid;
+    place-items: center;
+    width: 17px;
+    height: 17px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: radial-gradient(circle at 40% 30%, #6a6e75, #2a2c30 70%);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 1px 1px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(30, 20, 5, 0.6);
+    color: #c9cdd2;
+    cursor: pointer;
+}
+
+.pp-radio-cap svg {
+    width: 9px;
+    height: 9px;
+    fill: currentColor;
+}
+
+.pp-radio-cap:hover {
+    color: #fff;
+}
+
+.pp-radio-cap:active {
+    transform: translateY(1px);
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(30, 20, 5, 0.6);
+}
+
+/* Power LED */
+.pp-radio-led {
     width: 7px;
     height: 7px;
     flex: none;
     border-radius: 50%;
-    background: #5a2a14;
-    box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.6);
+    background: radial-gradient(circle at 40% 35%, #8a4a2a, #4a1d0c 70%);
+    box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(0, 0, 0, 0.45);
 }
 
-.pp-radio-playing .pp-radio-lamp {
-    background: #ff8a2a;
-    box-shadow: 0 0 6px #ff7a1a, 0 0 12px rgba(255, 110, 20, 0.6);
-    animation: pp-radio-lamp 1.4s ease-in-out infinite;
+.pp-radio-playing .pp-radio-led {
+    background: radial-gradient(circle at 40% 35%, #fff2d6 0%, #ffb24a 35%, #ff6a12 75%);
+    box-shadow: 0 0 0 1px rgba(80, 30, 0, 0.6), 0 0 6px #ff7a1a, 0 0 14px rgba(255, 110, 20, 0.6);
+    animation: pp-radio-led 2.4s ease-in-out infinite;
 }
 
-@keyframes pp-radio-lamp {
-    50% { opacity: 0.55; }
-}
-
-.pp-radio-min,
-.pp-radio-x {
-    width: 20px;
-    height: 18px;
-    padding: 0;
-    border: 1px solid var(--sg-line);
-    background: rgba(0, 0, 0, 0.3);
-    color: var(--sg-dim);
-    font: 600 11px/1 "IBM Plex Mono", Consolas, monospace;
-    cursor: pointer;
-}
-
-.pp-radio-min:hover,
-.pp-radio-x:hover {
-    color: var(--sg-amber);
-    border-color: rgba(255, 150, 60, 0.7);
+@keyframes pp-radio-led {
+    50% { filter: brightness(0.8); }
 }
 
 .pp-radio-body {
-    padding: 8px 9px 9px;
+    padding: 0;
+}
+
+/* Speaker grille + CRT */
+.pp-radio-face {
+    display: flex;
+    gap: 9px;
+}
+
+.pp-radio-grille {
+    width: 52px;
+    flex: none;
+    border-radius: 9px;
+    background:
+        radial-gradient(circle, #050506 1.25px, transparent 1.7px) 0 0 / 6px 6px,
+        radial-gradient(circle, rgba(255, 255, 255, 0.09) 1.9px, transparent 2.2px) 0.5px 0.8px / 6px 6px,
+        linear-gradient(180deg, #33363b, #222428);
+    box-shadow:
+        inset 0 2px 4px rgba(0, 0, 0, 0.75),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.08),
+        0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.pp-radio-crt {
+    position: relative;
+    flex: 1;
+    height: 66px;
+    padding: 0;
+    border-radius: 10px;
+    background:
+        radial-gradient(ellipse at 50% 45%, #3a1606 0%, #1a0903 60%, #070302 100%);
+    box-shadow:
+        0 0 0 3px #0c0d0f,
+        0 0 0 4px #3f4248,
+        0 1px 0 4px rgba(255, 255, 255, 0.1),
+        inset 0 0 18px rgba(0, 0, 0, 0.9),
+        inset 0 0 3px rgba(0, 0, 0, 0.9);
+    overflow: hidden;
 }
 
 .pp-radio-scope {
     display: block;
     width: 100%;
-    height: 46px;
-    border: 1px solid rgba(255, 140, 60, 0.18);
-    background: radial-gradient(ellipse at 50% 50%, rgba(60, 20, 6, 0.65), rgba(6, 3, 2, 0.95));
+    height: 100%;
+    border: 0;
+    background: transparent;
+}
+
+/* Curved glass: reflection, scanlines and vignette */
+.pp-radio-glass {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background:
+        linear-gradient(165deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.05) 28%, transparent 42%),
+        repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.22) 0 1px, transparent 1px 3px),
+        radial-gradient(ellipse at 50% 50%, transparent 55%, rgba(0, 0, 0, 0.55) 100%);
+    pointer-events: none;
+}
+
+/* Smoked VFD window */
+.pp-radio-vfd {
+    margin-top: 11px;
+    padding: 6px 9px 7px;
+    border-radius: 6px;
+    background: linear-gradient(180deg, #0a0806, #120c08);
+    box-shadow:
+        inset 0 2px 5px rgba(0, 0, 0, 0.85),
+        inset 0 0 0 1px rgba(255, 140, 60, 0.08),
+        0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.pp-radio-list-name {
+    display: block;
+    overflow: hidden;
+    color: rgba(255, 170, 80, 0.55);
+    font-size: 8.5px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .pp-radio-title {
-    margin-top: 7px;
+    margin-top: 3px;
     overflow: hidden;
     white-space: nowrap;
-    color: var(--sg-amber);
-    font-size: 13px;
-    text-shadow: 0 0 8px rgba(255, 140, 40, 0.5);
+    color: #ffc066;
+    font-size: 14px;
+    letter-spacing: 0.04em;
+    text-shadow: 0 0 6px rgba(255, 150, 40, 0.75), 0 0 14px rgba(255, 110, 20, 0.35);
 }
 
 .pp-radio-title-text {
@@ -5550,74 +5690,215 @@ dialog.pp-menu .pp-wd-del {
     85%, 100% { transform: translateX(var(--pp-radio-shift, 0px)); }
 }
 
+/* Nixie clocks + slider groove */
 .pp-radio-time {
     display: flex;
     align-items: center;
-    gap: 6px;
-    margin-top: 6px;
-    font-size: 10px;
-    color: var(--sg-dim);
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.pp-radio-nixie {
+    padding: 3px 5px;
+    border-radius: 9px;
+    background:
+        repeating-linear-gradient(90deg, rgba(255, 140, 60, 0.07) 0 1px, transparent 1px 3px),
+        radial-gradient(ellipse at 50% 30%, rgba(80, 30, 10, 0.55), rgba(10, 4, 2, 0.95));
+    box-shadow:
+        inset 0 1px 2px rgba(0, 0, 0, 0.9),
+        inset 0 0 0 1px rgba(255, 200, 150, 0.08),
+        0 1px 0 rgba(255, 255, 255, 0.1);
+    color: #ff9c3a;
+    font: 600 11px/1 "IBM Plex Mono", Consolas, monospace;
     font-variant-numeric: tabular-nums;
+    letter-spacing: 0.06em;
+    text-shadow: 0 0 3px #ff7a1a, 0 0 8px rgba(255, 90, 0, 0.75);
 }
 
 .pp-radio-seek {
+    --pp-pct: 0%;
     flex: 1;
     min-width: 0;
-    height: 14px;
+    height: 18px;
     margin: 0;
-    accent-color: var(--sg-orange);
     background: transparent;
     cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
 }
 
+.pp-radio-seek:disabled {
+    cursor: default;
+    opacity: 0.6;
+}
+
+.pp-radio-seek::-webkit-slider-runnable-track {
+    height: 6px;
+    border-radius: 3px;
+    background:
+        linear-gradient(90deg, rgba(255, 140, 40, 0.85) 0 var(--pp-pct), transparent var(--pp-pct)),
+        #0b0b0c;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.9), 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.pp-radio-seek::-moz-range-track {
+    height: 6px;
+    border-radius: 3px;
+    background: #0b0b0c;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.9), 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.pp-radio-seek::-moz-range-progress {
+    height: 6px;
+    border-radius: 3px;
+    background: rgba(255, 140, 40, 0.85);
+}
+
+.pp-radio-seek::-webkit-slider-thumb {
+    width: 16px;
+    height: 16px;
+    margin-top: -5px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 38% 32%, #f4f6f8 0%, #b8bec6 40%, #6e747c 75%, #4a4f56 100%);
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.7), inset 0 -1px 1px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(0, 0, 0, 0.5);
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.pp-radio-seek::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border: 0;
+    border-radius: 50%;
+    background: radial-gradient(circle at 38% 32%, #f4f6f8 0%, #b8bec6 40%, #6e747c 75%, #4a4f56 100%);
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(0, 0, 0, 0.5);
+}
+
+/* Transport keys */
 .pp-radio-keys {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 5px;
-    margin-top: 7px;
+    grid-template-columns: 1fr 1fr 1.1fr 1.35fr 1.1fr;
+    gap: 6px;
+    margin-top: 12px;
+    padding: 6px;
+    border-radius: 9px;
+    background: linear-gradient(180deg, #141517, #1d1f22);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.8), 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
-.pp-radio-keys button,
-.pp-radio-btn {
-    height: 26px;
-    padding: 0 6px;
-    border: 1px solid var(--sg-line);
-    background: linear-gradient(180deg, rgba(40, 16, 8, 0.85), rgba(14, 6, 3, 0.9));
-    color: var(--sg-ink);
-    font: 600 13px/1 "IBM Plex Mono", Consolas, monospace;
+.pp-radio-keys button {
+    position: relative;
+    display: grid;
+    place-items: center;
+    height: 34px;
+    padding: 0;
+    border: 0;
+    border-radius: 6px;
+    background: linear-gradient(180deg, #5a5e66 0%, #3b3e44 18%, #2d3035 60%, #24262a 100%);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.25),
+        inset 0 -2px 0 rgba(0, 0, 0, 0.4),
+        0 3px 0 #0e0f11,
+        0 4px 6px rgba(0, 0, 0, 0.55);
+    color: #d4d8dd;
     cursor: pointer;
+    transition: transform 0.06s ease, box-shadow 0.06s ease;
 }
 
-.pp-radio-keys button:hover,
-.pp-radio-btn:hover {
-    border-color: rgba(255, 150, 60, 0.7);
-    color: var(--sg-amber);
+.pp-radio-keys button svg {
+    width: 17px;
+    height: 17px;
+    fill: currentColor;
+    filter: drop-shadow(0 -1px 0 rgba(0, 0, 0, 0.7)) drop-shadow(0 1px 0 rgba(255, 255, 255, 0.12));
+}
+
+.pp-radio-keys button:hover {
+    color: #fff;
+}
+
+.pp-radio-keys button:active {
+    transform: translateY(3px);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.12),
+        inset 0 2px 4px rgba(0, 0, 0, 0.55),
+        0 0 0 #0e0f11,
+        0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* Play key: amber cap, LED lit while playing */
+.pp-radio-keys .pp-radio-play,
+.pp-radio-keys .pp-radio-play:hover {
+    color: #fff7e8;
 }
 
 .pp-radio-keys .pp-radio-play {
-    border-color: rgba(255, 140, 50, 0.65);
-    background: linear-gradient(180deg, rgba(255, 120, 30, 0.3), rgba(120, 40, 10, 0.45));
-    color: var(--sg-amber);
+    background: linear-gradient(180deg, #ffcf86 0%, #f59a35 22%, #d8761b 62%, #a9540d 100%);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 245, 220, 0.7),
+        inset 0 -2px 0 rgba(90, 35, 0, 0.5),
+        0 3px 0 #4a2306,
+        0 4px 7px rgba(0, 0, 0, 0.55);
+}
+
+.pp-radio-keys .pp-radio-play svg {
+    filter: drop-shadow(0 -1px 0 rgba(110, 45, 0, 0.75)) drop-shadow(0 1px 1px rgba(255, 240, 210, 0.35));
+}
+
+.pp-radio-keys .pp-radio-play:active {
+    box-shadow:
+        inset 0 1px 0 rgba(255, 245, 220, 0.4),
+        inset 0 2px 5px rgba(90, 35, 0, 0.6),
+        0 0 0 #4a2306,
+        0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.pp-radio-keys .pp-radio-play::after,
+.pp-radio-keys .pp-radio-mode::after {
+    content: '';
+    position: absolute;
+    top: 4px;
+    right: 5px;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: rgba(60, 20, 0, 0.55);
+    box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.6);
+}
+
+.pp-radio-playing .pp-radio-keys .pp-radio-play::after {
+    background: #fff6d8;
+    box-shadow: 0 0 4px #fff, 0 0 8px #ffb24a;
+}
+
+.pp-radio-keys .pp-radio-mode::after {
+    background: rgba(0, 0, 0, 0.55);
 }
 
 .pp-radio-keys .pp-radio-on-key {
-    color: var(--sg-amber);
-    border-color: rgba(255, 150, 60, 0.6);
-    box-shadow: inset 0 0 8px rgba(255, 110, 20, 0.25);
+    color: #ffc066;
 }
 
-/* Folded down: a slim strip with the title */
+.pp-radio-keys .pp-radio-on-key::after {
+    background: #ffb24a;
+    box-shadow: 0 0 4px #ff8a1a;
+}
+
+/* Folded down: a slim metal strip with the LED and VFD title */
 .pp-radio-mini {
     display: none;
     align-items: center;
-    gap: 7px;
+    gap: 8px;
     width: 100%;
-    padding: 6px 9px;
+    margin: 0;
+    padding: 7px 10px;
     border: 0;
-    background: transparent;
-    color: var(--sg-amber);
-    font: 500 11px/1.2 "IBM Plex Mono", Consolas, monospace;
+    border-radius: 7px;
+    background: linear-gradient(180deg, #0a0806, #120c08);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.85), 0 1px 0 rgba(255, 255, 255, 0.1);
+    color: #ffc066;
+    font: 500 12px/1.2 "IBM Plex Mono", Consolas, monospace;
     text-align: left;
+    text-shadow: 0 0 6px rgba(255, 150, 40, 0.7);
     cursor: pointer;
 }
 
@@ -5628,16 +5909,64 @@ dialog.pp-menu .pp-wd-del {
 }
 
 .pp-radio.pp-radio-collapsed {
-    width: 200px;
+    width: 230px;
+    padding: 9px 20px;
 }
 
-.pp-radio.pp-radio-collapsed .pp-radio-head,
+.pp-radio.pp-radio-collapsed .pp-radio-plate,
 .pp-radio.pp-radio-collapsed .pp-radio-body {
     display: none;
 }
 
 .pp-radio.pp-radio-collapsed .pp-radio-mini {
     display: flex;
+}
+
+.pp-radio.pp-radio-collapsed .pp-radio-screw-tl,
+.pp-radio.pp-radio-collapsed .pp-radio-screw-bl { left: 6px; top: 50%; bottom: auto; margin-top: -4.5px; }
+.pp-radio.pp-radio-collapsed .pp-radio-screw-tr,
+.pp-radio.pp-radio-collapsed .pp-radio-screw-br { right: 6px; top: 50%; bottom: auto; margin-top: -4.5px; }
+
+.pp-radio-min,
+.pp-radio-x {
+    width: 20px;
+    height: 18px;
+    padding: 0;
+    border: 1px solid var(--sg-line);
+    background: rgba(0, 0, 0, 0.3);
+    color: var(--sg-dim);
+    font: 600 11px/1 "IBM Plex Mono", Consolas, monospace;
+    cursor: pointer;
+}
+
+.pp-radio-x:hover {
+    color: var(--sg-amber);
+    border-color: rgba(255, 150, 60, 0.7);
+}
+
+.pp-radio-btn {
+    height: 26px;
+    padding: 0 8px;
+    border: 1px solid var(--sg-line);
+    background: linear-gradient(180deg, rgba(40, 16, 8, 0.85), rgba(14, 6, 3, 0.9));
+    color: var(--sg-ink);
+    font: 600 12px/1 "IBM Plex Mono", Consolas, monospace;
+    cursor: pointer;
+}
+
+.pp-radio-btn:hover {
+    border-color: rgba(255, 150, 60, 0.7);
+    color: var(--sg-amber);
+}
+
+/* Lamp used in the song list header */
+.pp-radio-lamp {
+    width: 7px;
+    height: 7px;
+    flex: none;
+    border-radius: 50%;
+    background: #ff8a2a;
+    box-shadow: 0 0 6px #ff7a1a;
 }
 
 /* Song list */
@@ -5763,7 +6092,7 @@ dialog.pp-menu .pp-wd-del {
 
 @media (prefers-reduced-motion: reduce) {
     .pp-radio-title-text.pp-radio-marquee,
-    .pp-radio-playing .pp-radio-lamp {
+    .pp-radio-playing .pp-radio-led {
         animation: none;
     }
 }
