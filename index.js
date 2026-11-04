@@ -87,6 +87,7 @@ function bindSettingsUi() {
     $('#pp_open_shut').prop('checked', s.openShutFirst !== false);
     $('#pp_side_dock').prop('checked', Boolean(s.phoneSideDock));
     $('#pp_inject').prop('checked', s.injectPrompt);
+    $('#pp_char_mail_chat').prop('checked', s.charMailInChat !== false);
     $('#pp_inject_worldline').prop('checked', s.dmailWorldline !== false);
     $('#pp_mail_memory_scope').val(s.mailMemoryScope === 'all' ? 'all' : 'speaker');
     $('#pp_mail_memory_max').val(s.mailMemoryMax ?? 6);
@@ -369,6 +370,7 @@ async function loadSettingsPanel() {
     });
     onToggle('openShutFirst', '#pp_open_shut');
     onToggle('phoneSideDock', '#pp_side_dock', () => refreshPhoneDock());
+    onToggle('charMailInChat', '#pp_char_mail_chat', () => updateMailPrompt());
     onToggle('injectPrompt', '#pp_inject', () => {
         syncInjectFields();
         updateMailPrompt();

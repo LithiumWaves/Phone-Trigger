@@ -24,7 +24,7 @@ SillyTavern extension that recreates the Steins;Gate **Phone Trigger** loop: ope
 - **Send animation** — compose shows an e-mail-client send sequence
 - **Wallpaper & sounds** — presets (the default **SG-001** is a vector remake of Okabe's blueprint wallpaper) or custom URLs
 - **Standby screen & main menu** — a clean standby screen (clock, Day, meter, notifications) and a 3×3 pixel-icon menu on OK / MENU
-- **Character → user** — `send_email` tool or `<email subject="…">…</email>` tags
+- **Character → user** — characters can mail you straight from the chat whenever it fits (`<email subject="…">…</email>` tags or the `send_email` tool); on by default (Context → *Characters can e-mail you from the chat*)
 - **User → character** — compose in-phone or `/mailsend`
 - **Independent replies** — mail generation uses raw/OpenRouter (not the active chat turn), with a configurable delay and editable prompt template
 - **Active-chat To:** — PhoneWave plus group members (or the solo chat character) appear in compose
