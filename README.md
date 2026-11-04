@@ -14,7 +14,7 @@ SillyTavern extension that recreates the Steins;Gate **Phone Trigger** loop: ope
 - **Calls** — dial a character and talk in the phone UI (not the main chat); optional call initiative (incoming rings); generation via unique prompt, main chat presets, or both
 - **Character initiative** — optional VN-style unsolicited mail with interval, chance, idle, caps, quiet hours, and contact rules (off by default)
 - **D-Mail** — permanent contact **PhoneWave (name subject to change)** (hideable); Spectacle (FX only) / Worldline / Propose / Apply; clearable worldline facts
-- **Time Leap Machine** — call **PhoneWave** to open TLM.EXE; you or a character leaps back (48 h limit) to a chosen message, the chat branches there, and only the leaper remembers the abandoned future; **Original** or **Progressive** cutscene
+- **Time Leap Machine** — call **PhoneWave** to open TLM.EXE; you or a character leaps back to a chosen message (48 h per leap; further back chains several leaps, each counted), the chat branches there, and only the leaper remembers the abandoned future; **Original** or **Progressive** cutscene
 - **Divergence meter** — per-chat divergence picked by the AI for each D-Mail; choose the **Original** cutscene (default) or a **Progressive** nixie-tube remake that lands on the new value (asked once on first boot); meter on the phone home screen
 - **Strong Apply** — optional lorebook (pick which book) + optional smooth character-card rewrite (confirm screens; no chat paste, no worldline block dump)
 - **Call memory** — persist finished calls; optional inject; summarize on hang-up (or per-call Σ) for token-friendly recollection
@@ -29,7 +29,7 @@ SillyTavern extension that recreates the Steins;Gate **Phone Trigger** loop: ope
 - **Active-chat To:** — PhoneWave plus group members (or the solo chat character) appear in compose
 - **Context toggles** — optional chat→mail summary; optional mail→chat memory with a phone **Memory** picker per character; optional worldline inject after D-Mail
 - **Guided receive** — faint signal bars on Inbox open a From / Guide panel to force inbound mail
-- **Story clock** — the chat keeps its own date, time and Day; manual, real-time or per-message flow; Pass time and Sleep
+- **Story clock** — the chat keeps its own date, time and Day; manual, real-time or per-message flow; Pass time and Sleep; **Re-date history…** (under the story log) moves an older chat's real-time dates onto the story calendar, all at once or one event at a time
 - **Phone Trigger keywords** — character mail underlines a few words; tap one and your reply is written about it
 - **Photo mail** — attach photos to mail; characters can send described photos (developed by `/sd` when installed)
 - **Undoing D-Mails** — a D-Mail that contradicts an earlier one cancels it and the meter goes back
@@ -60,7 +60,7 @@ SillyTavern extension that recreates the Steins;Gate **Phone Trigger** loop: ope
 | `/worldcheck [name]` | Ask now whether a character would send a D-Mail or time leap |
 | `/music` (`/radio`) | Open Lab Radio, the music player (needs Dynamic Audio) |
 | `/phonemenu` (`/ptmenu`) | Open the settings menu |
-| `/storytime` (`/clock`) | Story clock: `pass 2h`, `sleep`, `set 2010-08-13 19:56`, `day 3` (no argument reports it) |
+| `/storytime` (`/clock`) | Story clock: `pass 2h`, `sleep`, `set 2010-08-13 19:56`, `day 3`, `history` (re-date) (no argument reports it) |
 | `/worldlines` (`/wlmap`) | Open the worldline map |
 | `/board [name]` (`/atchannel`) | Open @channel (optionally a board, e.g. `/board occult`) |
 | `/fakecall [who]` | Take a fake call |
