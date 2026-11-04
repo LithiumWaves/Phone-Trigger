@@ -31,6 +31,7 @@ import { updateWorldlinePrompt } from './lib/dmail.js';
 import { updateCallMemoryPrompt } from './lib/callMemory.js';
 import { updateTimeleapPrompt } from './lib/timeleap.js';
 import { initMailUi } from './lib/mailUi.js';
+import { initWorldlineUi, refreshWorldlinePanels, setConvergenceChangeHandler } from './lib/worldline.js';
 import { initStoryClockUi, syncStoryClockFlow, noteStoryMessage, onStoryChatChanged, updateStoryClockPrompt, storyTimeCommand } from './lib/storyClock.js';
 import { mountMenu, openMenu, updateMenuStatus } from './lib/menu.js';
 import { registerPhonesMenu, registerPhoneCardAction } from './lib/phonesMenu.js';
@@ -1239,6 +1240,11 @@ function initFeatureUi() {
         () => syncStoryClockFlow(),
         () => updateStoryClockPrompt(),
         () => initMailUi(),
+        () => initWorldlineUi(() => updateWorldlinePrompt()),
+        () => setConvergenceChangeHandler(() => updateWorldlinePrompt()),
+        () => document.getElementById('pp_open_worldline_map')?.addEventListener('click', () => {
+            void import('./lib/worldlineMap.js').then((m) => m.openWorldlineMap());
+        }),
     ];
     for (const step of steps) {
         try {
@@ -1278,6 +1284,7 @@ function registerEvents() {
 
     eventSource.on(event_types.CHAT_CHANGED, () => {
         onStoryChatChanged();
+        refreshWorldlinePanels();
         updateMenuStatus();
         updateMailPrompt();
         if (getSettings().dmailWorldline !== false) {

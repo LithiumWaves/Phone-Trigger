@@ -680,6 +680,40 @@
                             <span>Divergence meter on home screen</span>
                         </label>
                     </div>
+                                <h3 class="pp-menu-sub">Worldlines</h3>
+                    <div class="pp-settings-block">
+                        <button type="button" class="menu_button" id="pp_open_worldline_map">◈ Open the worldline map</button>
+                        <label>
+                            <input id="pp_dmail_cancels" type="checkbox" />
+                            <span>Contradicting D-Mails undo earlier ones</span>
+                        </label>
+                        <small>Send a D-Mail that stops an earlier one (from any phone) and that change is undone; the meter returns to where it was before it.</small>
+                        <label>
+                            <input id="pp_dmail_rewrite" type="checkbox" />
+                            <span>Phone records follow the worldline</span>
+                        </label>
+                        <small>After a D-Mail, recent mail is rewritten to match the new past (one extra generation). You keep what you remember: ◇ on a mail shows the old version; mail that never existed hides under the inbox. Undoing the D-Mail puts it all back.</small>
+                    </div>
+                    <h3 class="pp-menu-sub">Convergence</h3>
+                    <div class="pp-settings-block">
+                        <div id="pp_convergence_panel" class="pp-convergence-panel"></div>
+                        <small>Outcomes the worldline keeps reaching however anyone tries to stop them — until the divergence crosses into another attractor field (the reading's first digit changes). Told to the AI with the worldline.</small>
+                        <label>
+                            <input id="pp_convergence_log" type="checkbox" />
+                            <span>Count how often each is reached</span>
+                        </label>
+                        <small>After each time leap, a short check asks whether the abandoned future reached them.</small>
+                    </div>
+                    <h3 class="pp-menu-sub">Milestones</h3>
+                    <div class="pp-settings-block">
+                        <label>
+                            <input id="pp_div_milestones" type="checkbox" />
+                            <span>Mark field crossings and a target reading</span>
+                        </label>
+                        <small>Crossing an attractor field makes the meter's first tube hesitate and adds one quiet line for the AI. Reaching your target reading gives the home meter a faint glow.</small>
+                        <label for="pp_div_target">Target reading (optional)</label>
+                        <input id="pp_div_target" type="text" class="text_pole" placeholder="e.g. 1.048596" maxlength="8" />
+                    </div>
             </section>
 
             <section class="pp-menu-cat" data-cat="timeleap" data-title="Time Leap" data-icon="⟲">
