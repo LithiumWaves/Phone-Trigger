@@ -5284,3 +5284,127 @@ dialog.pp-menu .pp-wd-del {
     color: var(--pp-danger);
     border-color: color-mix(in srgb, var(--pp-danger) 55%, transparent);
 }
+
+/* —— A character wants to time leap —— */
+.pp-wa-ask .pp-wa-frame {
+    width: min(440px, 100%);
+    padding: 22px 20px 16px;
+}
+
+.pp-wa-head {
+    font-size: 11px;
+    letter-spacing: 0.24em;
+    color: var(--sg-orange);
+}
+
+.pp-wa-blink {
+    animation: pp-wa-blink 1s steps(2, start) infinite;
+}
+
+@keyframes pp-wa-blink {
+    to { visibility: hidden; }
+}
+
+.pp-wa-name {
+    margin-top: 14px;
+    font: 700 26px/1.1 "Helvetica Neue", Arial, sans-serif;
+    letter-spacing: 0.04em;
+    color: var(--sg-amber);
+    text-shadow: 0 0 14px rgba(255, 140, 40, 0.45);
+}
+
+.pp-wa-sub {
+    margin-top: 4px;
+    font-size: 12px;
+    color: var(--sg-dim);
+}
+
+.pp-wa-clock {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin: 16px 0 6px;
+    padding: 10px 8px;
+    border: 1px solid var(--sg-line);
+    background: rgba(0, 0, 0, 0.35);
+    font-size: 15px;
+    letter-spacing: 0.06em;
+    color: var(--sg-amber);
+}
+
+.pp-wa-arrow {
+    color: var(--sg-orange);
+}
+
+.pp-wa-why {
+    margin: 12px 0 0;
+    font-size: 13px;
+    font-style: italic;
+    color: var(--sg-ink);
+}
+
+.pp-wa-arrive {
+    margin: 10px 0 0;
+    font-size: 11px;
+    color: var(--sg-dim);
+    text-align: left;
+}
+
+.pp-wa-arrive span {
+    color: var(--sg-orange);
+    letter-spacing: 0.14em;
+    margin-right: 4px;
+}
+
+.pp-wa-note {
+    margin: 10px 0 0;
+    font-size: 11px;
+    color: var(--sg-dim);
+}
+
+.pp-wa-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 16px;
+}
+
+.pp-wa-btn {
+    flex: 1;
+    padding: 10px 8px;
+    border: 1px solid var(--sg-line);
+    background: rgba(20, 8, 4, 0.8);
+    color: var(--sg-ink);
+    font: 600 12px/1 "IBM Plex Mono", Consolas, monospace;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.pp-wa-btn:hover,
+.pp-wa-btn:focus-visible {
+    border-color: rgba(255, 150, 60, 0.7);
+    outline: none;
+}
+
+.pp-wa-go {
+    border-color: rgba(255, 140, 50, 0.65);
+    background: linear-gradient(180deg, rgba(255, 120, 30, 0.28), rgba(120, 40, 10, 0.4));
+    color: var(--sg-amber);
+}
+
+.pp-wa-quiet {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 12px;
+    font-size: 11px;
+    color: var(--sg-dim);
+    cursor: pointer;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .pp-wa-blink {
+        animation: none;
+    }
+}

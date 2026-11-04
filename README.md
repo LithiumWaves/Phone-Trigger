@@ -46,6 +46,8 @@ SillyTavern extension that recreates the Steins;Gate **Phone Trigger** loop: ope
 | `/mailsend subject="Hi" Hello` | Send mail (`reply=off` to skip AI reply) |
 | `/timeleap` (`/tlm`) | Open the Time Leap Machine |
 | `/grabphone <name>` (`/snoop`) | Take someone's phone and look through it |
+| `/chardmail <name> [guidance]` | Make a character send a D-Mail now |
+| `/charleap <name> [guidance]` | Make a character time leap now |
 | `/phonemenu` (`/ptmenu`) | Open the settings menu |
 
 ## Character mail
@@ -94,6 +96,16 @@ Your designed phone replaces the SG001 everywhere — mail, calls, D-Mail and Ti
 On their phone you can read everything and **send mail as them**. Mail to you lands in your inbox as from them; mail to anyone else goes in their Sent, and that person's reply arrives in their inbox.
 
 Open any of their mails to **Edit** or **Delete** it. Your own mail with them changes only on their phone; your copy stays. With **Tell the chat what you saw** on, each edit or delete asks whether to tell the chat (it goes in the note of what you did on their phone) or keep it a hidden action; with it off, it is always hidden. The red key hands the phone back.
+
+### Characters reaching into the past
+
+Characters can send D-Mails and time leap too:
+
+- **From their phone.** Grab it and use **D-Mail** (or pick PhoneWave in the To list) or **Time Leap**. Their Time Leap Machine only lets them leap.
+- **When you make them.** Settings → Time Leap → *Make them do it*, or `/chardmail Kurisu stop Mayuri taking the train` / `/charleap Kurisu`. Guidance is optional.
+- **On their own** (off by default). Every few character messages, a short check asks whether someone in the chat — usually whoever just spoke, sometimes someone who isn't — has a real reason: they know the technology exists, and something urgent needs preventing or undoing. The answer is almost always no.
+
+When a character's D-Mail shifts the worldline, only you notice (Reading Steiner); the sender doesn't remember sending it. The change is still saved and injected, and the note allows that a strong push can stir memories of other worldlines. A character's own leap first shows a prompt to let it happen or stop it (turn that off to let leaps just happen). The cutscenes for character D-Mails and leaps can each be turned off.
 
 Characters can show you their phone. They are told (unless you turn it off) that they may write:
 

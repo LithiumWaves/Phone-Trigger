@@ -54,6 +54,13 @@ import {
     setCallInitiativeGenerationBusy,
     tryCallInitiative,
 } from './lib/callInitiative.js';
+import {
+    listActors,
+    resolveActor,
+    forceAct,
+    noteCharacterMessage,
+    setWorldGenerationBusy,
+} from './lib/worldActs.js';
 
 const LOG = `[${MODULE_NAME}]`;
 
@@ -162,6 +169,15 @@ function bindSettingsUi() {
     $('#pp_timeleap_marker').prop('checked', s.timeleapArrivalMarker !== false);
     $('#pp_timeleap_sound').prop('checked', s.timeleapSound !== false);
     $('#pp_timeleap_cutscene').val(s.timeleapCutscene === 'progressive' ? 'progressive' : 'original');
+    $('#pp_world_init').prop('checked', Boolean(s.worldInitiativeEnabled));
+    $('#pp_world_init_dmail').prop('checked', s.worldInitiativeDmail !== false);
+    $('#pp_world_init_leap').prop('checked', s.worldInitiativeLeap !== false);
+    $('#pp_world_init_every').val(s.worldInitiativeEveryMessages ?? 4);
+    $('#pp_world_init_cooldown').val(s.worldInitiativeCooldownSec ?? 600);
+    $('#pp_world_init_others').val(Math.round((s.worldInitiativeOthersChance ?? 0.3) * 100));
+    $('#pp_char_leap_ask').prop('checked', s.charLeapAsk !== false);
+    $('#pp_char_leap_cutscene').prop('checked', s.charLeapCutscene !== false);
+    $('#pp_char_dmail_cutscene').prop('checked', s.charDmailCutscene !== false);
     $('#pp_home_meter').prop('checked', s.homeDivergenceMeter !== false);
     $('#pp_inject_call_memory').prop('checked', Boolean(s.injectCallMemory));
     $('#pp_call_summarize').prop('checked', Boolean(s.callSummarizeOnEnd));
@@ -771,6 +787,59 @@ async function loadSettingsPanel() {
         const choice = await showCutscenePrompt({ kind: 'timeleap' });
         $('#pp_timeleap_cutscene').val(choice);
     });
+    // Characters: D-Mail & Time Leap
+    onToggle('worldInitiativeEnabled', '#pp_world_init');
+    onToggle('worldInitiativeDmail', '#pp_world_init_dmail');
+    onToggle('worldInitiativeLeap', '#pp_world_init_leap');
+    onToggle('charLeapAsk', '#pp_char_leap_ask');
+    onToggle('charLeapCutscene', '#pp_char_leap_cutscene');
+    onToggle('charDmailCutscene', '#pp_char_dmail_cutscene');
+    const worldNum = (selector, key, min, max, fallback, scale = 1) => {
+        $(selector).on('change', () => {
+            const st = getSettings();
+            let n = Number($(selector).val());
+            if (!Number.isFinite(n)) {
+                n = fallback;
+            }
+            n = Math.max(min, Math.min(max, Math.floor(n)));
+            st[key] = n / scale;
+            $(selector).val(n);
+            saveSettings();
+        });
+    };
+    worldNum('#pp_world_init_every', 'worldInitiativeEveryMessages', 1, 50, 4);
+    worldNum('#pp_world_init_cooldown', 'worldInitiativeCooldownSec', 0, 86400, 600);
+    worldNum('#pp_world_init_others', 'worldInitiativeOthersChance', 0, 100, 30, 100);
+    const fillForceWho = () => {
+        const sel = $('#pp_world_force_who');
+        const was = sel.val();
+        const actors = listActors();
+        sel.empty();
+        for (const c of actors) {
+            sel.append($('<option></option>').val(c.key).text(c.name));
+        }
+        if (was && actors.some((c) => c.key === was)) {
+            sel.val(was);
+        }
+    };
+    fillForceWho();
+    $('#pp_world_force_who').on('focus mousedown', fillForceWho);
+    $('#pp_world_force_go').on('click', async () => {
+        fillForceWho();
+        const contact = listActors().find((c) => c.key === $('#pp_world_force_who').val());
+        if (!contact) {
+            toast('No character in this chat', 'warning', 'PHONEWAVE');
+            return;
+        }
+        const act = $('#pp_world_force_act').val() === 'leap' ? 'leap' : 'dmail';
+        const btn = $('#pp_world_force_go');
+        btn.prop('disabled', true);
+        try {
+            await forceAct(contact, act, String($('#pp_world_force_guidance').val() || '').trim());
+        } finally {
+            btn.prop('disabled', false);
+        }
+    });
     onToggle('homeDivergenceMeter', '#pp_home_meter');
     onToggle('injectCallMemory', '#pp_inject_call_memory', (st) => {
         if (st.injectCallMemory) {
@@ -948,6 +1017,44 @@ function registerSlashCommands() {
         helpString: 'Open the Time Leap Machine (same as calling PhoneWave).',
     }));
 
+    // /chardmail Name guidance… · /charleap Name guidance…
+    for (const [name, act, help] of [
+        ['chardmail', 'dmail', 'Make a character send a D-Mail now. /chardmail Name optional guidance'],
+        ['charleap', 'leap', 'Make a character time leap now. /charleap Name optional guidance'],
+    ]) {
+        Parser.addCommandObject(SlashCommand.fromProps({
+            name,
+            callback: async (_named, unnamed) => {
+                if (!getSettings().enableSlashCommand) {
+                    return 'Phone slash commands disabled';
+                }
+                const text = String(unnamed || '').trim();
+                // The longest cast name that starts the text wins (names can have spaces).
+                const actors = listActors().sort((a, b) => b.name.length - a.name.length);
+                let contact = actors.find((c) => text.toLowerCase().startsWith(c.name.toLowerCase())) || null;
+                let guidance = contact ? text.slice(contact.name.length).trim() : '';
+                if (!contact) {
+                    const [first, ...rest] = text.split(/\s+/);
+                    contact = resolveActor(first);
+                    guidance = rest.join(' ');
+                }
+                if (!contact) {
+                    toast(`Who? /${name} <character> [guidance]`, 'warning', 'PHONEWAVE');
+                    return '';
+                }
+                return forceAct(contact, /** @type {'dmail' | 'leap'} */ (act), guidance);
+            },
+            unnamedArgumentList: SlashCommandArgument?.fromProps ? [
+                SlashCommandArgument.fromProps({
+                    description: 'Character name, then optional guidance',
+                    typeList: [ARGUMENT_TYPE.STRING],
+                    isRequired: true,
+                }),
+            ] : [],
+            helpString: help,
+        }));
+    }
+
     Parser.addCommandObject(SlashCommand.fromProps({
         name: 'mailsend',
         callback: async (namedArgs, unnamedArgs) => {
@@ -1043,6 +1150,15 @@ function registerEvents() {
         noteInitiativeActivity();
         noteCallInitiativeActivity();
         try {
+            // A character spoke: now and then, does anyone have reason to reach into the past?
+            const msg = getContext().chat?.[Number(messageId)];
+            if (msg && !msg.is_user && !msg.is_system) {
+                noteCharacterMessage(resolveSpeakingContact(msg) || null);
+            }
+        } catch (err) {
+            console.debug(LOG, 'world initiative note failed', err);
+        }
+        try {
             await ingestEmailsFromMessage(messageId);
             refreshIfOpen();
         } catch (err) {
@@ -1078,6 +1194,7 @@ function registerEvents() {
         eventSource.on(event_types.GENERATION_STARTED, (...args) => {
             setInitiativeGenerationBusy(true);
             setCallInitiativeGenerationBusy(true);
+            setWorldGenerationBusy(true);
             refreshSpeakerMemory(...args);
         });
     }
@@ -1090,6 +1207,7 @@ function registerEvents() {
     const clearGenBusy = () => {
         setInitiativeGenerationBusy(false);
         setCallInitiativeGenerationBusy(false);
+        setWorldGenerationBusy(false);
     };
     if (event_types.GENERATION_ENDED) {
         eventSource.on(event_types.GENERATION_ENDED, clearGenBusy);

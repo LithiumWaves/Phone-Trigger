@@ -632,6 +632,63 @@
                         </select>
                         <button id="pp_timeleap_cutscene_compare" class="menu_button" type="button">Compare cutscenes</button>
                     </div>
+
+                    <h3 class="pp-menu-sub">Characters: D-Mail &amp; Time Leap</h3>
+                    <div class="pp-settings-block">
+                        <small>
+                            Characters can send D-Mails and time leap too: from their phone (grab it), when you make them,
+                            or on their own. When a character's D-Mail shifts the worldline only you notice (Reading Steiner);
+                            the sender does not remember sending it.
+                        </small>
+                        <label>
+                            <input id="pp_world_init" type="checkbox" />
+                            <span>Characters may decide on their own</span>
+                        </label>
+                        <small>
+                            Every few character messages, a short check asks whether someone has a real reason —
+                            they know the technology exists, and there is something urgent to prevent or undo. Usually the answer is no.
+                        </small>
+                        <label>
+                            <input id="pp_world_init_dmail" type="checkbox" />
+                            <span>…by sending a D-Mail</span>
+                        </label>
+                        <label>
+                            <input id="pp_world_init_leap" type="checkbox" />
+                            <span>…by time leaping</span>
+                        </label>
+                        <label for="pp_world_init_every">Check after this many character messages</label>
+                        <input id="pp_world_init_every" type="number" min="1" max="50" step="1" class="text_pole" style="max-width:5em;" />
+                        <label for="pp_world_init_cooldown">Cooldown between checks (seconds)</label>
+                        <input id="pp_world_init_cooldown" type="number" min="0" max="86400" step="30" class="text_pole" style="max-width:6em;" />
+                        <label for="pp_world_init_others">Chance to consider someone not speaking (%)</label>
+                        <input id="pp_world_init_others" type="number" min="0" max="100" step="5" class="text_pole" style="max-width:5em;" />
+                    </div>
+                    <div class="pp-settings-block">
+                        <label>
+                            <input id="pp_char_leap_ask" type="checkbox" />
+                            <span>Ask before a character leaps on their own</span>
+                        </label>
+                        <small>Off: their leap just happens (the chat branches).</small>
+                        <label>
+                            <input id="pp_char_leap_cutscene" type="checkbox" />
+                            <span>Cutscene when a character time leaps</span>
+                        </label>
+                        <label>
+                            <input id="pp_char_dmail_cutscene" type="checkbox" />
+                            <span>Cutscene when a character sends a D-Mail</span>
+                        </label>
+                    </div>
+                    <div class="pp-settings-block">
+                        <label for="pp_world_force_who">Make them do it</label>
+                        <select id="pp_world_force_who"></select>
+                        <select id="pp_world_force_act">
+                            <option value="dmail">Send a D-Mail</option>
+                            <option value="leap">Time leap</option>
+                        </select>
+                        <textarea id="pp_world_force_guidance" class="text_pole" rows="2" spellcheck="true" placeholder="Optional guidance — e.g. stop Mayuri from going to the station / go back to before the argument"></textarea>
+                        <button id="pp_world_force_go" class="menu_button" type="button">Make it happen</button>
+                        <small>Also <code>/chardmail Name guidance</code> and <code>/charleap Name guidance</code>. Forced leaps don't ask.</small>
+                    </div>
             </section>
 
             <section class="pp-menu-cat" data-cat="phones" data-title="Phones" data-icon="▯">
