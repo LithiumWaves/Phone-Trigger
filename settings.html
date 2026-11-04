@@ -575,6 +575,48 @@
                     </div>
             </section>
 
+            <section class="pp-menu-cat" data-cat="clock" data-title="Clock" data-icon="◷">
+                <p class="pp-menu-lead">The story's own date and time, kept per chat.</p>
+                    <div class="pp-settings-block">
+                        <div id="pp_clock_panel" class="pp-clock-panel"></div>
+                        <small>Pass time, sleep until morning, or set the date, time and Day directly. Time leaps move the clock back.</small>
+                    </div>
+                    <h3 class="pp-menu-sub">How time flows</h3>
+                    <div class="pp-settings-block">
+                        <label for="pp_clock_flow">Flow</label>
+                        <select id="pp_clock_flow">
+                            <option value="manual">Manual (only when you move it)</option>
+                            <option value="realtime">Real time (minutes per story hour)</option>
+                            <option value="messages">Messages (messages per story hour)</option>
+                        </select>
+                        <div class="pp-clock-real">
+                            <label for="pp_clock_real_min">Real minutes = 1 story hour</label>
+                            <input id="pp_clock_real_min" type="number" min="0.1" max="1440" step="0.5" class="text_pole" />
+                            <small>Ticks only while this chat is open in a visible tab.</small>
+                        </div>
+                        <div class="pp-clock-msg">
+                            <label for="pp_clock_msgs">Messages = 1 story hour</label>
+                            <input id="pp_clock_msgs" type="number" min="1" max="500" step="1" class="text_pole" />
+                            <small>Yours and the characters' messages both count.</small>
+                        </div>
+                        <label for="pp_clock_wake">Sleep wakes at (hour)</label>
+                        <input id="pp_clock_wake" type="number" min="0" max="23" step="1" class="text_pole" />
+                    </div>
+                    <h3 class="pp-menu-sub">Where it shows</h3>
+                    <div class="pp-settings-block">
+                        <label>
+                            <input id="pp_clock_phone" type="checkbox" />
+                            <span>Phone clocks show story time</span>
+                        </label>
+                        <small>Status bar, home screen, cover display and mail dates, once this chat has a story time.</small>
+                        <label>
+                            <input id="pp_clock_inject" type="checkbox" />
+                            <span>Tell the AI the story time</span>
+                        </label>
+                        <label for="pp_clock_depth">Inject depth</label>
+                        <input id="pp_clock_depth" type="number" min="0" max="99" step="1" class="text_pole" />
+                    </div>
+            </section>
             <section class="pp-menu-cat" data-cat="dmail" data-title="D-Mail" data-icon="⌁">
                 <p class="pp-menu-lead">Mail to the past through PhoneWave.</p>
                     <div class="pp-settings-block">

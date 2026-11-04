@@ -30,6 +30,7 @@ import { ensureNotifyHost } from './lib/notify.js';
 import { updateWorldlinePrompt } from './lib/dmail.js';
 import { updateCallMemoryPrompt } from './lib/callMemory.js';
 import { updateTimeleapPrompt } from './lib/timeleap.js';
+import { initStoryClockUi, syncStoryClockFlow, noteStoryMessage, onStoryChatChanged, updateStoryClockPrompt, storyTimeCommand } from './lib/storyClock.js';
 import { mountMenu, openMenu, updateMenuStatus } from './lib/menu.js';
 import { registerPhonesMenu, registerPhoneCardAction } from './lib/phonesMenu.js';
 import {
@@ -1063,6 +1064,30 @@ function registerSlashCommands() {
         helpString: 'Open the Phone Trigger settings menu.',
     }));
 
+    /** Newer commands: one optional free-text argument. */
+    const simple = (name, callback, helpString, aliases = []) => {
+        Parser.addCommandObject(SlashCommand.fromProps({
+            name,
+            callback: async (_named, text) => {
+                if (!getSettings().enableSlashCommand) {
+                    return 'Phone slash commands disabled';
+                }
+                return String(await callback(String(text ?? '').trim()) ?? '');
+            },
+            aliases,
+            unnamedArgumentList: [
+                SlashCommandArgument.fromProps({ description: 'arguments', typeList: [ARGUMENT_TYPE.STRING], isRequired: false }),
+            ],
+            helpString,
+        }));
+    };
+    simple('storytime', (text) => storyTimeCommand(text),
+        'Story clock. No argument reports it; <code>pass 2h</code>, <code>sleep</code>, <code>set 2010-08-13 19:56</code>, <code>day 3</code>.',
+        ['clock']);
+    for (const extra of extraCommands) {
+        simple(extra.name, extra.callback, extra.help, extra.aliases || []);
+    }
+
     Parser.addCommandObject(SlashCommand.fromProps({
         name: 'timeleap',
         callback: () => {
@@ -1200,6 +1225,28 @@ function registerSlashCommands() {
     }));
 }
 
+/**
+ * Slash commands registered by newer feature modules.
+ * @type {{ name: string, callback: (text: string) => any, help: string, aliases?: string[] }[]}
+ */
+const extraCommands = [];
+
+/** Newer features bind their own menu controls and prompts. */
+function initFeatureUi() {
+    const steps = [
+        () => initStoryClockUi(),
+        () => syncStoryClockFlow(),
+        () => updateStoryClockPrompt(),
+    ];
+    for (const step of steps) {
+        try {
+            step();
+        } catch (err) {
+            console.error(LOG, 'feature init failed', err);
+        }
+    }
+}
+
 function registerEvents() {
     const ctx = getContext();
     const { eventSource, event_types } = ctx;
@@ -1228,6 +1275,7 @@ function registerEvents() {
     });
 
     eventSource.on(event_types.CHAT_CHANGED, () => {
+        onStoryChatChanged();
         updateMenuStatus();
         updateMailPrompt();
         if (getSettings().dmailWorldline !== false) {
@@ -1246,6 +1294,7 @@ function registerEvents() {
     });
 
     eventSource.on(event_types.MESSAGE_RECEIVED, async (messageId) => {
+        noteStoryMessage();
         noteInitiativeActivity();
         noteCallInitiativeActivity();
         try {
@@ -1267,6 +1316,7 @@ function registerEvents() {
 
     if (event_types.MESSAGE_SENT) {
         eventSource.on(event_types.MESSAGE_SENT, () => {
+            noteStoryMessage();
             noteInitiativeActivity();
             noteCallInitiativeActivity();
         });
@@ -1391,6 +1441,7 @@ jQuery(async () => {
     registerEmailTool();
     registerSlashCommands();
     registerEvents();
+    initFeatureUi();
     updateMailPrompt();
     if (getSettings().dmailWorldline !== false) {
         updateWorldlinePrompt();
