@@ -6414,3 +6414,9 @@ dialog.pp-menu .pp-wd-del {
         transition: none;
     }
 }
+
+/* Shut phone placed instantly (no animation from the stored closed angle) */
+.pp-flip.pp-no-anim,
+.pp-flip.pp-no-anim * {
+    transition: none !important;
+}
