@@ -180,7 +180,6 @@ function bindSettingsUi() {
     $('#pp_timeleap_max').val(s.timeleapMaxMemories ?? 5);
     $('#pp_timeleap_limit').val(s.timeleapLimitHours ?? 48);
     $('#pp_timeleap_keep_phone').prop('checked', Boolean(s.timeleapKeepFuturePhone));
-    $('#pp_timeleap_marker').prop('checked', s.timeleapArrivalMarker !== false);
     $('#pp_timeleap_sound').prop('checked', s.timeleapSound !== false);
     $('#pp_timeleap_cutscene').val(s.timeleapCutscene === 'progressive' ? 'progressive' : 'original');
     $('#pp_world_init').prop('checked', Boolean(s.worldInitiativeEnabled));
@@ -819,7 +818,6 @@ async function loadSettingsPanel() {
     }
     onToggle('timeleapInject', '#pp_timeleap_inject', () => updateTimeleapPrompt());
     onToggle('timeleapKeepFuturePhone', '#pp_timeleap_keep_phone');
-    onToggle('timeleapArrivalMarker', '#pp_timeleap_marker');
     onToggle('timeleapSound', '#pp_timeleap_sound');
     const leapInt = (selector, key, min, max, fallback) => {
         $(selector).on('change', () => {

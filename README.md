@@ -145,7 +145,7 @@ Mail to PhoneWave is a D-Mail; **calling** PhoneWave (green ☎ → PhoneWave) b
 - **MEMORY** — **Compress memories** summarizes everything after the arrival message (chat, plus mail and calls from that future) into what the leaper remembers. Edit it, then **Execute time leap**.
 - **LOG** — past leaps on this timeline (forget one or all) and machine toggles.
 
-Executing plays the cutscene, then branches the chat at the arrival message (SillyTavern's `/branch-create`), so the abandoned future stays in its own chat file. The new branch keeps the worldline, divergence, D-Mails and earlier leaps; mail and calls from after the arrival point are dropped unless **Keep future phone** is on. A `/comment` arrival marker (not sent to the AI) notes the leap.
+Executing plays the cutscene, then branches the chat at the arrival message (SillyTavern's `/branch-create`), so the abandoned future stays in its own chat file. The new branch keeps the worldline, divergence, D-Mails and earlier leaps; mail and calls from after the arrival point are dropped unless **Keep future phone** is on.
 
 Memories are injected per leaper: yours are always in the prompt, marked as known only to you. A character's are only present while that character is speaking, so the rest of the cast (and you) don't know unless they tell you. Leaps stack, as Okabe's do. Contradicting an earlier D-Mail is done the canonical way: send another D-Mail.
 
