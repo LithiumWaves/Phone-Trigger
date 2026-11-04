@@ -13,6 +13,7 @@ import {
     openTimeleapMachine,
     openCharacterPhone,
     userOpenPhone,
+    refreshPhoneDock,
 } from './lib/phone.js';
 import {
     registerEmailTool,
@@ -84,6 +85,7 @@ function bindSettingsUi() {
     $('#pp_slash').prop('checked', s.enableSlashCommand);
     $('#pp_sound').prop('checked', s.soundEnabled);
     $('#pp_open_shut').prop('checked', s.openShutFirst !== false);
+    $('#pp_side_dock').prop('checked', Boolean(s.phoneSideDock));
     $('#pp_inject').prop('checked', s.injectPrompt);
     $('#pp_inject_worldline').prop('checked', s.dmailWorldline !== false);
     $('#pp_mail_memory_scope').val(s.mailMemoryScope === 'all' ? 'all' : 'speaker');
@@ -184,6 +186,7 @@ function bindSettingsUi() {
     $('#pp_world_init').prop('checked', Boolean(s.worldInitiativeEnabled));
     $('#pp_world_init_dmail').prop('checked', s.worldInitiativeDmail !== false);
     $('#pp_world_init_leap').prop('checked', s.worldInitiativeLeap !== false);
+    $('#pp_world_urgent').prop('checked', Boolean(s.worldUrgentAct));
     $('#pp_world_init_every').val(s.worldInitiativeEveryMessages ?? 4);
     $('#pp_world_init_cooldown').val(s.worldInitiativeCooldownSec ?? 600);
     $('#pp_world_init_others').val(Math.round((s.worldInitiativeOthersChance ?? 0.3) * 100));
@@ -366,6 +369,7 @@ async function loadSettingsPanel() {
         refreshMenuMusic();
     });
     onToggle('openShutFirst', '#pp_open_shut');
+    onToggle('phoneSideDock', '#pp_side_dock', () => refreshPhoneDock());
     onToggle('injectPrompt', '#pp_inject', () => {
         syncInjectFields();
         updateMailPrompt();
@@ -848,6 +852,7 @@ async function loadSettingsPanel() {
     onToggle('worldInitiativeEnabled', '#pp_world_init');
     onToggle('worldInitiativeDmail', '#pp_world_init_dmail');
     onToggle('worldInitiativeLeap', '#pp_world_init_leap');
+    onToggle('worldUrgentAct', '#pp_world_urgent');
     onToggle('charLeapAsk', '#pp_char_leap_ask');
     onToggle('charLeapCutscene', '#pp_char_leap_cutscene');
     onToggle('charDmailCutscene', '#pp_char_dmail_cutscene');

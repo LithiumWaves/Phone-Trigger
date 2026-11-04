@@ -10,6 +10,7 @@ SillyTavern extension that recreates the Steins;Gate **Phone Trigger** loop: ope
 - **Phone UI** — draggable MAIL chip, Extensions wand menu, `/phone`
 - **Handset chassis** — Okabe Rintarou's SG001 (truss crown, grey screen panel, gunmetal barrel hinge, wedge-key cluster, kana-printed keypad) with working multi-tap keypad (T9-style Latin)
 - **Mobile** — `<dialog showModal()>` top layer + scale-to-fit (S25 Ultra–safe)
+- **PC side dock** — optional: on a computer the phone stands large on the right, like in the VN, with no dimming; the chat stays usable (Phones → Phone on the right side)
 - **Mail** — inbox / outbox / read / compose; optional tap-to-reply phrases; trash on open mail
 - **Calls** — dial a character and talk in the phone UI (not the main chat); optional call initiative (incoming rings); generation via unique prompt, main chat presets, or both
 - **Character initiative** — optional VN-style unsolicited mail with interval, chance, idle, caps, quiet hours, and contact rules (off by default)
@@ -122,7 +123,8 @@ Characters can send D-Mails and time leap too:
 - **From their phone.** Grab it and use **D-Mail** (or pick PhoneWave in the To list) or **Time Leap**. Their Time Leap Machine only lets them leap.
 - **When you make them.** Settings → Time Leap → *Make them do it*, or `/chardmail Kurisu stop Mayuri taking the train` / `/charleap Kurisu`. Guidance is optional.
 - **On their own** (off by default). Every few character messages, a short check asks whether someone in the chat — usually whoever just spoke, sometimes someone who isn't — has a real reason: they know the technology exists, and something urgent needs preventing or undoing. The answer is almost always no.
-- **Check now.** *Check now* in the same panel (or `/worldcheck Kurisu`) runs that check immediately, skipping the cooldown. It is still their call, so usually nothing happens.
+- **Right away when it matters** (off by default). *Act at once when something terrible happens*: when a message shows a death, an attack or a disaster, the check runs immediately (no message count or cooldown) and a leap they choose happens without asking you. Works even with *On their own* off.
+- **Check now.** *Check now* in the same panel (or `/worldcheck Kurisu`) runs that check immediately, skipping the cooldown. It is still their call, so usually nothing happens — unless something terrible just happened. The latest messages are read in full, so an event at the end of a long message is not missed.
 
 When a character's D-Mail shifts the worldline, only you notice (Reading Steiner); the sender doesn't remember sending it. The change is still saved and injected, and the note allows that a strong push can stir memories of other worldlines. A character's own leap first shows a prompt to let it happen or stop it (turn that off to let leaps just happen). The cutscenes for character D-Mails and leaps can each be turned off; without the cutscene, a short Reading Steiner note tells you the worldline shifted.
 
