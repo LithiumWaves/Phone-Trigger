@@ -21,7 +21,8 @@ SillyTavern extension that recreates the Steins;Gate **Phone Trigger** loop: ope
 - **Do not reply** — compose toggle skips the AI reply so mail threads do not loop
 - **Notifications** — Steins;Gate-styled mail alerts + chip unread badge
 - **Send animation** — compose shows an e-mail-client send sequence
-- **Wallpaper & sounds** — presets or custom URLs
+- **Wallpaper & sounds** — presets (the default **SG-001** is a vector remake of Okabe's blueprint wallpaper) or custom URLs
+- **Standby screen & main menu** — a clean standby screen (clock, Day, meter, notifications) and a 3×3 pixel-icon menu on OK / MENU
 - **Character → user** — `send_email` tool or `<email subject="…">…</email>` tags
 - **User → character** — compose in-phone or `/mailsend`
 - **Independent replies** — mail generation uses raw/OpenRouter (not the active chat turn), with a configurable delay and editable prompt template
@@ -64,6 +65,7 @@ SillyTavern extension that recreates the Steins;Gate **Phone Trigger** loop: ope
 | `/board [name]` (`/atchannel`) | Open @channel (optionally a board, e.g. `/board occult`) |
 | `/fakecall [who]` | Take a fake call |
 | `/tips` | Open the TIPS glossary |
+| `/cardundo [name]` | Undo Phone Trigger's last rewrite of a character card |
 | `/labmem [name number title]` | List lab members, or set one (`/labmem Kurisu 4 Assistant`) |
 
 ## Character mail
@@ -159,6 +161,14 @@ Optional VN-style unsolicited mail (Extensions drawer → **Character initiative
 Calls live in the phone UI: green ☎ → pick a contact → talk in the call screen. The character always speaks first: they answer when you call, and when they call you they open with why (set an optional reason under Call initiative). To make someone ring you, tap the faint signal bars on the Call screen (or long-press its title), pick the caller and optionally guide why they call, then **Ring me**. Keep talking while they reply — lines said mid-reply get answered next — and they can hang up on you. A reply still generating when a call ends is dropped. Generation mode can be **unique call prompt**, **main chat completion presets** (`generateQuietPrompt`), or **both** (presets + full call template). Optional **Call initiative** rings you with mail-style throttling. Hang up with red ☎ or soft **End**.
 
 Mail is stored in chat metadata. Wallpaper / sounds / reply prompt are extension settings.
+
+### Standby screen and main menu
+
+Opening the phone shows its standby screen: the wallpaper, a big clock with the date and Day, a slim divergence meter, and small chips only when something is waiting (new mail, missed calls, a call in progress, a worldline shift — tap one to go there). Press **OK** (or the **MENU** soft key) for the main menu: a 3×3 grid of pixel icons for Mail, Call, Grab a phone, @channel, Clock, Worldline map, Time Leap, D-Mail and Settings. The D-pad or the SG-001's wedges move through it, number keys 1–9 jump straight to an item, and Back returns to the menu.
+
+### Card history
+
+When D-Mail Apply rewrites a character card, the text it replaced is kept (and the original is always kept) so you can undo it: Menu → D-Mail → **Card history** shows each change with a diff, **Undo this change** and **Restore original**. Undoing a D-Mail also offers to restore the card it changed. History lives only in this SillyTavern's extension settings — never inside the card file, so exporting or sharing a card doesn't carry it. `/cardundo [name]`.
 
 ### Story clock
 
