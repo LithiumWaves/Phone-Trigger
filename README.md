@@ -190,7 +190,7 @@ Send a D-Mail that contradicts an earlier one — from your phone or anyone's (g
 
 ### Worldline map
 
-D-Mail screen → **Worldline map**, Menu → D-Mail, or `/worldlines`. D-Mails and leaps from before 0.9 are included; their readings weren't recorded then, so they're estimated from the ones that were (marked *est.*). Divergence is split into attractor-field bands; your path is a glowing trace, D-Mails are lightning jumps, undone D-Mails leave ghost branches, time leaps curl back with the abandoned future trailing off, and convergence points lie across their field. Drag, scroll or pinch; arrow keys step through events; the side rail (a bottom sheet on phones) lists everything.
+D-Mail screen → **Worldline map**, Menu → D-Mail, or `/worldlines`. D-Mails and leaps from before 0.9 are included; their readings weren't recorded then, so they're estimated from the ones that were (marked *est.*). **Check for earlier D-Mails** (D-Mail settings, the phone's D-Mail screen, or `/worldlines check`) lists every D-Mail the chat kept — even ones whose fact an older version saved without its link — lets you show or hide each on the map, and **Estimate readings with AI** gives old D-Mails plausible jumps that end on today's reading. Divergence is split into attractor-field bands; your path is a glowing trace, D-Mails are lightning jumps, undone D-Mails leave ghost branches, time leaps curl back with the abandoned future trailing off, and convergence points lie across their field. Drag, scroll or pinch; arrow keys step through events; the side rail (a bottom sheet on phones) lists everything.
 
 ### Convergence & milestones
 

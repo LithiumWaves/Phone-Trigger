@@ -8659,3 +8659,81 @@ dialog.pp-menu .pp-wd-del {
 .pt-wm-frame {
     position: relative;
 }
+
+/* Map: earlier D-Mails */
+.pt-wm-earlier-tools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 6px 0 8px;
+}
+
+.pt-wm-btn {
+    padding: 5px 10px;
+    border: 1px solid rgba(255, 170, 90, 0.55);
+    border-radius: 3px;
+    background: rgba(60, 28, 10, 0.7);
+    color: #ffd6a8;
+    font: 600 10px/1.2 "IBM Plex Mono", Consolas, monospace;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+}
+
+.pt-wm-btn:disabled {
+    opacity: 0.6;
+}
+
+.pt-wm-btn-ghost {
+    border-color: rgba(120, 170, 255, 0.3);
+    background: transparent;
+    color: #9fb4d6;
+}
+
+.pt-wm-btn-small {
+    padding: 2px 7px;
+    font-size: 9px;
+}
+
+.pt-wm-earlier {
+    display: grid;
+    gap: 5px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.pt-wm-early {
+    padding: 6px 8px;
+    border-left: 3px solid #4aa3ff;
+    background: rgba(16, 28, 50, 0.55);
+    font-size: 10.5px;
+}
+
+.pt-wm-early-undone { border-left-color: #ff9a5a; }
+.pt-wm-early-unapplied { border-left-color: #59647a; opacity: 0.8; }
+
+.pt-wm-early-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    color: #9fb4d6;
+    font-size: 9px;
+}
+
+.pt-wm-early-tag {
+    color: #7fdc9a;
+    font-size: 8.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.pt-wm-early-text {
+    margin: 3px 0 2px;
+    color: #e8f0ff;
+}
+
+.pt-wm-early-status {
+    color: #7f93b6;
+    font-size: 9px;
+}

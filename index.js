@@ -1089,10 +1089,10 @@ function registerSlashCommands() {
             helpString,
         }));
     };
-    simple('worldlines', async () => {
-        (await import('./lib/worldlineMap.js')).openWorldlineMap();
+    simple('worldlines', async (text) => {
+        (await import('./lib/worldlineMap.js')).openWorldlineMap(/^check|earlier/i.test(text) ? { section: 'earlier' } : {});
         return '';
-    }, 'Open the worldline map.', ['wlmap']);
+    }, 'Open the worldline map. <code>/worldlines check</code> opens it on the earlier D-Mails.', ['wlmap']);
     simple('board', async (text) => {
         if (getSettings().boardEnabled === false) {
             return 'The board app is off';
@@ -1279,6 +1279,9 @@ function initFeatureUi() {
         () => setConvergenceChangeHandler(() => updateWorldlinePrompt()),
         () => document.getElementById('pp_open_worldline_map')?.addEventListener('click', () => {
             void import('./lib/worldlineMap.js').then((m) => m.openWorldlineMap());
+        }),
+        () => document.getElementById('pp_check_earlier_dmails')?.addEventListener('click', () => {
+            void import('./lib/worldlineMap.js').then((m) => m.openWorldlineMap({ section: 'earlier' }));
         }),
     ];
     for (const step of steps) {
