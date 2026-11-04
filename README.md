@@ -158,4 +158,4 @@ Focus a subject/body field, then use the chassis keys:
 
 ### Menu music
 
-With the [Dynamic Audio](https://github.com/SillyTavern/Extension-Audio) extension installed, System → **Menu music** plays a song from its library (`assets/bgm`) while the Phone Trigger menu is open, at Dynamic Audio's music volume. Dynamic Audio's own music pauses and picks up again when you close the menu.
+With the [Dynamic Audio](https://github.com/SillyTavern/Extension-Audio) extension installed, System → **Menu music** has Dynamic Audio play a song from its library (`assets/bgm`) while the Phone Trigger menu is open, at its music volume. It plays only in the menu: closing the menu puts Dynamic Audio back to what it was playing before, or to silence.
