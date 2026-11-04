@@ -28,6 +28,14 @@ SillyTavern extension that recreates the Steins;Gate **Phone Trigger** loop: ope
 - **Active-chat To:** — PhoneWave plus group members (or the solo chat character) appear in compose
 - **Context toggles** — optional chat→mail summary; optional mail→chat memory with a phone **Memory** picker per character; optional worldline inject after D-Mail
 - **Guided receive** — faint signal bars on Inbox open a From / Guide panel to force inbound mail
+- **Story clock** — the chat keeps its own date, time and Day; manual, real-time or per-message flow; Pass time and Sleep
+- **Phone Trigger keywords** — character mail underlines a few words; tap one and your reply is written about it
+- **Photo mail** — attach photos to mail; characters can send described photos (developed by `/sd` when installed)
+- **Undoing D-Mails** — a D-Mail that contradicts an earlier one cancels it and the meter goes back
+- **Worldline map** — every D-Mail, undo and leap on an oscilloscope-style chart of attractor fields
+- **Convergence & milestones** — outcomes the worldline keeps reaching; field crossings and a target reading
+- **@channel** — an anonymous textboard app where characters post too
+- **Fake call**, **TIPS** glossary, **lab members**, and optional consequences for ignored mail and calls
 
 ## Install
 
@@ -51,6 +59,12 @@ SillyTavern extension that recreates the Steins;Gate **Phone Trigger** loop: ope
 | `/worldcheck [name]` | Ask now whether a character would send a D-Mail or time leap |
 | `/music` (`/radio`) | Open Lab Radio, the music player (needs Dynamic Audio) |
 | `/phonemenu` (`/ptmenu`) | Open the settings menu |
+| `/storytime` (`/clock`) | Story clock: `pass 2h`, `sleep`, `set 2010-08-13 19:56`, `day 3` (no argument reports it) |
+| `/worldlines` (`/wlmap`) | Open the worldline map |
+| `/board [name]` (`/atchannel`) | Open @channel (optionally a board, e.g. `/board occult`) |
+| `/fakecall [who]` | Take a fake call |
+| `/tips` | Open the TIPS glossary |
+| `/labmem [name number title]` | List lab members, or set one (`/labmem Kurisu 4 Assistant`) |
 
 ## Character mail
 
@@ -145,6 +159,48 @@ Optional VN-style unsolicited mail (Extensions drawer → **Character initiative
 Calls live in the phone UI: green ☎ → pick a contact → talk in the call screen. The character always speaks first: they answer when you call, and when they call you they open with why (set an optional reason under Call initiative). To make someone ring you, tap the faint signal bars on the Call screen (or long-press its title), pick the caller and optionally guide why they call, then **Ring me**. Keep talking while they reply — lines said mid-reply get answered next — and they can hang up on you. A reply still generating when a call ends is dropped. Generation mode can be **unique call prompt**, **main chat completion presets** (`generateQuietPrompt`), or **both** (presets + full call template). Optional **Call initiative** rings you with mail-style throttling. Hang up with red ☎ or soft **End**.
 
 Mail is stored in chat metadata. Wallpaper / sounds / reply prompt are extension settings.
+
+### Story clock
+
+Each chat keeps its own date and time (Menu → **Clock**, or tap the clock on the phone's home screen). Set the date, time and **Day** directly; **Pass time** (+15 m, +1 h, +3 h or any amount) and **Sleep** (until the wake hour, Day +1). Choose how it flows: **Manual**, **Real time** (X real minutes = 1 story hour, only while the chat is open) or **Messages** (X messages = 1 story hour). Phone clocks, mail dates and the menu follow it, time leaps move it back, and an optional line tells the AI the time. A **story log** records mail, calls, D-Mails, leaps and sleeps with their story time.
+
+### Mail on the handset
+
+As in the VN, character mail underlines a few **keywords** — tap one and your reply is written about it (drafted for you to edit, or sent right away). The inbox shows sealed/opened envelopes, replies, photos and D-Mail parts; new mail plays a short *Receiving…* bar; the read view has prev/next through the conversation, forward, and a **conversation view**.
+
+**Photos:** attach one from the compose screen (it's shrunk to fit the chat file; add a caption so they know what it shows). With *Characters can send photos* on, they sometimes attach one: SillyTavern's image generation (`/sd`) develops it when installed, otherwise its description shows.
+
+**People notice** (optional, Mail settings): mail left unread and calls not returned for a few story hours become a note for the AI, and characters may mail you about it. **Closeness** (optional) moves with the words you tap, your replies and the tone of their mail.
+
+### Undoing D-Mails
+
+Send a D-Mail that contradicts an earlier one — from your phone or anyone's (grab FB's phone and tell the past to stop the search) — and that change is undone: it stops being true and the meter returns to its reading from before it. With **Propose**, the review screen lists what will be undone.
+
+**Phone records follow the worldline** (optional): after a D-Mail, recent mail is rewritten to the new past. You still remember the old versions — ◇ on a mail shows them, and mail that never existed hides at the bottom of the inbox. Undoing the D-Mail puts it all back. (Time leaps already drop mail from after the arrival point.)
+
+### Worldline map
+
+D-Mail screen → **Worldline map**, Menu → D-Mail, or `/worldlines`. Divergence is split into attractor-field bands; your path is a glowing trace, D-Mails are lightning jumps, undone D-Mails leave ghost branches, time leaps curl back with the abandoned future trailing off, and convergence points lie across their field. Drag, scroll or pinch; arrow keys step through events; the side rail (a bottom sheet on phones) lists everything.
+
+### Convergence & milestones
+
+**Convergence points** (D-Mail settings or the phone's D-Mail screen) are outcomes the worldline reaches however anyone tries to stop them — until the divergence crosses into another attractor field. Optionally count how often each is reached (checked after each time leap). **Milestones** (optional): crossing a field makes the meter's first tube hesitate, and a target reading of your choice makes the home meter glow.
+
+### @channel
+
+A 2ch-style textboard app on the phone (home screen, or `/board`). Nothing is written in the background: opening a board writes its threads, opening a thread writes 4–6 replies, **Load more** writes more. Steer a board or thread, post yourself, start threads, or **＋ New board** with a topic that shapes everything posted there.
+
+**Characters post too** (on by default): their cards decide whether they'd use the site and under what handle, or anonymously (editable in Menu → @channel). **Post as…** makes anyone post a reply or a new thread. Optional: threads react to the story, and a tripcode poster claims to be from the future. The ◎ Who toggle shows you who wrote what.
+
+### Fake call
+
+Dial screen → **☏ Fake call** (or `/fakecall the Organization`): talk into the phone with nobody on the line. Afterwards the people around you hear your side — as a hidden note for the next reply, or a narrator line — and **Let them react** asks for one now.
+
+### TIPS and lab members
+
+**TIPS** (optional, Menu → TIPS): terms the story mentions get a short glossary entry, as in the VN. Choose what's explained — science, otaku and internet terms by default — search, edit, or explain a term yourself. Reader-only.
+
+**Lab members** (Menu → Phones, or `/labmem`): member numbers and titles, shown as badges on their mail and optionally told to the AI.
 
 ## Keypad
 
