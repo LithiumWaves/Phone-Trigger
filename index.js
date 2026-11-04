@@ -63,6 +63,7 @@ import {
     setWorldGenerationBusy,
 } from './lib/worldActs.js';
 import { hasDynamicAudio, listSongs, songLabel, refreshMenuMusic } from './lib/menuMusic.js';
+import { initMusicPlayer, openMusicPlayer, resetPlayerPosition } from './lib/musicPlayer.js';
 
 const LOG = `[${MODULE_NAME}]`;
 
@@ -339,6 +340,17 @@ async function loadSettingsPanel() {
         }
     });
     onToggle('menuSongEnabled', '#pp_menu_song_enabled', () => refreshMenuMusic());
+
+    // Lab Radio
+    $('#pp_radio_enabled').prop('checked', getSettings().musicPlayerEnabled !== false);
+    onToggle('musicPlayerEnabled', '#pp_radio_enabled');
+    $('#pp_radio_open').on('click', () => {
+        if (!openMusicPlayer()) {
+            toast('Lab Radio needs the Dynamic Audio extension', 'warning', 'LAB RADIO');
+        }
+    });
+    $('#pp_radio_reset').on('click', () => resetPlayerPosition());
+    initMusicPlayer();
     $('#pp_menu_song').on('change', () => {
         getSettings().menuSong = String($('#pp_menu_song').val() || '');
         saveSettings();
@@ -1062,6 +1074,22 @@ function registerSlashCommands() {
         },
         aliases: ['tlm'],
         helpString: 'Open the Time Leap Machine (same as calling PhoneWave).',
+    }));
+
+    Parser.addCommandObject(SlashCommand.fromProps({
+        name: 'music',
+        callback: () => {
+            if (!getSettings().enableSlashCommand) {
+                return 'Phone slash commands disabled';
+            }
+            if (!openMusicPlayer()) {
+                toast('Lab Radio needs the Dynamic Audio extension', 'warning', 'LAB RADIO');
+                return '';
+            }
+            return 'Lab Radio open';
+        },
+        aliases: ['radio'],
+        helpString: 'Open Lab Radio, the music player (needs Dynamic Audio).',
     }));
 
     Parser.addCommandObject(SlashCommand.fromProps({

@@ -49,6 +49,7 @@ SillyTavern extension that recreates the Steins;Gate **Phone Trigger** loop: ope
 | `/chardmail <name> [guidance]` | Make a character send a D-Mail now |
 | `/charleap <name> [guidance]` | Make a character time leap now |
 | `/worldcheck [name]` | Ask now whether a character would send a D-Mail or time leap |
+| `/music` (`/radio`) | Open Lab Radio, the music player (needs Dynamic Audio) |
 | `/phonemenu` (`/ptmenu`) | Open the settings menu |
 
 ## Character mail
@@ -159,3 +160,11 @@ Focus a subject/body field, then use the chassis keys:
 ### Menu music
 
 With the [Dynamic Audio](https://github.com/SillyTavern/Extension-Audio) extension installed, System → **Menu music** has Dynamic Audio play a song from its library (`assets/bgm`) while the Phone Trigger menu is open, at its music volume. It plays only in the menu: closing the menu puts Dynamic Audio back to what it was playing before, or to silence.
+
+### Lab Radio
+
+With Dynamic Audio installed, **Lab Radio** slides in while music plays: a Lab-style panel with the song title, an oscilloscope trace, a progress bar you can drag to jump ahead, previous / play-pause / next, and play in order / shuffle / repeat one. ☰ opens the song list: Dynamic Audio's library (plus any character songs it lists), a search box, and playlists you make yourself (＋ New, then ＋ on a song to add it). The list you pick from becomes the queue.
+
+Songs play on Dynamic Audio's own player, picked through its song list, and Dynamic Audio is locked onto your pick so it doesn't switch by expression. Drag the panel by its header, fold it down with –, or hide it with ✕ (it comes back with the next song). System → Lab Radio turns it off, opens it with nothing playing, or resets its position; `/music` opens it too.
+
+The trace follows play and pause rather than the actual sound: measuring Dynamic Audio's player with Web Audio only works for one extension at a time, and other players (such as the Danganronpa one) may already do it.
