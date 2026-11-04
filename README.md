@@ -164,7 +164,7 @@ Mail is stored in chat metadata. Wallpaper / sounds / reply prompt are extension
 
 ### Standby screen and main menu
 
-Opening the phone shows its standby screen: the wallpaper, a big clock with the date and Day, a slim divergence meter, and small chips only when something is waiting (new mail, missed calls, a call in progress, a worldline shift — tap one to go there). Press **OK** (or the **MENU** soft key) for the main menu: a 3×3 grid of pixel icons for Mail, Call, Grab a phone, @channel, Clock, Worldline map, Time Leap, D-Mail and Settings. The D-pad or the SG-001's wedges move through it, number keys 1–9 jump straight to an item, and Back returns to the menu.
+Opening the phone shows its standby screen: the wallpaper, a big clock with the date and Day, a slim divergence meter, and small chips only when something is waiting (new mail, missed calls, a call in progress, a worldline shift — tap one to go there). Press **OK** (or the **MENU** soft key) for the main menu: a 3×3 grid of pixel icons for Mail, Call, Grab a phone, @channel, Clock, Worldline map, Time Leap, D-Mail and Settings. The D-pad moves through it (on the SG-001 the big side wedges are left/right while the menu is open, and the red End key returns to standby), number keys 1–9 jump straight to an item, and Back from any item returns to the menu.
 
 ### Card history
 
@@ -190,7 +190,7 @@ Send a D-Mail that contradicts an earlier one — from your phone or anyone's (g
 
 ### Worldline map
 
-D-Mail screen → **Worldline map**, Menu → D-Mail, or `/worldlines`. Divergence is split into attractor-field bands; your path is a glowing trace, D-Mails are lightning jumps, undone D-Mails leave ghost branches, time leaps curl back with the abandoned future trailing off, and convergence points lie across their field. Drag, scroll or pinch; arrow keys step through events; the side rail (a bottom sheet on phones) lists everything.
+D-Mail screen → **Worldline map**, Menu → D-Mail, or `/worldlines`. D-Mails and leaps from before 0.9 are included; their readings weren't recorded then, so they're estimated from the ones that were (marked *est.*). Divergence is split into attractor-field bands; your path is a glowing trace, D-Mails are lightning jumps, undone D-Mails leave ghost branches, time leaps curl back with the abandoned future trailing off, and convergence points lie across their field. Drag, scroll or pinch; arrow keys step through events; the side rail (a bottom sheet on phones) lists everything.
 
 ### Convergence & milestones
 
