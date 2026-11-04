@@ -62,6 +62,20 @@
                             <span>Sounds</span>
                         </label>
                     </div>
+                    <h3 class="pp-menu-sub">Menu music</h3>
+                    <div class="pp-settings-block">
+                        <label>
+                            <input id="pp_menu_song_enabled" type="checkbox" />
+                            <span>Play a song while this menu is open</span>
+                        </label>
+                        <label for="pp_menu_song">Song (from Dynamic Audio)</label>
+                        <select id="pp_menu_song"></select>
+                        <button id="pp_menu_song_refresh" class="menu_button" type="button">Refresh song list</button>
+                        <small id="pp_menu_song_note">
+                            Uses the songs in Dynamic Audio's library (<code>data/&lt;user&gt;/assets/bgm</code>) at its music volume.
+                            Dynamic Audio's own music pauses while the menu is open and picks up again when you close it.
+                        </small>
+                    </div>
                     <h3 class="pp-menu-sub">Notifications</h3>
                     <div class="pp-settings-block">
                         <label>
@@ -688,6 +702,8 @@
                         <textarea id="pp_world_force_guidance" class="text_pole" rows="2" spellcheck="true" placeholder="Optional guidance — e.g. stop Mayuri from going to the station / go back to before the argument"></textarea>
                         <button id="pp_world_force_go" class="menu_button" type="button">Make it happen</button>
                         <small>Also <code>/chardmail Name guidance</code> and <code>/charleap Name guidance</code>. Forced leaps don't ask.</small>
+                        <button id="pp_world_check_now" class="menu_button" type="button">Check now</button>
+                        <small>Runs the "would they?" check for the character above right now (no cooldown). It is still their call — usually no. Also <code>/worldcheck [Name]</code>.</small>
                     </div>
             </section>
 

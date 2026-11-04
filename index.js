@@ -58,9 +58,11 @@ import {
     listActors,
     resolveActor,
     forceAct,
+    checkNow,
     noteCharacterMessage,
     setWorldGenerationBusy,
 } from './lib/worldActs.js';
+import { hasDynamicAudio, listSongs, songLabel, refreshMenuMusic } from './lib/menuMusic.js';
 
 const LOG = `[${MODULE_NAME}]`;
 
@@ -307,7 +309,41 @@ async function loadSettingsPanel() {
     });
     onToggle('showWandMenuItem', '#pp_wand', () => updateWandItem());
     onToggle('enableSlashCommand', '#pp_slash');
-    onToggle('soundEnabled', '#pp_sound');
+    onToggle('soundEnabled', '#pp_sound', () => refreshMenuMusic());
+
+    // Menu music (Dynamic Audio's song library)
+    $('#pp_menu_song_enabled').prop('checked', Boolean(getSettings().menuSongEnabled));
+    const fillMenuSongs = async () => {
+        const sel = $('#pp_menu_song');
+        const current = String(getSettings().menuSong || '');
+        const installed = hasDynamicAudio();
+        const songs = installed ? await listSongs() : [];
+        sel.empty().append($('<option></option>').val('').text(installed ? (songs.length ? '— choose a song —' : '— no songs in Dynamic Audio —') : '— Dynamic Audio not installed —'));
+        for (const path of songs) {
+            sel.append($('<option></option>').val(path).text(songLabel(path)));
+        }
+        if (current && !songs.includes(current)) {
+            sel.append($('<option></option>').val(current).text(`${songLabel(current)} (missing)`));
+        }
+        sel.val(current);
+        sel.prop('disabled', !installed);
+        $('#pp_menu_song_enabled').prop('disabled', !installed);
+        $('#pp_menu_song_refresh').prop('disabled', !installed);
+    };
+    // Dynamic Audio may load after us: fill once things settle, and on demand.
+    setTimeout(() => void fillMenuSongs(), 2500);
+    $('#pp_menu_song_refresh').on('click', () => void fillMenuSongs());
+    $('#pp_menu_song').on('focus', () => {
+        if ($('#pp_menu_song option').length <= 1) {
+            void fillMenuSongs();
+        }
+    });
+    onToggle('menuSongEnabled', '#pp_menu_song_enabled', () => refreshMenuMusic());
+    $('#pp_menu_song').on('change', () => {
+        getSettings().menuSong = String($('#pp_menu_song').val() || '');
+        saveSettings();
+        refreshMenuMusic();
+    });
     onToggle('openShutFirst', '#pp_open_shut');
     onToggle('injectPrompt', '#pp_inject', () => {
         syncInjectFields();
@@ -840,6 +876,17 @@ async function loadSettingsPanel() {
             btn.prop('disabled', false);
         }
     });
+    $('#pp_world_check_now').on('click', async () => {
+        fillForceWho();
+        const contact = listActors().find((c) => c.key === $('#pp_world_force_who').val()) || null;
+        const btn = $('#pp_world_check_now');
+        btn.prop('disabled', true);
+        try {
+            await checkNow(contact);
+        } finally {
+            btn.prop('disabled', false);
+        }
+    });
     onToggle('homeDivergenceMeter', '#pp_home_meter');
     onToggle('injectCallMemory', '#pp_inject_call_memory', (st) => {
         if (st.injectCallMemory) {
@@ -1015,6 +1062,30 @@ function registerSlashCommands() {
         },
         aliases: ['tlm'],
         helpString: 'Open the Time Leap Machine (same as calling PhoneWave).',
+    }));
+
+    Parser.addCommandObject(SlashCommand.fromProps({
+        name: 'worldcheck',
+        callback: async (_named, unnamed) => {
+            if (!getSettings().enableSlashCommand) {
+                return 'Phone slash commands disabled';
+            }
+            const name = String(unnamed || '').trim();
+            const contact = name ? resolveActor(name) : null;
+            if (name && !contact) {
+                toast(`Who? /worldcheck [character]`, 'warning', 'PHONEWAVE');
+                return '';
+            }
+            return checkNow(contact);
+        },
+        unnamedArgumentList: SlashCommandArgument?.fromProps ? [
+            SlashCommandArgument.fromProps({
+                description: 'Character to consider (default: whoever is speaking)',
+                typeList: [ARGUMENT_TYPE.STRING],
+                isRequired: false,
+            }),
+        ] : [],
+        helpString: 'Ask now whether a character would send a D-Mail or time leap (skips the cooldown; usually they won\'t).',
     }));
 
     // /chardmail Name guidance… · /charleap Name guidance…

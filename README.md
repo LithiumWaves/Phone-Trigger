@@ -48,6 +48,7 @@ SillyTavern extension that recreates the Steins;Gate **Phone Trigger** loop: ope
 | `/grabphone <name>` (`/snoop`) | Take someone's phone and look through it |
 | `/chardmail <name> [guidance]` | Make a character send a D-Mail now |
 | `/charleap <name> [guidance]` | Make a character time leap now |
+| `/worldcheck [name]` | Ask now whether a character would send a D-Mail or time leap |
 | `/phonemenu` (`/ptmenu`) | Open the settings menu |
 
 ## Character mail
@@ -104,8 +105,9 @@ Characters can send D-Mails and time leap too:
 - **From their phone.** Grab it and use **D-Mail** (or pick PhoneWave in the To list) or **Time Leap**. Their Time Leap Machine only lets them leap.
 - **When you make them.** Settings → Time Leap → *Make them do it*, or `/chardmail Kurisu stop Mayuri taking the train` / `/charleap Kurisu`. Guidance is optional.
 - **On their own** (off by default). Every few character messages, a short check asks whether someone in the chat — usually whoever just spoke, sometimes someone who isn't — has a real reason: they know the technology exists, and something urgent needs preventing or undoing. The answer is almost always no.
+- **Check now.** *Check now* in the same panel (or `/worldcheck Kurisu`) runs that check immediately, skipping the cooldown. It is still their call, so usually nothing happens.
 
-When a character's D-Mail shifts the worldline, only you notice (Reading Steiner); the sender doesn't remember sending it. The change is still saved and injected, and the note allows that a strong push can stir memories of other worldlines. A character's own leap first shows a prompt to let it happen or stop it (turn that off to let leaps just happen). The cutscenes for character D-Mails and leaps can each be turned off.
+When a character's D-Mail shifts the worldline, only you notice (Reading Steiner); the sender doesn't remember sending it. The change is still saved and injected, and the note allows that a strong push can stir memories of other worldlines. A character's own leap first shows a prompt to let it happen or stop it (turn that off to let leaps just happen). The cutscenes for character D-Mails and leaps can each be turned off; without the cutscene, a short Reading Steiner note tells you the worldline shifted.
 
 Characters can show you their phone. They are told (unless you turn it off) that they may write:
 
@@ -153,3 +155,7 @@ Focus a subject/body field, then use the chassis keys:
 - **\*** toggles Aa / aa
 - **Lower-centre wedge** (below the OK square) = backspace
 - **Upper-left / upper-right wedges** = soft keys (captions show at the bottom of the screen)
+
+### Menu music
+
+With the [Dynamic Audio](https://github.com/SillyTavern/Extension-Audio) extension installed, System → **Menu music** plays a song from its library (`assets/bgm`) while the Phone Trigger menu is open, at Dynamic Audio's music volume. Dynamic Audio's own music pauses and picks up again when you close the menu.
