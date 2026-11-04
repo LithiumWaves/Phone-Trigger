@@ -8615,14 +8615,6 @@ dialog.pp-menu .pp-wd-del {
     white-space: nowrap;
 }
 
-.pp-menu-num {
-    position: absolute;
-    top: 1px;
-    left: 3px;
-    color: var(--pp-lcd-dim);
-    font: 600 6.5px/1 var(--pp-font);
-    opacity: 0.7;
-}
 
 .pp-menu-cell.pp-cursor,
 .pp-menu-cell:hover {
@@ -8657,3 +8649,13 @@ dialog.pp-menu .pp-wd-del {
 .pp-idle-chip-mail .pp-mi-a { fill: var(--pp-unread); }
 .pp-idle-chip-missed .pp-mi-b,
 .pp-idle-chip-missed .pp-mi-a { fill: var(--pp-danger); }
+
+/* The map never scrolls as a whole; only the rail does. */
+.pt-wm {
+    overflow: hidden;
+    overscroll-behavior: contain;
+}
+
+.pt-wm-frame {
+    position: relative;
+}
