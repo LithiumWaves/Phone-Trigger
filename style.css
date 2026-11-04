@@ -5432,8 +5432,7 @@ dialog.pp-menu .pp-wd-del {
     z-index: 3000;
     width: 330px;
     box-sizing: border-box;
-    border-radius: 9px;
-    filter: drop-shadow(0 18px 28px rgba(0, 0, 0, 0.55)) drop-shadow(0 3px 6px rgba(0, 0, 0, 0.4));
+    padding-bottom: 14px;
     color: var(--sg-ink);
     font-family: "IBM Plex Mono", Consolas, "Lucida Console", monospace;
     opacity: 0;
@@ -5447,30 +5446,53 @@ dialog.pp-menu .pp-wd-del {
 .pp-radio.pp-radio-on {
     opacity: 1;
     transform: none;
+}
+
+/* Only the hardware takes clicks: the air between the tubes lets them through to the chat */
+.pp-radio.pp-radio-on :is(.pp-radio-chassis, .pp-radio-deck, .pp-radio-mini) {
     pointer-events: auto;
 }
 
-/* —— Perfboard —— */
-.pp-radio-board {
+/* —— Stage: the tubes stand in open air on a perfboard deck seen in perspective —— */
+.pp-radio-stage {
     position: relative;
-    padding: 30px 12px 11px;
-    border-radius: 9px 9px 0 0;
+    height: 146px;
+    margin: 0 4px;
+}
+
+.pp-radio-deck {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 66px;
+    perspective: 240px;
+    perspective-origin: 50% -120%;
+}
+
+.pp-radio-deck-top {
+    position: absolute;
+    inset: 0;
+    border-radius: 6px 6px 2px 2px;
+    transform-origin: 50% 100%;
+    transform: rotateX(62deg);
     background:
-        radial-gradient(circle, #2a1608 0 1.15px, #b98545 1.5px 2.1px, rgba(120, 70, 25, 0.35) 2.3px, transparent 2.7px) 4px 4px / 9px 9px,
-        repeating-linear-gradient(97deg, rgba(255, 255, 255, 0.035) 0 2px, transparent 2px 7px),
-        linear-gradient(180deg, #ddb27a 0%, #c99858 55%, #b8864a 100%);
+        radial-gradient(circle, #2a1608 0 1.2px, #b98545 1.6px 2.2px, rgba(120, 70, 25, 0.35) 2.4px, transparent 2.8px) 3px 3px / 9px 9px,
+        repeating-linear-gradient(97deg, rgba(255, 255, 255, 0.04) 0 2px, transparent 2px 7px),
+        linear-gradient(180deg, #a87a43 0%, #cf9f60 45%, #e2b77e 100%);
     box-shadow:
-        inset 0 1px 0 rgba(255, 240, 210, 0.6),
+        inset 0 -2px 0 rgba(255, 240, 210, 0.55),
         inset 0 0 0 1px rgba(90, 52, 18, 0.55),
-        inset 0 -6px 10px rgba(80, 40, 10, 0.18);
+        inset 0 30px 30px -10px rgba(60, 30, 8, 0.35);
 }
 
 /* Masking tape label (drag handle) */
 .pp-radio-tape {
     position: absolute;
-    top: 7px;
-    left: 14px;
-    max-width: 205px;
+    top: 9px;
+    left: 16px;
+    z-index: 1;
+    max-width: 220px;
     padding: 3px 12px 2px;
     background:
         repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.12) 0 1px, transparent 1px 3px),
@@ -5521,12 +5543,12 @@ dialog.pp-menu .pp-wd-del {
     box-shadow: inset 0 0 0 0.5px rgba(0, 0, 0, 0.4);
 }
 
-.pp-radio-cap-a { right: 40px; top: 8px; }
-.pp-radio-cap-b { right: 20px; top: 11px; width: 11px; height: 14px; }
+.pp-radio-cap-a { left: 12px; bottom: 16px; height: 22px; }
+.pp-radio-cap-b { left: 30px; bottom: 9px; width: 11px; height: 16px; }
 
 .pp-radio-ceramic {
-    right: 62px;
-    top: 9px;
+    right: 34px;
+    bottom: 20px;
     width: 12px;
     height: 10px;
     border-radius: 50% 50% 45% 45%;
@@ -5546,7 +5568,8 @@ dialog.pp-menu .pp-wd-del {
 }
 
 .pp-radio-res {
-    bottom: 13px;
+    right: 6px;
+    bottom: 7px;
     width: 30px;
     height: 7px;
 }
@@ -5575,21 +5598,22 @@ dialog.pp-menu .pp-wd-del {
     box-shadow: 0 1px 1px rgba(50, 25, 5, 0.45);
 }
 
-.pp-radio-res-a { left: 6px; }
-.pp-radio-res-b { right: 6px; }
 
-/* Nixie row */
+/* Nixie row (transparent canvas over the deck) */
 .pp-radio-nixies {
-    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
     width: 100%;
-    height: 94px;
-    margin-top: 2px;
+    height: 100%;
+    pointer-events: none;
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.35));
 }
 
 /* —— VFD title tube —— */
 .pp-radio-vfd {
     position: relative;
-    margin-top: 8px;
+    margin-top: 0;
     padding: 4px 22px 5px;
     border-radius: 17px;
     background:
@@ -5668,7 +5692,7 @@ dialog.pp-menu .pp-wd-del {
     --pp-pct: 0%;
     position: relative;
     height: 12px;
-    margin: 9px 40px 0;
+    margin: 8px 8px 0;
     border-radius: 6px;
     background:
         linear-gradient(90deg, rgba(255, 120, 40, 0.12), rgba(255, 120, 40, 0.12)) 6px 50% / calc(100% - 12px) 2px no-repeat,
@@ -5721,23 +5745,83 @@ dialog.pp-menu .pp-wd-del {
     text-shadow: 0 0 4px rgba(255, 130, 30, 0.5);
 }
 
-/* —— Aluminium chassis —— */
+/* —— Aluminium chassis box under the deck —— */
 .pp-radio-chassis {
+    position: relative;
+    padding: 34px 12px 0;
+    border-radius: 3px 3px 9px 9px;
+    background:
+        repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.09) 0 1px, rgba(0, 0, 0, 0.035) 1px 2px, transparent 2px 3px),
+        linear-gradient(180deg, #f2f4f6 0%, #cdd2d7 30%, #b2b8be 75%, #9aa0a7 100%);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.95),
+        inset 1px 0 0 rgba(255, 255, 255, 0.5),
+        inset -1px 0 0 rgba(0, 0, 0, 0.15),
+        inset 0 -3px 0 rgba(0, 0, 0, 0.18),
+        0 0 0 1px #5e646b,
+        0 10px 18px rgba(0, 0, 0, 0.45);
+}
+
+/* The board's edge (phenolic + copper) overhanging the box */
+.pp-radio-chassis::before {
+    content: '';
+    position: absolute;
+    left: 2px;
+    right: 2px;
+    top: -5px;
+    height: 6px;
+    border-radius: 1px;
+    background: linear-gradient(180deg, #e9c48e 0%, #b07a3e 35%, #7a4d20 100%);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.35), 0 2px 3px rgba(0, 0, 0, 0.35), inset 0 -1px 0 rgba(200, 120, 60, 0.7);
+}
+
+/* Floor shadow */
+.pp-radio-chassis::after {
+    content: '';
+    position: absolute;
+    left: 6%;
+    right: 6%;
+    bottom: -16px;
+    height: 14px;
+    border-radius: 50%;
+    background: radial-gradient(ellipse at 50% 50%, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0) 70%);
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* Rubber feet */
+.pp-radio-foot {
+    position: absolute;
+    bottom: -6px;
+    width: 26px;
+    height: 7px;
+    border-radius: 0 0 5px 5px;
+    background: linear-gradient(180deg, #2a2b2e, #0d0d0e);
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.5);
+}
+
+.pp-radio-foot-l { left: 18px; }
+.pp-radio-foot-r { right: 18px; }
+
+/* Recessed window holding the VFD tube and the bargraph */
+.pp-radio-window {
+    padding: 7px 8px 9px;
+    border-radius: 8px;
+    background: linear-gradient(180deg, #1a1612, #2a221a);
+    box-shadow:
+        inset 0 3px 6px rgba(0, 0, 0, 0.85),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.08),
+        0 1px 0 rgba(255, 255, 255, 0.85),
+        0 -1px 0 rgba(0, 0, 0, 0.25);
+}
+
+.pp-radio-controls {
     position: relative;
     display: flex;
     align-items: center;
-    gap: 9px;
-    height: 62px;
-    padding: 0 26px;
-    border-radius: 0 0 9px 9px;
-    background:
-        repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.09) 0 1px, rgba(0, 0, 0, 0.035) 1px 2px, transparent 2px 3px),
-        linear-gradient(180deg, #eef0f2 0%, #c6cbd0 40%, #a7adb4 100%);
-    box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.9),
-        inset 0 3px 4px -2px rgba(70, 40, 10, 0.45),
-        inset 0 -2px 0 rgba(0, 0, 0, 0.2),
-        0 0 0 1px #5e646b;
+    gap: 6px;
+    height: 60px;
+    padding: 0 24px 0 24px;
 }
 
 .pp-radio-screw {
@@ -5792,6 +5876,7 @@ dialog.pp-menu .pp-wd-del {
 /* Bat-handle toggle switch: lever angle shows the mode */
 .pp-radio-toggle {
     position: relative;
+    flex: none;
     width: 38px;
     height: 46px;
     padding: 0;
@@ -5835,11 +5920,11 @@ dialog.pp-menu .pp-wd-del {
 
 .pp-radio-toggle-labels {
     position: absolute;
-    left: -4px;
-    right: -4px;
+    left: 50%;
     bottom: 1px;
     display: flex;
-    justify-content: space-between;
+    gap: 3px;
+    transform: translateX(-50%);
 }
 
 .pp-radio-toggle-labels i {
@@ -6043,33 +6128,72 @@ dialog.pp-menu .pp-wd-del {
     transform: translateY(1px);
 }
 
-/* —— Folded: a perfboard strip with small nixies and the title on tape —— */
+/* —— Folded: five little tubes on a short box, title on tape —— */
 .pp-radio-mini {
+    position: relative;
     display: none;
-    align-items: center;
-    gap: 10px;
     width: 100%;
+    height: 96px;
     margin: 0;
-    padding: 6px 12px 6px 8px;
+    padding: 0;
     border: 0;
-    border-radius: 9px;
-    background:
-        radial-gradient(circle, #2a1608 0 1.15px, #b98545 1.5px 2.1px, transparent 2.6px) 4px 4px / 9px 9px,
-        linear-gradient(180deg, #ddb27a, #bf8e50);
-    box-shadow: inset 0 1px 0 rgba(255, 240, 210, 0.6), inset 0 0 0 1px rgba(90, 52, 18, 0.55);
+    background: transparent;
     cursor: pointer;
     text-align: left;
 }
 
+.pp-radio-mini-stage {
+    position: absolute;
+    left: 4px;
+    right: 4px;
+    top: 0;
+    height: 64px;
+}
+
+.pp-radio-mini-stage .pp-radio-deck {
+    height: 34px;
+    perspective: 160px;
+}
+
 .pp-radio-mini-nixies {
-    width: 92px;
-    height: 46px;
-    flex: none;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.35));
+}
+
+.pp-radio-mini-box {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    height: 30px;
+    padding: 0 12px;
+    border-radius: 3px 3px 8px 8px;
+    background:
+        repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.09) 0 1px, rgba(0, 0, 0, 0.035) 1px 2px, transparent 2px 3px),
+        linear-gradient(180deg, #f2f4f6 0%, #c6cbd0 45%, #a2a8af 100%);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.95), 0 0 0 1px #5e646b, 0 8px 14px rgba(0, 0, 0, 0.45);
+}
+
+.pp-radio-mini-box::before {
+    content: '';
+    position: absolute;
+    left: 2px;
+    right: 2px;
+    top: -4px;
+    height: 5px;
+    background: linear-gradient(180deg, #e9c48e, #7a4d20);
 }
 
 .pp-radio-mini-text {
     overflow: hidden;
-    padding: 3px 9px 2px;
+    max-width: 100%;
+    padding: 2px 9px 1px;
     background: var(--rd-tape);
     color: var(--rd-ink);
     font: 600 11px/1.25 var(--rd-hand);
@@ -6080,16 +6204,16 @@ dialog.pp-menu .pp-wd-del {
 }
 
 .pp-radio.pp-radio-collapsed {
-    width: 280px;
+    width: 190px;
 }
 
-.pp-radio.pp-radio-collapsed .pp-radio-board,
+.pp-radio.pp-radio-collapsed .pp-radio-stage,
 .pp-radio.pp-radio-collapsed .pp-radio-chassis {
     display: none;
 }
 
 .pp-radio.pp-radio-collapsed .pp-radio-mini {
-    display: flex;
+    display: block;
 }
 
 /* —— Song list: aluminium frame, tape labels, VFD rows —— */
