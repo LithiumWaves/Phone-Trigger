@@ -200,6 +200,8 @@ Each chat keeps its own date and time (Menu → **Clock**, or tap the clock on t
 
 As in the VN, character mail underlines a few **keywords** — tap one and your reply is written about it (drafted for you to edit, or sent right away). The inbox shows sealed/opened envelopes, replies, photos and D-Mail parts; new mail plays a short *Receiving…* bar; the read view has prev/next through the conversation, forward, and a **conversation view**.
 
+On the SG-001 the mail screens use the VN's **Classic** look by default: white screens with a blue title bar, one-line inbox rows (`8/ 2  Sender`), red To/frm/sub tags, and the *Sending mail → Mail sent.* animation. Pick **Dark** (Mail settings → *Mail screen theme*, or the phone's Settings → *Mail theme*) for the navy LCD. Custom phones keep their own screen colours.
+
 **Photos:** attach one from the compose screen (it's shrunk to fit the chat file; add a caption so they know what it shows). With *Characters can send photos* on, they sometimes attach one: SillyTavern's image generation (`/sd`) develops it when installed, otherwise its description shows.
 
 **People notice** (optional, Mail settings): mail left unread and calls not returned for a few story hours become a note for the AI, and characters may mail you about it. **Closeness** (optional) moves with the words you tap, your replies and the tone of their mail.

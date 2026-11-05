@@ -9188,3 +9188,632 @@ body.pt-no-msg-stamps .pt-story-stamp {
 .pp-photo-viewer-bar {
     flex-wrap: wrap;
 }
+
+/* ═══════════ SG001 "Classic" mail theme — the VN's white mail screens ═══════════
+   Applies only on the SG001 (no data-custom) and only to mail views; "Dark" keeps the navy LCD. */
+.pp-mail-md,
+.pp-clip-md {
+    display: none;
+}
+
+.pp-phone[data-mail-theme="classic"] .pp-view-mail {
+    --pp-lcd-bg: #ffffff;
+    --pp-lcd-fg: #111111;
+    --pp-lcd-dim: #5a5a5a;
+    --pp-accent: #2d4f9e;
+    --pp-unread: #111111;
+    --pp-sg-blue: #2d4f9e;
+    --pp-sg-red: #d8402a;
+    --pp-sg-pick: #f7a682;
+    --pp-sg-font: "Noto Sans JP", "Hiragino Sans", "Meiryo", "Segoe UI", "Helvetica Neue", sans-serif;
+    background: linear-gradient(180deg, #ffffff 0%, #ffffff 58%, #d6d6d6 100%);
+    color: #111;
+    font-family: var(--pp-sg-font);
+    font-size: 11.5px;
+}
+
+.pp-phone[data-mail-theme="classic"] .pp-view-mail :is(.pp-row, .pp-btn, .pp-field input, .pp-field textarea, .pp-field select, .pp-picker-btn, .pp-picker-option, .pp-reply-chip, .pp-bubble, .pp-kw-hint, .pp-thread-strip, .pp-settings-note, .pp-section, .pp-dmail-hint, .pp-empty) {
+    font-family: var(--pp-sg-font);
+}
+
+.pp-phone[data-mail-theme="classic"] .pp-view-mail .pp-scroll {
+    background: transparent;
+}
+
+/* Title bar: blue gradient with the round mail badge */
+.pp-phone[data-mail-theme="classic"] .pp-view-mail .pp-title {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    min-height: 19px;
+    padding: 2px 6px 2px 4px;
+    border-bottom: none;
+    background: linear-gradient(180deg, #5878c8 0%, #3a5cae 45%, #24438f 100%);
+    color: #fff;
+    font: 500 12.5px/1.2 var(--pp-sg-font);
+    letter-spacing: 0.02em;
+    text-transform: none;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
+}
+
+.pp-phone[data-mail-theme="classic"] .pp-view-mail .pp-title::before {
+    content: "";
+    flex: 0 0 auto;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='7.4' fill='%23fff'/%3E%3Ccircle cx='8' cy='8' r='6.2' fill='%23e8eefb'/%3E%3Cpath d='M4 5.6h8v5.2H4z' fill='%23fff' stroke='%232d4f9e' stroke-width='1.1' stroke-linejoin='round' transform='rotate(-14 8 8)'/%3E%3Cpath d='M4 5.6l4 3 4-3' fill='none' stroke='%232d4f9e' stroke-width='1.1' stroke-linejoin='round' transform='rotate(-14 8 8)'/%3E%3C/svg%3E") center / contain no-repeat;
+    box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.25);
+}
+
+.pp-phone[data-mail-theme="classic"] .pp-view-mail .pp-title .pp-env {
+    display: none;
+}
+
+.pp-phone[data-mail-theme="classic"] .pp-view-mail .pp-title .pp-title-text {
+    display: inline-flex;
+    gap: 0;
+}
+
+.pp-phone[data-mail-theme="classic"] .pp-view-mail .pp-mail-count {
+    color: #fff;
+    font: 500 10px/1 var(--pp-sg-font);
+}
+
+.pp-phone[data-mail-theme="classic"] .pp-view-mail .pp-mail-count b {
+    color: #fff;
+}
+
+.pp-phone[data-mail-theme="classic"] .pp-view-mail .pp-title .pp-icon-btn {
+    width: 20px;
+    height: 17px;
+    color: #fff;
+    font-size: 11px;
+}
+
+.pp-phone[data-mail-theme="classic"] .pp-view-mail .pp-title .pp-icon-btn:active {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Rows: plain white, salmon highlight */
+.pp-phone[data-mail-theme="classic"] .pp-view-mail .pp-row {
+    padding: 4px 8px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    color: #111;
+    font: 400 11.5px/1.3 var(--pp-sg-font);
+}
+
+.pp-phone[data-mail-theme="classic"] .pp-view-mail .pp-row:hover,
+.pp-phone[data-mail-theme="classic"] .pp-view-mail .pp-row:active,
+.pp-phone[data-mail-theme="classic"] .pp-view-mail .pp-row.pp-selected,
+.pp-phone[data-mail-theme="classic"] .pp-view-mail .pp-row.pp-cursor {
+    background: var(--pp-sg-pick);
+    box-shadow: none;
+    outline: none;
+}
+
+.pp-phone[data-mail-theme="classic"] .pp-view-mail .pp-row-meta {
+    color: #555;
+    font-size: 10px;
+}
+
+.pp-phone[data-mail-theme="classic"] .pp-view-mail .pp-cursor:not(.pp-row) {
+    outline-color: var(--pp-sg-blue);
+}
+
+/* Inbox / Outbox: one line — envelope · M/ D · sender */
+.pp-phone[data-mail-theme="classic"] .pp-view-list .pp-mail-row {
+    align-items: center !important;
+    gap: 5px !important;
+    padding: 2px 6px 2px 5px;
+    border-bottom: none;
+}
+
+.pp-phone[data-mail-theme="classic"] .pp-view-list .pp-mail-top {
+    justify-content: flex-start;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.pp-phone[data-mail-theme="classic"] .pp-view-list .pp-mail-md {
+    display: inline-block;
+    flex: 0 0 auto;
+    min-width: 3.1em;
+    text-align: right;
+    white-space: pre;
+    font-variant-numeric: tabular-nums;
+}
+
+.pp-phone[data-mail-theme="classic"] .pp-view-list .pp-clip-md {
+    display: inline-block;
+    margin: 0 -2px 0 0;
+    border-color: #444;
+}
+
+.pp-phone[data-mail-theme="classic"] .pp-view-list .pp-mail-from {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: 400;
+}
+
+.pp-phone[data-mail-theme="classic"] .pp-view-list :is(.pp-mail-time, .pp-mail-subj, .pp-mail-preview) {
+    display: none;
+}
+
+.pp-phone[data-mail-theme="classic"] .pp-view-list .pp-mail-vanished {
+    opacity: 0.45;
+}
+
+/* Envelopes: grey line art, no glow */
+.pp-phone[data-mail-theme="classic"] .pp-view-mail .pp-env {
+    margin-top: 0;
+    color: #4a4a4a;
+    background: #fff;
+    box-shadow: none;
+}
+
+.pp-phone[data-mail-theme="classic"] .pp-view-mail .pp-env-sealed {
+    background: #f4f4f4;
+}
+
+.pp-phone[data-mail-theme="classic"] .pp-view-mail .pp-env-replied i {
+    border-color: #f08a30;
+}
+
+.pp-phone[data-mail-theme="classic"] .pp-view-mail .pp-env-sent {
+    color: var(--pp-sg-blue);
+}
+
+.pp-phone[data-mail-theme="classic"] .pp-view-mail .pp-env-dmail {
+    color: #e0621f;
+    box-shadow: none;
+}
+
+.pp-phone[data-mail-theme="classic"] .pp-view-mail .pp-clip {
+    border-color: #444;
+}
+
+.pp-phone[data-mail-theme="classic"] .pp-view-mail .pp-mail-part {
+    background: #fde3d4;
+    color: #b84a14;
+}
+
+/* Red header tags: clock / frm / sub / To */
+.pp-phone[data-mail-theme="classic"] .pp-view-mail .pp-tag {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+    width: 16px;
+    height: 15px;
+    margin: 0 3px 0 0;
+    padding: 0;
+    border-radius: 1px;
+    background: linear-gradient(180deg, #e65a3c, var(--pp-sg-red));
+    color: #fff;
+    font-size: 0;
+    letter-spacing: 0;
+    text-transform: none;
+    vertical-align: middle;
+}
+
+.pp-phone[data-mail-theme="classic"] .pp-view-mail .pp-tag::before {
+    font: 700 7.5px/1 "Arial Narrow", Arial, sans-serif;
+    letter-spacing: -0.04em;
+}
+
+.pp-phone[data-mail-theme="classic"] .pp-view-mail .pp-tag-from::before { content: "frm"; }
+.pp-phone[data-mail-theme="classic"] .pp-view-mail .pp-tag-sub::before { content: "sub"; }
+.pp-phone[data-mail-theme="classic"] .pp-view-mail .pp-tag-to::before { content: "To"; font-size: 8.5px; }
+
+.pp-phone[data-mail-theme="classic"] .pp-view-mail .pp-tag-time::before {
+    content: "";
+    width: 10px;
+    height: 10px;
+    box-sizing: border-box;
+    border: 1.4px solid #fff;
+    border-radius: 50%;
+    background:
+        linear-gradient(#fff, #fff) 50% 20% / 1.3px 3.4px no-repeat,
+        linear-gradient(#fff, #fff) 72% 50% / 3px 1.3px no-repeat;
+}
+
+/* Read view */
+.pp-phone[data-mail-theme="classic"] .pp-view-read .pp-read-meta {
+    margin: 0;
+    padding: 1px 3px 2px;
+    border: none;
+    border-bottom: 1.5px solid #1a1a1a;
+    border-radius: 0;
+    background: #fff;
+    font-size: 11.5px;
+    line-height: 1.3;
+}
+
+.pp-phone[data-mail-theme="classic"] .pp-view-read .pp-read-line {
+    align-items: center;
+    gap: 2px;
+    margin: 1px 0;
+}
+
+.pp-phone[data-mail-theme="classic"] .pp-view-read .pp-read-time {
+    margin-top: 1px;
+    white-space: pre;
+    color: #111;
+    font-size: 11.5px;
+}
+
+.pp-phone[data-mail-theme="classic"] .pp-view-read .pp-read-line b,
+.pp-phone[data-mail-theme="classic"] .pp-view-read .pp-read-subj {
+    font-weight: 400;
+}
+
+.pp-phone[data-mail-theme="classic"] .pp-view-read .pp-read-body {
+    padding: 3px 4px 8px;
+    color: #111;
+    font: 400 12px/1.45 var(--pp-sg-font);
+}
+
+.pp-phone[data-mail-theme="classic"] .pp-view-mail .pp-kw {
+    padding: 0;
+    border-bottom: 1px solid currentColor;
+    background: none;
+    color: #1d3fd0;
+}
+
+.pp-phone[data-mail-theme="classic"] .pp-view-mail .pp-kw:hover,
+.pp-phone[data-mail-theme="classic"] .pp-view-mail .pp-kw.pp-nav-on,
+.pp-phone[data-mail-theme="classic"] .pp-view-mail .pp-kw:focus-visible {
+    background: #1d3fd0;
+    color: #fff;
+}
+
+.pp-phone[data-mail-theme="classic"] .pp-view-mail .pp-kw-hint {
+    color: #777;
+}
+
+.pp-phone[data-mail-theme="classic"] .pp-view-mail .pp-unregistered {
+    color: #b84a14;
+}
+
+/* Buttons, chips, fields */
+.pp-phone[data-mail-theme="classic"] .pp-view-mail .pp-btn {
+    border: 1px solid #9a9a9a;
+    border-radius: 2px;
+    background: linear-gradient(180deg, #ffffff, #dedede);
+    color: #222;
+    font: 500 11px/1 var(--pp-sg-font);
+    letter-spacing: 0.02em;
+    text-transform: none;
+}
+
+.pp-phone[data-mail-theme="classic"] .pp-view-mail .pp-btn:active,
+.pp-phone[data-mail-theme="classic"] .pp-view-mail .pp-btn.pp-cursor {
+    background: var(--pp-sg-pick);
+    outline: none;
+}
+
+.pp-phone[data-mail-theme="classic"] .pp-view-mail .pp-btn-ghost {
+    background: transparent;
+    border-color: #b5b5b5;
+}
+
+.pp-phone[data-mail-theme="classic"] .pp-view-mail .pp-reply-chip {
+    border-color: #9a9a9a;
+    background: #f2f2f2;
+    color: #222;
+}
+
+.pp-phone[data-mail-theme="classic"] .pp-view-mail .pp-label {
+    color: #333;
+    letter-spacing: 0.02em;
+}
+
+.pp-phone[data-mail-theme="classic"] .pp-view-mail .pp-field input,
+.pp-phone[data-mail-theme="classic"] .pp-view-mail .pp-field textarea,
+.pp-phone[data-mail-theme="classic"] .pp-view-mail .pp-field select,
+.pp-phone[data-mail-theme="classic"] .pp-view-mail .pp-select,
+.pp-phone[data-mail-theme="classic"] .pp-view-mail .pp-attach-desc {
+    border: 1px solid #a8a8a8;
+    border-radius: 1px;
+    background: #fff;
+    color: #111;
+    font-size: 11.5px;
+}
+
+.pp-phone[data-mail-theme="classic"] .pp-view-mail .pp-field input:focus,
+.pp-phone[data-mail-theme="classic"] .pp-view-mail .pp-field textarea:focus {
+    outline: 1px solid var(--pp-sg-blue);
+}
+
+.pp-phone[data-mail-theme="classic"] .pp-view-mail .pp-picker-btn {
+    border: 1px solid #a8a8a8;
+    border-radius: 1px;
+    background: #fff;
+    color: #111;
+}
+
+.pp-phone[data-mail-theme="classic"] .pp-view-mail .pp-picker-value {
+    color: #111;
+}
+
+.pp-phone[data-mail-theme="classic"] .pp-view-mail .pp-picker-caret {
+    color: #555;
+}
+
+.pp-phone[data-mail-theme="classic"] .pp-view-mail .pp-picker-menu {
+    border-color: #a8a8a8;
+    background: #fff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.pp-phone[data-mail-theme="classic"] .pp-view-mail .pp-picker-option {
+    border-bottom-color: #eee;
+    color: #111;
+}
+
+.pp-phone[data-mail-theme="classic"] .pp-view-mail .pp-picker-option:hover,
+.pp-phone[data-mail-theme="classic"] .pp-view-mail .pp-picker-option:active,
+.pp-phone[data-mail-theme="classic"] .pp-view-mail .pp-picker-option.pp-picker-active {
+    background: var(--pp-sg-pick);
+    color: #111;
+}
+
+/* Compose: To / Sub header rows like the VN */
+.pp-phone[data-mail-theme="classic"] .pp-view-compose .pp-field-to,
+.pp-phone[data-mail-theme="classic"] .pp-view-compose .pp-field-sub {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    padding: 2px 4px;
+}
+
+.pp-phone[data-mail-theme="classic"] .pp-view-compose .pp-field-to > div,
+.pp-phone[data-mail-theme="classic"] .pp-view-compose .pp-field-sub input {
+    flex: 1;
+    min-width: 0;
+    margin-top: 0;
+}
+
+.pp-phone[data-mail-theme="classic"] .pp-view-compose .pp-field-to .pp-picker {
+    margin-top: 0;
+}
+
+.pp-phone[data-mail-theme="classic"] .pp-view-compose .pp-field-to .pp-picker-btn,
+.pp-phone[data-mail-theme="classic"] .pp-view-compose .pp-field-sub input {
+    padding: 2px 4px;
+    border-color: transparent;
+    background: transparent;
+}
+
+.pp-phone[data-mail-theme="classic"] .pp-view-compose .pp-field-sub {
+    border-bottom: 1.5px solid #1a1a1a;
+}
+
+.pp-phone[data-mail-theme="classic"] .pp-view-mail .pp-settings-note,
+.pp-phone[data-mail-theme="classic"] .pp-view-mail .pp-toggle-blurb {
+    color: #666;
+}
+
+.pp-phone[data-mail-theme="classic"] .pp-view-mail .pp-section {
+    color: var(--pp-sg-blue);
+    border-color: #ddd;
+}
+
+.pp-phone[data-mail-theme="classic"] .pp-view-mail .pp-dmail-hint {
+    background: #fdeee6;
+    border-left-color: #e0621f;
+    color: #5a2a10;
+}
+
+.pp-phone[data-mail-theme="classic"] .pp-view-mail .pp-mail-photo {
+    border-color: #bbb;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.pp-phone[data-mail-theme="classic"] .pp-view-mail .pp-mail-photo-desc {
+    background: repeating-linear-gradient(135deg, #f2f2f2 0 6px, #fff 6px 12px);
+    color: #333;
+}
+
+.pp-phone[data-mail-theme="classic"] .pp-view-mail .pp-photo-icon {
+    border-color: #555;
+    background: radial-gradient(circle at 50% 55%, #555 0 2.5px, transparent 3px);
+}
+
+.pp-phone[data-mail-theme="classic"] .pp-view-mail .pp-thread-strip {
+    color: #555;
+}
+
+/* Conversation bubbles */
+.pp-phone[data-mail-theme="classic"] .pp-view-thread .pp-bubble {
+    border-color: #c8c8c8;
+    background: #f1f1f1;
+    color: #111;
+    font-size: 11px;
+}
+
+.pp-phone[data-mail-theme="classic"] .pp-view-thread .pp-bubble-out {
+    border-color: #b4c4e8;
+    background: #e3ebfb;
+}
+
+.pp-phone[data-mail-theme="classic"] .pp-view-thread .pp-bubble.pp-nav-on,
+.pp-phone[data-mail-theme="classic"] .pp-view-thread .pp-bubble.pp-cursor {
+    border-color: #e07b4f;
+    box-shadow: 0 0 0 1px #e07b4f;
+}
+
+.pp-phone[data-mail-theme="classic"] .pp-view-thread .pp-bubble-meta {
+    color: #666;
+}
+
+/* Reading Steiner ghosts on white */
+.pp-phone[data-mail-theme="classic"] .pp-view-mail .pp-ghost {
+    border-color: rgba(120, 70, 190, 0.45);
+    background: #f4eefc;
+    color: #5b3a8a;
+    filter: none;
+}
+
+.pp-phone[data-mail-theme="classic"] .pp-view-mail .pp-ghost-label {
+    color: #7a4cc0;
+}
+
+/* Send: white panel under To/Sub, tilted envelope with motion lines, red status */
+.pp-phone[data-mail-theme="classic"] .pp-send-classic {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    padding: 0;
+    background: #fff;
+    color: #111;
+    font-family: var(--pp-sg-font);
+}
+
+.pp-send-classic .pp-sc-head {
+    padding: 1px 3px 2px;
+    border-bottom: 1.5px solid #1a1a1a;
+    font-size: 11.5px;
+    line-height: 1.3;
+}
+
+.pp-send-classic .pp-sc-line {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    margin: 1px 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.pp-send-classic .pp-sc-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    margin: 0 0 20%;
+    border-bottom: 1px dashed #b8b8b8;
+    background: #fff;
+}
+
+.pp-send-classic .pp-sc-env {
+    position: relative;
+    width: 44px;
+    height: 30px;
+}
+
+.pp-send-classic .pp-sc-mail {
+    position: absolute;
+    left: 13px;
+    top: 7px;
+    width: 22px;
+    height: 15px;
+    box-sizing: border-box;
+    border: 1.4px solid #8a8a8a;
+    border-radius: 1px;
+    background: #fff;
+    transform: rotate(-22deg);
+    transition: transform 0.25s ease;
+}
+
+.pp-send-classic .pp-sc-mail::before {
+    content: "";
+    position: absolute;
+    left: 2px;
+    right: 2px;
+    top: -4px;
+    height: 10px;
+    border: solid #8a8a8a;
+    border-width: 0 1.4px 1.4px 0;
+    transform: scaleX(1.35) rotate(45deg) scale(0.62);
+}
+
+.pp-send-classic .pp-sc-swoosh,
+.pp-send-classic .pp-sc-swoosh::before {
+    position: absolute;
+    width: 12px;
+    height: 9px;
+    border: solid #9a9a9a;
+    border-width: 0 0 1.4px 1.4px;
+    border-radius: 0 0 0 10px;
+    transition: opacity 0.2s ease;
+}
+
+.pp-send-classic .pp-sc-swoosh {
+    left: 3px;
+    top: 12px;
+    transform: rotate(-14deg);
+}
+
+.pp-send-classic .pp-sc-swoosh::before {
+    content: "";
+    left: -1px;
+    top: 4px;
+    width: 9px;
+}
+
+.pp-send-classic.pp-send-on:not(.pp-send-done):not(.pp-send-calm) .pp-sc-env {
+    animation: pp-sc-wobble 0.42s ease-in-out infinite alternate;
+}
+
+@keyframes pp-sc-wobble {
+    from { transform: translate(-1px, 1px) rotate(-4deg); }
+    to { transform: translate(2px, -2px) rotate(5deg); }
+}
+
+.pp-send-classic.pp-send-done .pp-sc-mail {
+    transform: rotate(0deg);
+}
+
+.pp-send-classic.pp-send-done .pp-sc-swoosh {
+    opacity: 0;
+}
+
+.pp-send-classic .pp-sc-status {
+    color: #e0392b;
+    font: 500 12px/1.2 var(--pp-sg-font);
+    letter-spacing: 0.02em;
+}
+
+/* Receiving, on the SG001 in Classic */
+.pp-phone[data-mail-theme="classic"] .pp-receiving {
+    background: rgba(255, 255, 255, 0.6);
+}
+
+.pp-phone[data-mail-theme="classic"] .pp-receiving-box {
+    border: 1px solid #9a9a9a;
+    border-radius: 2px;
+    background: #fff;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
+    color: #e0392b;
+    font: 500 10.5px/1.2 "Noto Sans JP", "Hiragino Sans", "Meiryo", "Segoe UI", sans-serif;
+    letter-spacing: 0.02em;
+}
+
+.pp-phone[data-mail-theme="classic"] .pp-receiving-ico .pp-env {
+    color: #6a6a6a;
+    background: #fff;
+    box-shadow: none;
+}
+
+.pp-phone[data-mail-theme="classic"] .pp-receiving-bar i {
+    background: #e4e4e4;
+    animation-name: pp-recv-cell-classic;
+}
+
+@keyframes pp-recv-cell-classic {
+    to { background: #3a5cae; }
+}
+
+.pp-phone[data-mail-theme="classic"] .pp-receiving-from {
+    color: #555;
+}
