@@ -31,7 +31,7 @@ SillyTavern extension that recreates the Steins;Gate **Phone Trigger** loop: ope
 - **Active-chat To:** — PhoneWave plus group members (or the solo chat character) appear in compose
 - **Context toggles** — optional chat→mail summary; optional mail→chat memory with a phone **Memory** picker per character; optional worldline inject after D-Mail
 - **Guided receive** — faint signal bars on Inbox open a From / Guide panel to force inbound mail
-- **Story clock** — the chat keeps its own date, time and Day; manual, real-time or per-message flow; Pass time and Sleep; **Re-date history…** (under the story log) moves an older chat's real-time dates onto the story calendar, all at once or one event at a time
+- **Story clock** — the chat keeps its own date, time and Day (chat messages show their story time beside the real timestamp); manual, real-time or per-message flow; Pass time and Sleep; **Re-date history…** (under the story log) moves an older chat's real-time dates onto the story calendar, all at once or one event at a time
 - **Phone Trigger keywords** — character mail underlines a few words; tap one and your reply is written about it
 - **Photo mail** — attach photos to mail; characters can send described photos (developed by `/sd` when installed)
 - **Undoing D-Mails** — a D-Mail that contradicts an earlier one cancels it and the meter goes back

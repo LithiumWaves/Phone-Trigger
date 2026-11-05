@@ -9010,3 +9010,18 @@ dialog.pp-menu .pp-wd-del {
     border-color: rgba(255, 150, 60, 0.75);
     color: var(--sg-amber);
 }
+
+/* —— Story time on chat messages —— */
+.pt-story-stamp {
+    margin-left: 6px;
+    font-family: "IBM Plex Mono", Consolas, monospace;
+    font-size: 0.78em;
+    letter-spacing: 0.04em;
+    color: var(--SmartThemeQuoteColor, #9ec4ff);
+    opacity: 0.8;
+    white-space: nowrap;
+}
+
+body.pt-no-msg-stamps .pt-story-stamp {
+    display: none;
+}

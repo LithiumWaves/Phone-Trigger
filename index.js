@@ -39,7 +39,7 @@ import { initTipsUi, refreshTips, noteTipsMessage, openTips } from './lib/tips.j
 import { initLabUi, refreshLab, labMemCommand } from './lib/labMembers.js';
 import { initCardHistoryUi, cardUndoCommand } from './lib/cardHistory.js';
 import { initWorldlineUi, refreshWorldlinePanels, setConvergenceChangeHandler } from './lib/worldline.js';
-import { initStoryClockUi, syncStoryClockFlow, noteStoryMessage, onStoryChatChanged, updateStoryClockPrompt, storyTimeCommand } from './lib/storyClock.js';
+import { initStoryClockUi, syncStoryClockFlow, noteStoryMessage, onStoryChatChanged, updateStoryClockPrompt, storyTimeCommand, stampMessage, renderMessageStamps } from './lib/storyClock.js';
 import { mountMenu, openMenu, updateMenuStatus } from './lib/menu.js';
 import { registerPhonesMenu, registerPhoneCardAction } from './lib/phonesMenu.js';
 import {
@@ -1336,6 +1336,9 @@ function registerEvents() {
 
     eventSource.on(event_types.CHAT_CHANGED, () => {
         onStoryChatChanged();
+        // SillyTavern renders the chat after this event: draw story stamps once it has.
+        setTimeout(() => renderMessageStamps(), 300);
+        setTimeout(() => renderMessageStamps(), 1500);
         refreshConsequences();
         resetBoardNav();
         refreshTips();
@@ -1360,6 +1363,7 @@ function registerEvents() {
 
     eventSource.on(event_types.MESSAGE_RECEIVED, async (messageId) => {
         noteStoryMessage();
+        stampMessage(Number(messageId));
         onFakeCallMessage();
         noteInitiativeActivity();
         noteCallInitiativeActivity();
@@ -1381,15 +1385,22 @@ function registerEvents() {
         }
     });
 
+    for (const ev of ['MORE_MESSAGES_LOADED', 'MESSAGE_SWIPED', 'MESSAGE_EDITED', 'MESSAGE_UPDATED', 'MESSAGE_DELETED']) {
+        if (event_types[ev]) {
+            eventSource.on(event_types[ev], () => setTimeout(() => renderMessageStamps(), 50));
+        }
+    }
     if (event_types.MESSAGE_SENT) {
-        eventSource.on(event_types.MESSAGE_SENT, () => {
+        eventSource.on(event_types.MESSAGE_SENT, (messageId) => {
             noteStoryMessage();
+            stampMessage(Number(messageId));
             noteInitiativeActivity();
             noteCallInitiativeActivity();
         });
     }
     if (event_types.USER_MESSAGE_RENDERED) {
         eventSource.on(event_types.USER_MESSAGE_RENDERED, () => {
+            renderMessageStamps();
             noteInitiativeActivity();
             noteCallInitiativeActivity();
         });
@@ -1435,6 +1446,7 @@ function registerEvents() {
     // Some ST versions emit CHARACTER_MESSAGE_RENDERED after DOM paint
     if (event_types.CHARACTER_MESSAGE_RENDERED) {
         eventSource.on(event_types.CHARACTER_MESSAGE_RENDERED, () => {
+            renderMessageStamps();
             clearGenBusy();
             refreshIfOpen();
         });
