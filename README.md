@@ -38,6 +38,10 @@ SillyTavern extension that recreates the Steins;Gate **Phone Trigger** loop: ope
 - **Worldline map** — every D-Mail, undo and leap on an oscilloscope-style chart of attractor fields
 - **Convergence & milestones** — outcomes the worldline keeps reaching; field crossings and a target reading
 - **@channel** — an anonymous textboard app where characters post too
+- **Address book** — per chat: pick who starts in your phone, save them under your own names (the story keeps real names), add the rest later from their mail or call; each contact can have its own ringtone and mail tone
+- **Data folder** — every photo sent or received by mail; keep copies that survive deletion and worldline shifts, or make one the chat's wallpaper
+- **PhoneWave setup minigames** — optional (off by default): before your own D-Mails and leaps, set the machine up as in the VN — the Braun tube downstairs, the microwave timer, calling the PhoneWave, the discharge; the headgear and Enter for a leap
+- **Machine completed** — optional per-chat date (none by default): nobody can time leap to before the Time Leap Machine existed
 - **Fake call**, **TIPS** glossary, **lab members**, and optional consequences for ignored mail and calls
 
 ## Install
@@ -167,7 +171,35 @@ Mail is stored in chat metadata. Wallpaper / sounds / reply prompt are extension
 
 ### Standby screen and main menu
 
-Opening the phone shows its standby screen: the wallpaper, a big clock with the date and Day, a slim divergence meter, and small chips only when something is waiting (new mail, missed calls, a call in progress, a worldline shift — tap one to go there). Press **OK** (or the **MENU** soft key) for the main menu: a 3×3 grid of pixel icons for Mail, Call, Grab a phone, @channel, Clock, Worldline map, Time Leap, D-Mail and Settings. The D-pad moves through it (on the SG-001 the big side wedges are left/right while the menu is open, and the red End key returns to standby), number keys 1–9 jump straight to an item, and Back from any item returns to the menu.
+Opening the phone shows its standby screen: the wallpaper, a big clock with the date and Day, a slim divergence meter, and small chips only when something is waiting (new mail, missed calls, a call in progress, a worldline shift — tap one to go there). Press **OK** (or the **MENU** soft key) for the main menu: a 3×3 grid of pixel icons for Mail, Call, Grab a phone, @channel, Clock, Worldline map, Time Leap, D-Mail and Settings, with a second page for the Address book and Data folder. The D-pad moves through it (on the SG-001 the big side wedges are left/right while the menu is open, and the red End key returns to standby), number keys 1–9 jump straight to an item on the page you're on, and Back from any item returns to the menu.
+
+### Address book
+
+Menu (page 2) → **Address book**. The first time the phone opens in a chat it asks who is already in your phone, and under what name (Phones → *Ask who's in my phone when a chat starts*; off means everyone starts as a contact). Saved names show everywhere on the handset — inbox, read view, calls, the outer display, notifications — while prompts and the story keep everyone's real name. PhoneWave can be renamed too.
+
+People who aren't in your phone can still mail and call you: they show as *not in contacts* with **＋ Add to contacts**. The Address book's **＋ Add** lists everyone in the chat you haven't added. Compose and the dialer only list your contacts (and whoever you're replying to).
+
+Each contact can have its own **ringtone** and **mail tone** (presets or a URL, with Test buttons). These follow the character across chats; everyone else uses Settings → Sounds.
+
+### Data folder
+
+Menu (page 2) → **Data folder**: a grid of every photo that came or went by mail. Open one for **Keep**, **Set as wallpaper** and Save. A kept copy stays even if the mail is deleted or a D-Mail erases it from this worldline. *Set as wallpaper* is for this chat only; Settings → Wallpaper shows it and can stop using it, and picking any other wallpaper replaces it.
+
+### Setting up the PhoneWave yourself
+
+Off by default (Extensions → D-Mail → *Set up the machine yourself*). When on, your own D-Mails and time leaps start with short minigames based on how the lab works the machine in the VN:
+
+- **Braun tube** — the lifter only works while Mr. Braun's 42-inch CRT is on downstairs (shop hours in story time, 10:00–20:00 by default). When the shop is closed, wait until it opens (the story clock moves on) or cancel.
+- **Timer** (D-Mail) — type the microwave timer: each second sends the mail one hour back, and that becomes its arrival time. If you set *Arrive at*, it tells you what to type.
+- **Call it** (D-Mail) — the PhoneWave starts when its phone is called: dial its number.
+- **Send** / **Enter** — the discharge surges; press while the needle is in the band. For a D-Mail, too early fizzles and too late overloads (three overloads and it needs to cool down: the D-Mail isn't sent, the draft stays). For a leap there's no failing: the charge builds again until you hit it.
+- **Headgear** (time leap) — tap the three marked points (or drag the electrodes onto them).
+
+**Skip setup** goes straight on, **Cancel** stops without sending or leaping. Keys work too (digits, Backspace, Space / Enter). *Reduce flashing* calms the sparks. Characters' own D-Mails and leaps never use the minigames.
+
+### Machine completed
+
+TLM.EXE → CONFIG → **MACHINE COMPLETED** (or Extensions → Time Leap): the story time the Time Leap Machine was finished in this chat. Nobody can leap to before it: TLM.EXE says so and won't execute, and a character's leap that far is refused. Empty (the default) means no limit. **NOW** sets it to the current story time, **NO LIMIT** clears it.
 
 ### Card history
 
