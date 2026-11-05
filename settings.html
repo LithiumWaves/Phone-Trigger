@@ -834,6 +834,13 @@
                             or on their own. When a character's D-Mail shifts the worldline only you notice (Reading Steiner);
                             the sender does not remember sending it.
                         </small>
+                        <label>Who knows about time leaping (this chat)</label>
+                        <div id="pp_leap_aware" class="pp-leap-aware"></div>
+                        <small>
+                            Ticked characters are told, every reply, how to time leap: they end the reply with a
+                            &lt;timeleap back="N"/&gt; marker when something happens they would go back to undo, and the leap
+                            starts (asking you first if that is on). The marker is removed from the message.
+                        </small>
                         <label>
                             <input id="pp_world_init" type="checkbox" />
                             <span>Characters may decide on their own</span>
@@ -850,14 +857,6 @@
                             <input id="pp_world_init_leap" type="checkbox" />
                             <span>…by time leaping</span>
                         </label>
-                        <label>
-                            <input id="pp_world_urgent" type="checkbox" />
-                            <span>Act at once when something terrible happens</span>
-                        </label>
-                        <small>
-                            When a message shows a death, an attack or a disaster, the check runs right away — no waiting for
-                            the message count or cooldown — and if they decide to leap, they leap without asking you first.
-                        </small>
                         <label for="pp_world_init_every">Check after this many character messages</label>
                         <input id="pp_world_init_every" type="number" min="1" max="50" step="1" class="text_pole" style="max-width:5em;" />
                         <label for="pp_world_init_cooldown">Cooldown between checks (seconds)</label>

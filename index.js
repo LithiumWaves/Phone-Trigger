@@ -70,6 +70,10 @@ import {
     forceAct,
     checkNow,
     noteCharacterMessage,
+    setLeapAware,
+    listLeapAware,
+    updateLeapAwarePrompt,
+    handleLeapMarker,
     setWorldGenerationBusy,
 } from './lib/worldActs.js';
 import { hasDynamicAudio, listSongs, songLabel, refreshMenuMusic } from './lib/menuMusic.js';
@@ -187,7 +191,6 @@ function bindSettingsUi() {
     $('#pp_world_init').prop('checked', Boolean(s.worldInitiativeEnabled));
     $('#pp_world_init_dmail').prop('checked', s.worldInitiativeDmail !== false);
     $('#pp_world_init_leap').prop('checked', s.worldInitiativeLeap !== false);
-    $('#pp_world_urgent').prop('checked', Boolean(s.worldUrgentAct));
     $('#pp_world_init_every').val(s.worldInitiativeEveryMessages ?? 4);
     $('#pp_world_init_cooldown').val(s.worldInitiativeCooldownSec ?? 600);
     $('#pp_world_init_others').val(Math.round((s.worldInitiativeOthersChance ?? 0.3) * 100));
@@ -859,7 +862,13 @@ async function loadSettingsPanel() {
     onToggle('worldInitiativeEnabled', '#pp_world_init');
     onToggle('worldInitiativeDmail', '#pp_world_init_dmail');
     onToggle('worldInitiativeLeap', '#pp_world_init_leap');
-    onToggle('worldUrgentAct', '#pp_world_urgent');
+    // Who knows about time leaping (per chat).
+    $(document).on('change', '#pp_leap_aware input[data-key]', async (e) => {
+        const el = /** @type {HTMLInputElement} */ (e.currentTarget);
+        await setLeapAware(el.getAttribute('data-key') || '', el.checked);
+    });
+    document.addEventListener('pt:menu-category', () => renderLeapAwareList());
+    renderLeapAwareList();
     onToggle('charLeapAsk', '#pp_char_leap_ask');
     onToggle('charLeapCutscene', '#pp_char_leap_cutscene');
     onToggle('charLeapDischarge', '#pp_char_leap_discharge');
@@ -1327,6 +1336,8 @@ function registerEvents() {
             updateCallMemoryPrompt();
         }
         updateTimeleapPrompt();
+        updateLeapAwarePrompt();
+        renderLeapAwareList();
         updateSnoopPrompt();
         noteInitiativeActivity();
         noteCallInitiativeActivity();
@@ -1353,6 +1364,8 @@ function registerEvents() {
             updateCallMemoryPrompt();
         }
         updateTimeleapPrompt();
+        updateLeapAwarePrompt();
+        renderLeapAwareList();
         updateSnoopPrompt();
         refreshIfOpen();
         noteInitiativeActivity();
@@ -1372,7 +1385,13 @@ function registerEvents() {
             const msg = getContext().chat?.[Number(messageId)];
             if (msg && !msg.is_user && !msg.is_system) {
                 noteTipsMessage();
-                noteCharacterMessage(resolveSpeakingContact(msg) || null);
+                const speaker = resolveSpeakingContact(msg) || null;
+                // A leap-aware character's <timeleap/> marker: stripped, and they leap.
+                const marked = /<timeleap\b/i.test(String(msg.mes || ''));
+                handleLeapMarker(Number(messageId), speaker);
+                if (!marked) {
+                    noteCharacterMessage(speaker);
+                }
             }
         } catch (err) {
             console.debug(LOG, 'world initiative note failed', err);
@@ -1413,6 +1432,7 @@ function registerEvents() {
             const speaker = resolveSpeakingContact(hint);
             updateMailPrompt(speaker);
             updateTimeleapPrompt(speaker);
+            updateLeapAwarePrompt(speaker);
         } catch (err) {
             console.debug(LOG, 'mail memory refresh failed', err);
         }
@@ -1451,6 +1471,24 @@ function registerEvents() {
             refreshIfOpen();
         });
     }
+}
+
+/** The Time Leap menu's "who knows about time leaping" checklist for this chat. */
+function renderLeapAwareList() {
+    const host = document.getElementById('pp_leap_aware');
+    if (!host) {
+        return;
+    }
+    const aware = listLeapAware();
+    const actors = listActors();
+    host.innerHTML = actors.length
+        ? actors.map((c) => `<label><input type="checkbox" data-key="${escapeAttr(c.key)}" ${aware.includes(c.key) ? 'checked' : ''} /> <span>${escapeAttr(c.name)}</span></label>`).join('')
+        : '<small>No characters in this chat.</small>';
+}
+
+/** @param {string} v */
+function escapeAttr(v) {
+    return String(v ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
 setMailOpenHandler(() => openInbox());

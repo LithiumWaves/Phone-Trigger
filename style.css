@@ -9025,3 +9025,17 @@ dialog.pp-menu .pp-wd-del {
 body.pt-no-msg-stamps .pt-story-stamp {
     display: none;
 }
+
+/* Time Leap menu: who knows about time leaping (this chat) */
+.pp-leap-aware {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 14px;
+    margin: 2px 0 4px;
+}
+
+.pp-leap-aware label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
