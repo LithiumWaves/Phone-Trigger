@@ -5,16 +5,27 @@
             <div class="inline-drawer-icon fa-solid fa-circle-chevron-down down"></div>
         </div>
         <div class="inline-drawer-content">
+            <div class="pp-settings-block">
+                <label>
+                    <input id="pp_enabled" type="checkbox" />
+                    <span>Enable</span>
+                </label>
+            </div>
+            <div class="pp-settings-block">
+                <button id="pp_open_menu_btn" class="menu_button pp-launch-menu" type="button">
+                    <span class="fa-solid fa-gear"></span> Open Phone Trigger menu
+                </button>
+                <small id="pp_drawer_status" class="pp-drawer-status"></small>
+            </div>
+        </div>
+    </div>
+</div>
 
-            <details class="pp-drawer-cat" open>
-                <summary>Extension &amp; UI</summary>
-                <div class="pp-drawer-cat-body">
-                    <div class="pp-settings-block">
-                        <label>
-                            <input id="pp_enabled" type="checkbox" />
-                            <span>Enable</span>
-                        </label>
-                    </div>
+<!-- Moved into the Steins;Gate system menu dialog (lib/menu.js) on load. -->
+<div id="pp-menu-sections" hidden>
+            <section class="pp-menu-cat" data-cat="system" data-title="System" data-icon="⚙">
+                <p class="pp-menu-lead">Launchers, sounds and alerts.</p>
+                    <h3 class="pp-menu-sub">Extension &amp; UI</h3>
                     <div class="pp-settings-block">
                         <label>
                             <input id="pp_show_chip" type="checkbox" />
@@ -40,16 +51,60 @@
                     </div>
                     <div class="pp-settings-block">
                         <label>
+                            <input id="pp_open_shut" type="checkbox" />
+                            <span>Open shut first</span>
+                        </label>
+                        <small>The phone appears closed, showing its cover; tap it or swipe up to flip it open. Tap the top edge (or long-press home) to fold it shut again.</small>
+                    </div>
+                    <div class="pp-settings-block">
+                        <label>
+                            <input id="pp_side_dock" type="checkbox" />
+                            <span>Phone on the right side (PC)</span>
+                        </label>
+                        <small>On a computer the phone stands large on the right, like in the VN; the chat stays lit and you can keep using it. Phones and small windows are unchanged.</small>
+                    </div>
+                    <div class="pp-settings-block">
+                        <label>
                             <input id="pp_sound" type="checkbox" />
                             <span>Sounds</span>
                         </label>
                     </div>
-                </div>
-            </details>
-
-            <details class="pp-drawer-cat">
-                <summary>Notifications</summary>
-                <div class="pp-drawer-cat-body">
+                    <div class="pp-settings-block">
+                        <label>
+                            <input id="pp_reduce_flashing" type="checkbox" />
+                            <span>Reduce flashing</span>
+                        </label>
+                        <small>Photosensitivity: softer lightning, cutscene flashes and worldline vertigo, and dimmer clips. Also follows your system's reduced-motion setting.</small>
+                    </div>
+                    <h3 class="pp-menu-sub">Menu music</h3>
+                    <div class="pp-settings-block">
+                        <label>
+                            <input id="pp_menu_song_enabled" type="checkbox" />
+                            <span>Play a song while this menu is open</span>
+                        </label>
+                        <label for="pp_menu_song">Song (from Dynamic Audio)</label>
+                        <select id="pp_menu_song"></select>
+                        <button id="pp_menu_song_refresh" class="menu_button" type="button">Refresh song list</button>
+                        <small id="pp_menu_song_note">
+                            Dynamic Audio plays it — a song from its library (<code>data/&lt;user&gt;/assets/bgm</code>), at its music volume —
+                            only while this menu is open. When you close the menu, Dynamic Audio goes back to whatever it was doing (or silence).
+                        </small>
+                    </div>
+                    <h3 class="pp-menu-sub">Lab Radio (music player)</h3>
+                    <div class="pp-settings-block">
+                        <label>
+                            <input id="pp_radio_enabled" type="checkbox" />
+                            <span>Show the player while music plays</span>
+                        </label>
+                        <small>
+                            A Lab-style panel for Dynamic Audio: pause, previous / next, drag the bar to jump ahead, play in order /
+                            shuffle / repeat, and a song list with your own playlists. Drag it by its header. Needs Dynamic Audio.
+                        </small>
+                        <button id="pp_radio_open" class="menu_button" type="button">Open music player</button>
+                        <button id="pp_radio_reset" class="menu_button" type="button">Reset player position</button>
+                        <small>Also <code>/music</code>.</small>
+                    </div>
+                    <h3 class="pp-menu-sub">Notifications</h3>
                     <div class="pp-settings-block">
                         <label>
                             <input id="pp_auto_open" type="checkbox" />
@@ -63,12 +118,131 @@
                         </label>
                         <small>Steins;Gate-styled alerts when mail arrives (tap to open inbox).</small>
                     </div>
-                </div>
-            </details>
+            </section>
 
-            <details class="pp-drawer-cat">
-                <summary>Mail → chat memory</summary>
-                <div class="pp-drawer-cat-body">
+            <section class="pp-menu-cat" data-cat="mail" data-title="Mail" data-icon="✉">
+                <p class="pp-menu-lead">How mail replies are written.</p>
+                    <h3 class="pp-menu-sub">Generation</h3>
+                    <div class="pp-settings-block">
+                        <label for="pp_mail_backend"><span>Mail generation backend</span></label>
+                        <select id="pp_mail_backend">
+                            <option value="main">Main LLM / API</option>
+                            <option value="openrouter">OpenRouter</option>
+                        </select>
+                    </div>
+                    <div class="pp-settings-block pp-openrouter-only">
+                        <label for="pp_or_key"><span>OpenRouter API key</span></label>
+                        <input id="pp_or_key" type="password" class="text_pole" autocomplete="off" spellcheck="false" />
+                    </div>
+                    <div class="pp-settings-block pp-openrouter-only">
+                        <label for="pp_or_model"><span>OpenRouter model</span></label>
+                        <input id="pp_or_model" type="text" class="text_pole" placeholder="openai/gpt-4o-mini" />
+                    </div>
+                    <div class="pp-settings-block">
+                        <label for="pp_mail_delay_min"><span>Reply delay (seconds)</span></label>
+                        <div class="flex-container flexGap5" style="align-items:center;flex-wrap:wrap;">
+                            <input id="pp_mail_delay_min" type="number" class="text_pole" min="0" max="120" step="1" style="max-width:5em;" />
+                            <span>–</span>
+                            <input id="pp_mail_delay_max" type="number" class="text_pole" min="0" max="300" step="1" style="max-width:5em;" />
+                        </div>
+                        <small>Independent of the main chat. Reply fires after a random delay in this range.</small>
+                    </div>
+                    <div class="pp-settings-block">
+                        <label for="pp_mail_reply_prompt"><span>Mail reply prompt</span></label>
+                        <textarea id="pp_mail_reply_prompt" class="text_pole" rows="12" spellcheck="false"></textarea>
+                        <small>
+                            Placeholders: <code>{{char}}</code> <code>{{user}}</code> <code>{{subject}}</code>
+                            <code>{{body}}</code> <code>{{char_card}}</code> <code>{{chat_summary}}</code>
+                            <code>{{description}}</code> <code>{{personality}}</code> <code>{{scenario}}</code>
+                        </small>
+                        <div style="margin-top:0.4em;">
+                            <button id="pp_mail_prompt_reset" class="menu_button" type="button">Reset reply prompt</button>
+                        </div>
+                    </div>
+                    <div class="pp-settings-block">
+                        <label for="pp_mail_force_prompt"><span>Forced mail prompt</span></label>
+                        <textarea id="pp_mail_force_prompt" class="text_pole" rows="10" spellcheck="false"></textarea>
+                        <small>
+                            Used when receiving guided mail from the inbox signal control.
+                            Placeholders: <code>{{char}}</code> <code>{{user}}</code> <code>{{guidance}}</code>
+                            <code>{{subject}}</code> <code>{{char_card}}</code> <code>{{chat_summary}}</code>
+                        </small>
+                        <div style="margin-top:0.4em;">
+                            <button id="pp_mail_force_reset" class="menu_button" type="button">Reset force prompt</button>
+                        </div>
+                    </div>
+                    <h3 class="pp-menu-sub">Chat → mail</h3>
+                    <div class="pp-settings-block">
+                        <label>
+                            <input id="pp_inject_chat_mail" type="checkbox" />
+                            <span>Inject main chat summary into email prompt</span>
+                        </label>
+                        <small>Gives mail replies story awareness via <code>{{chat_summary}}</code>.</small>
+                    </div>
+                    <div class="pp-settings-block pp-chat-summary-only">
+                        <label for="pp_chat_summary_n"><span>Chat messages in mail summary</span></label>
+                        <input id="pp_chat_summary_n" type="number" class="text_pole" min="1" max="40" step="1" style="max-width:5em;" />
+                    </div>
+                    <h3 class="pp-menu-sub">On the handset</h3>
+                    <div class="pp-settings-block">
+                        <label>
+                            <input id="pp_mail_keywords" type="checkbox" />
+                            <span>Tappable keywords (Phone Trigger)</span>
+                        </label>
+                        <small>Characters underline a few words in their mail. Tap one and your reply is written about it, as in the VN.</small>
+                        <label for="pp_keyword_mode">Tapping a keyword</label>
+                        <select id="pp_keyword_mode">
+                            <option value="prefill">Drafts the reply (you can edit, then send)</option>
+                            <option value="send">Sends the reply right away</option>
+                        </select>
+                        <label for="pp_mail_theme"><span>Mail screen theme (SG001)</span></label>
+                        <select id="pp_mail_theme">
+                            <option value="classic">Classic — Steins;Gate white</option>
+                            <option value="dark">Dark — navy LCD</option>
+                        </select>
+                        <label>
+                            <input id="pp_mail_receive_anim" type="checkbox" />
+                            <span>"Receiving…" bar when mail arrives</span>
+                        </label>
+                    </div>
+                    <h3 class="pp-menu-sub">Photos</h3>
+                    <div class="pp-settings-block">
+                        <label>
+                            <input id="pp_char_photos" type="checkbox" />
+                            <span>Characters can send photos</span>
+                        </label>
+                        <small>They may attach a described photo now and then. With SillyTavern's image generation installed (<code>/sd</code>), it's developed into a picture; otherwise the description shows.</small>
+                        <label for="pp_photo_max_kb">Max size of a photo you attach (KB)</label>
+                        <input id="pp_photo_max_kb" type="number" min="40" max="2000" step="10" class="text_pole" />
+                        <small>Photos are shrunk to fit and stored in the chat file.</small>
+                    </div>
+                                <h3 class="pp-menu-sub">People notice</h3>
+                    <div class="pp-settings-block">
+                        <label>
+                            <input id="pp_ignore_on" type="checkbox" />
+                            <span>Ignored mail and calls have consequences</span>
+                        </label>
+                        <small>Mail you leave unread and calls you don't return, counted in story hours (needs the story clock), become a note for the AI — and characters may mail you about it.</small>
+                        <label for="pp_ignore_hours">After (story hours)</label>
+                        <input id="pp_ignore_hours" type="number" min="0.25" max="240" step="0.5" class="text_pole" />
+                        <label>
+                            <input id="pp_closeness_on" type="checkbox" />
+                            <span>Track closeness</span>
+                        </label>
+                        <small>The words you tap, your replies and the tone of their mail move a closeness meter per person, shown on their mail and told to the AI.</small>
+                    </div>
+            </section>
+
+            <section class="pp-menu-cat" data-cat="memory" data-title="Memory" data-icon="◎">
+                <p class="pp-menu-lead">What the main chat remembers from the phone.</p>
+                    <h3 class="pp-menu-sub">Mail → chat</h3>
+                    <div class="pp-settings-block">
+                        <label>
+                            <input id="pp_char_mail_chat" type="checkbox" />
+                            <span>Characters can e-mail you from the chat</span>
+                        </label>
+                        <small>Tells the AI that characters may send you mail in their replies whenever it fits (an &lt;email&gt; tag, delivered to your phone and hidden from the message). Without it they only mail through initiative.</small>
+                    </div>
                     <div class="pp-settings-block">
                         <label>
                             <input id="pp_inject" type="checkbox" />
@@ -126,84 +300,26 @@
                         <textarea id="pp_mail_memory_send" class="text_pole" rows="3" spellcheck="false"></textarea>
                         <small>Inserted as <code>{{send_instructions}}</code>. Leave blank to omit.</small>
                     </div>
-                </div>
-            </details>
-
-            <details class="pp-drawer-cat">
-                <summary>Chat → mail</summary>
-                <div class="pp-drawer-cat-body">
+                    <h3 class="pp-menu-sub">Calls → chat</h3>
                     <div class="pp-settings-block">
                         <label>
-                            <input id="pp_inject_chat_mail" type="checkbox" />
-                            <span>Inject main chat summary into email prompt</span>
+                            <input id="pp_inject_call_memory" type="checkbox" />
+                            <span>Inject call memory into chat</span>
                         </label>
-                        <small>Gives mail replies story awareness via <code>{{chat_summary}}</code>.</small>
+                        <small>Same as phone Settings → Call memory. Summaries/transcripts of finished calls.</small>
                     </div>
-                    <div class="pp-settings-block pp-chat-summary-only">
-                        <label for="pp_chat_summary_n"><span>Chat messages in mail summary</span></label>
-                        <input id="pp_chat_summary_n" type="number" class="text_pole" min="1" max="40" step="1" style="max-width:5em;" />
+                    <div class="pp-settings-block">
+                        <label>
+                            <input id="pp_call_summarize" type="checkbox" />
+                            <span>Summarize calls on hang-up</span>
+                        </label>
+                        <small>LLM-compacts the transcript after each call (keeps summary, drops full turns).</small>
                     </div>
-                </div>
-            </details>
+            </section>
 
-            <details class="pp-drawer-cat">
-                <summary>Mail generation</summary>
-                <div class="pp-drawer-cat-body">
-                    <div class="pp-settings-block">
-                        <label for="pp_mail_backend"><span>Mail generation backend</span></label>
-                        <select id="pp_mail_backend">
-                            <option value="main">Main LLM / API</option>
-                            <option value="openrouter">OpenRouter</option>
-                        </select>
-                    </div>
-                    <div class="pp-settings-block pp-openrouter-only">
-                        <label for="pp_or_key"><span>OpenRouter API key</span></label>
-                        <input id="pp_or_key" type="password" class="text_pole" autocomplete="off" spellcheck="false" />
-                    </div>
-                    <div class="pp-settings-block pp-openrouter-only">
-                        <label for="pp_or_model"><span>OpenRouter model</span></label>
-                        <input id="pp_or_model" type="text" class="text_pole" placeholder="openai/gpt-4o-mini" />
-                    </div>
-                    <div class="pp-settings-block">
-                        <label for="pp_mail_delay_min"><span>Reply delay (seconds)</span></label>
-                        <div class="flex-container flexGap5" style="align-items:center;flex-wrap:wrap;">
-                            <input id="pp_mail_delay_min" type="number" class="text_pole" min="0" max="120" step="1" style="max-width:5em;" />
-                            <span>–</span>
-                            <input id="pp_mail_delay_max" type="number" class="text_pole" min="0" max="300" step="1" style="max-width:5em;" />
-                        </div>
-                        <small>Independent of the main chat. Reply fires after a random delay in this range.</small>
-                    </div>
-                    <div class="pp-settings-block">
-                        <label for="pp_mail_reply_prompt"><span>Mail reply prompt</span></label>
-                        <textarea id="pp_mail_reply_prompt" class="text_pole" rows="12" spellcheck="false"></textarea>
-                        <small>
-                            Placeholders: <code>{{char}}</code> <code>{{user}}</code> <code>{{subject}}</code>
-                            <code>{{body}}</code> <code>{{char_card}}</code> <code>{{chat_summary}}</code>
-                            <code>{{description}}</code> <code>{{personality}}</code> <code>{{scenario}}</code>
-                        </small>
-                        <div style="margin-top:0.4em;">
-                            <button id="pp_mail_prompt_reset" class="menu_button" type="button">Reset reply prompt</button>
-                        </div>
-                    </div>
-                    <div class="pp-settings-block">
-                        <label for="pp_mail_force_prompt"><span>Forced mail prompt</span></label>
-                        <textarea id="pp_mail_force_prompt" class="text_pole" rows="10" spellcheck="false"></textarea>
-                        <small>
-                            Used when receiving guided mail from the inbox signal control.
-                            Placeholders: <code>{{char}}</code> <code>{{user}}</code> <code>{{guidance}}</code>
-                            <code>{{subject}}</code> <code>{{char_card}}</code> <code>{{chat_summary}}</code>
-                        </small>
-                        <div style="margin-top:0.4em;">
-                            <button id="pp_mail_force_reset" class="menu_button" type="button">Reset force prompt</button>
-                        </div>
-                    </div>
-                </div>
-            </details>
-
-            <details class="pp-drawer-cat" open>
-                <summary>Character initiative</summary>
-                <div class="pp-drawer-cat-body">
-                    <p class="pp-drawer-lead">
+            <section class="pp-menu-cat" data-cat="initiative" data-title="Initiative" data-icon="✦">
+                <p class="pp-menu-lead">Characters mailing you on their own.</p>
+                    <p class="pp-menu-lead pp-menu-lead-sub">
                         Characters may send unsolicited mail on their own (VN-style), with heavy throttling so it stays optional.
                         Off by default.
                     </p>
@@ -347,13 +463,11 @@
                             <small>Bypasses chance / idle / grace / quiet hours; still respects unread and contact rules.</small>
                         </div>
                     </div>
-                </div>
-            </details>
+            </section>
 
-            <details class="pp-drawer-cat" open>
-                <summary>Calls</summary>
-                <div class="pp-drawer-cat-body">
-                    <p class="pp-drawer-lead">
+            <section class="pp-menu-cat" data-cat="calls" data-title="Calls" data-icon="☎">
+                <p class="pp-menu-lead">Live voice calls on the handset.</p>
+                    <p class="pp-menu-lead pp-menu-lead-sub">
                         Voice calls: talk inside the phone UI with one character.
                         Conversation stays on the phone — not the main chat log.
                     </p>
@@ -398,6 +512,7 @@
                             <textarea id="pp_call_prompt" class="text_pole" rows="10" spellcheck="false"></textarea>
                             <small>
                                 Placeholders: <code>{{char}}</code> <code>{{user}}</code> <code>{{transcript}}</code>
+                                <code>{{cue}}</code> (your latest line, or "{{char}} speaks first")
                                 <code>{{last_user}}</code> <code>{{guidance}}</code> <code>{{char_card}}</code>
                                 <code>{{chat_summary}}</code>
                             </small>
@@ -406,13 +521,24 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </details>
+                                <h3 class="pp-menu-sub">Fake call</h3>
+                    <div class="pp-settings-block">
+                        <label>
+                            <input id="pp_fakecall_on" type="checkbox" />
+                            <span>Fake call on the dial screen</span>
+                        </label>
+                        <small>Talk into the phone with nobody on the line. Afterwards the people around you hear your side (<code>/fakecall</code> too).</small>
+                        <label for="pp_fakecall_note">They hear about it as</label>
+                        <select id="pp_fakecall_note">
+                            <option value="hidden">A hidden note for the next reply</option>
+                            <option value="visible">A narrator line in the chat</option>
+                        </select>
+                    </div>
+            </section>
 
-            <details class="pp-drawer-cat">
-                <summary>Call initiative</summary>
-                <div class="pp-drawer-cat-body">
-                    <p class="pp-drawer-lead">
+            <section class="pp-menu-cat" data-cat="callinit" data-title="Incoming" data-icon="☏">
+                <p class="pp-menu-lead">Characters ringing you on their own.</p>
+                    <p class="pp-menu-lead pp-menu-lead-sub">
                         Characters may ring you unsolicited (VN-style), with the same style of throttling as mail initiative.
                         Off by default.
                     </p>
@@ -520,16 +646,66 @@
                             </div>
                         </div>
                         <div class="pp-settings-block">
+                            <label for="pp_call_init_reason"><span>Why they call (optional)</span></label>
+                            <textarea id="pp_call_init_reason" class="text_pole" rows="2" spellcheck="true" placeholder="Blank = the character picks a reason from the story"></textarea>
+                            <small>The caller speaks first when you answer and gets to this reason. Not quoted.</small>
+                        </div>
+                        <div class="pp-settings-block">
                             <button id="pp_call_initiative_test" class="menu_button" type="button">Ring me now</button>
                             <small>Bypasses chance / idle / grace / quiet hours.</small>
                         </div>
                     </div>
-                </div>
-            </details>
+            </section>
 
-            <details class="pp-drawer-cat">
-                <summary>D-Mail</summary>
-                <div class="pp-drawer-cat-body">
+            <section class="pp-menu-cat" data-cat="clock" data-title="Clock" data-icon="◷">
+                <p class="pp-menu-lead">The story's own date and time, kept per chat.</p>
+                    <div class="pp-settings-block">
+                        <div id="pp_clock_panel" class="pp-clock-panel"></div>
+                        <small>Pass time, sleep until morning, or set the date, time and Day directly. Time leaps move the clock back.</small>
+                    </div>
+                    <h3 class="pp-menu-sub">How time flows</h3>
+                    <div class="pp-settings-block">
+                        <label for="pp_clock_flow">Flow</label>
+                        <select id="pp_clock_flow">
+                            <option value="manual">Manual (only when you move it)</option>
+                            <option value="realtime">Real time (minutes per story hour)</option>
+                            <option value="messages">Messages (messages per story hour)</option>
+                        </select>
+                        <div class="pp-clock-real">
+                            <label for="pp_clock_real_min">Real minutes = 1 story hour</label>
+                            <input id="pp_clock_real_min" type="number" min="0.1" max="1440" step="0.5" class="text_pole" />
+                            <small>Ticks only while this chat is open in a visible tab.</small>
+                        </div>
+                        <div class="pp-clock-msg">
+                            <label for="pp_clock_msgs">Messages = 1 story hour</label>
+                            <input id="pp_clock_msgs" type="number" min="1" max="500" step="1" class="text_pole" />
+                            <small>Yours and the characters' messages both count.</small>
+                        </div>
+                        <label for="pp_clock_wake">Sleep wakes at (hour)</label>
+                        <input id="pp_clock_wake" type="number" min="0" max="23" step="1" class="text_pole" />
+                    </div>
+                    <h3 class="pp-menu-sub">Where it shows</h3>
+                    <div class="pp-settings-block">
+                        <label>
+                            <input id="pp_clock_phone" type="checkbox" />
+                            <span>Phone clocks show story time</span>
+                        </label>
+                        <small>Status bar, home screen, cover display and mail dates, once this chat has a story time.</small>
+                        <label>
+                            <input id="pp_clock_messages_stamp" type="checkbox" />
+                            <span>Story time on chat messages</span>
+                        </label>
+                        <small>Shown beside the real timestamp. Messages from before the clock was set have none.</small>
+                        <label>
+                            <input id="pp_clock_inject" type="checkbox" />
+                            <span>Tell the AI the story time</span>
+                        </label>
+                        <label for="pp_clock_depth">Inject depth</label>
+                        <input id="pp_clock_depth" type="number" min="0" max="99" step="1" class="text_pole" />
+                    </div>
+            </section>
+            <section class="pp-menu-cat" data-cat="dmail" data-title="D-Mail" data-icon="⌁">
+                <p class="pp-menu-lead">Mail to the past through PhoneWave.</p>
                     <div class="pp-settings-block">
                         <label>
                             <input id="pp_inject_worldline" type="checkbox" />
@@ -547,34 +723,305 @@
                             <input id="pp_dmail_sound" type="checkbox" />
                             <span>Play cutscene audio</span>
                         </label>
-                        <small>Unmutes <code>divmeter.mp4</code> so its embedded soundtrack plays (respects Sounds).</small>
+                        <small>Plays the <code>divmeter.mp4</code> soundtrack during the cutscene (respects Sounds).</small>
                     </div>
-                </div>
-            </details>
-
-            <details class="pp-drawer-cat">
-                <summary>Call memory</summary>
-                <div class="pp-drawer-cat-body">
                     <div class="pp-settings-block">
-                        <label>
-                            <input id="pp_inject_call_memory" type="checkbox" />
-                            <span>Inject call memory into chat</span>
-                        </label>
-                        <small>Same as phone Settings → Call memory. Summaries/transcripts of finished calls.</small>
+                        <label for="pp_dmail_cutscene">D-Mail cutscene</label>
+                        <select id="pp_dmail_cutscene">
+                            <option value="original">Original (clip, fixed numbers)</option>
+                            <option value="progressive">Progressive (lands on the new divergence)</option>
+                        </select>
+                        <button id="pp_dmail_cutscene_compare" class="menu_button" type="button">Compare cutscenes</button>
                     </div>
                     <div class="pp-settings-block">
                         <label>
-                            <input id="pp_call_summarize" type="checkbox" />
-                            <span>Summarize calls on hang-up</span>
+                            <input id="pp_home_meter" type="checkbox" />
+                            <span>Divergence meter on home screen</span>
                         </label>
-                        <small>LLM-compacts the transcript after each call (keeps summary, drops full turns).</small>
                     </div>
-                </div>
-            </details>
+                                <h3 class="pp-menu-sub">Worldlines</h3>
+                    <div class="pp-settings-block">
+                        <button type="button" class="menu_button" id="pp_open_worldline_map">◈ Open the worldline map</button>
+                        <button type="button" class="menu_button" id="pp_check_earlier_dmails">Check for earlier D-Mails</button>
+                        <small>Lists every D-Mail this chat kept (including ones from older versions), lets you put them on the map or take them off, and can estimate the readings they never recorded.</small>
+                        <label>
+                            <input id="pp_dmail_cancels" type="checkbox" />
+                            <span>Contradicting D-Mails undo earlier ones</span>
+                        </label>
+                        <small>Send a D-Mail that stops an earlier one (from any phone) and that change is undone; the meter returns to where it was before it.</small>
+                        <label>
+                            <input id="pp_dmail_rewrite" type="checkbox" />
+                            <span>Phone records follow the worldline</span>
+                        </label>
+                        <small>After a D-Mail, recent mail is rewritten to match the new past (one extra generation). You keep what you remember: ◇ on a mail shows the old version; mail that never existed hides under the inbox. Undoing the D-Mail puts it all back.</small>
+                    </div>
+                    <h3 class="pp-menu-sub">Card history</h3>
+                    <div class="pp-settings-block">
+                        <small>Every time Apply rewrites a character card, the text it replaced is kept here so you can undo it (or go back to the original). Stored only in this SillyTavern's extension settings — never inside the card file, so exporting or sharing a card doesn't carry it. Undoing a D-Mail also offers to restore the card it changed. <code>/cardundo [name]</code></small>
+                        <div id="pp_card_history" class="pp-card-history"></div>
+                    </div>
+                    <h3 class="pp-menu-sub">Convergence</h3>
+                    <div class="pp-settings-block">
+                        <div id="pp_convergence_panel" class="pp-convergence-panel"></div>
+                        <small>Outcomes the worldline keeps reaching however anyone tries to stop them — until the divergence crosses into another attractor field (the reading's first digit changes). Told to the AI with the worldline.</small>
+                        <label>
+                            <input id="pp_convergence_log" type="checkbox" />
+                            <span>Count how often each is reached</span>
+                        </label>
+                        <small>After each time leap, a short check asks whether the abandoned future reached them.</small>
+                    </div>
+                    <h3 class="pp-menu-sub">Milestones</h3>
+                    <div class="pp-settings-block">
+                        <label>
+                            <input id="pp_div_milestones" type="checkbox" />
+                            <span>Mark field crossings and a target reading</span>
+                        </label>
+                        <small>Crossing an attractor field makes the meter's first tube hesitate and adds one quiet line for the AI. Reaching your target reading gives the home meter a faint glow.</small>
+                        <label for="pp_div_target">Target reading (optional)</label>
+                        <input id="pp_div_target" type="text" class="text_pole" placeholder="e.g. 1.048596" maxlength="8" />
+                    </div>
+            </section>
 
-            <details class="pp-drawer-cat">
-                <summary>Actions &amp; help</summary>
-                <div class="pp-drawer-cat-body">
+            <section class="pp-menu-cat" data-cat="timeleap" data-title="Time Leap" data-icon="⟲">
+                <p class="pp-menu-lead">Memories sent back through PhoneWave.</p>
+                    <div class="pp-settings-block">
+                        <label>
+                            <input id="pp_timeleap_enabled" type="checkbox" />
+                            <span>Time Leap Machine</span>
+                        </label>
+                        <small>
+                            Call <b>PhoneWave</b> from the phone (or <code>/timeleap</code>) to open TLM.EXE: pick who leaps
+                            (you or a character), the message to arrive at, and the story times. The chat is branched at that
+                            message; the leaper keeps compressed memories of the abandoned future.
+                        </small>
+                    </div>
+                    <div class="pp-settings-block">
+                        <label>
+                            <input id="pp_timeleap_inject" type="checkbox" />
+                            <span>Inject leap memories</span>
+                        </label>
+                        <small>Your memories are always injected; a character's only while that character speaks.</small>
+                        <label for="pp_timeleap_depth">Inject depth</label>
+                        <input id="pp_timeleap_depth" type="number" min="0" max="99" step="1" class="text_pole" />
+                        <label for="pp_timeleap_max">Memories per leaper</label>
+                        <input id="pp_timeleap_max" type="number" min="1" max="20" step="1" class="text_pole" />
+                    </div>
+                    <div class="pp-settings-block">
+                        <label for="pp_timeleap_limit">Hours per leap (further back chains several leaps; 0 = no limit)</label>
+                        <input id="pp_timeleap_limit" type="number" min="0" max="8760" step="1" class="text_pole" />
+                        <label for="pp_tlm_built">Machine completed (this chat) — nobody can leap to before it</label>
+                        <input id="pp_tlm_built" type="datetime-local" class="text_pole" />
+                        <small>Story time. Empty = no limit (the default). Also in TLM.EXE → CONFIG.</small>
+                        <label>
+                            <input id="pp_timeleap_keep_phone" type="checkbox" />
+                            <span>Keep future mail and calls on the new branch</span>
+                        </label>
+                    </div>
+                    <div class="pp-settings-block">
+                        <label>
+                            <input id="pp_timeleap_discharge" type="checkbox" />
+                            <span>Discharge before your leaps</span>
+                        </label>
+                        <small>The phone closes and lightning builds over the chat until a flash drops to black and the cutscene begins.</small>
+                        <label>
+                            <input id="pp_timeleap_sound" type="checkbox" />
+                            <span>Play cutscene audio</span>
+                        </label>
+                        <label for="pp_timeleap_cutscene">Time leap cutscene</label>
+                        <select id="pp_timeleap_cutscene">
+                            <option value="original">Original (clip, fixed clock)</option>
+                            <option value="progressive">Progressive (counts back to your destination)</option>
+                        </select>
+                        <button id="pp_timeleap_cutscene_compare" class="menu_button" type="button">Compare cutscenes</button>
+                    </div>
+
+                    <h3 class="pp-menu-sub">Characters: D-Mail &amp; Time Leap</h3>
+                    <div class="pp-settings-block">
+                        <small>
+                            Characters can send D-Mails and time leap too: from their phone (grab it), when you make them,
+                            or on their own. When a character's D-Mail shifts the worldline only you notice (Reading Steiner);
+                            the sender does not remember sending it.
+                        </small>
+                        <label>Who knows about time leaping (this chat)</label>
+                        <div id="pp_leap_aware" class="pp-leap-aware"></div>
+                        <small>
+                            Ticked characters are told, every reply, how to time leap: they end the reply with a
+                            &lt;timeleap back="N"/&gt; marker when something happens they would go back to undo, and the leap
+                            starts (asking you first if that is on). The marker is removed from the message.
+                        </small>
+                        <label>
+                            <input id="pp_world_init" type="checkbox" />
+                            <span>Characters may decide on their own</span>
+                        </label>
+                        <small>
+                            Every few character messages, a short check asks whether someone has a real reason —
+                            they know the technology exists, and there is something urgent to prevent or undo. Usually the answer is no.
+                        </small>
+                        <label>
+                            <input id="pp_world_init_dmail" type="checkbox" />
+                            <span>…by sending a D-Mail</span>
+                        </label>
+                        <label>
+                            <input id="pp_world_init_leap" type="checkbox" />
+                            <span>…by time leaping</span>
+                        </label>
+                        <label for="pp_world_init_every">Check after this many character messages</label>
+                        <input id="pp_world_init_every" type="number" min="1" max="50" step="1" class="text_pole" style="max-width:5em;" />
+                        <label for="pp_world_init_cooldown">Cooldown between checks (seconds)</label>
+                        <input id="pp_world_init_cooldown" type="number" min="0" max="86400" step="30" class="text_pole" style="max-width:6em;" />
+                        <label for="pp_world_init_others">Chance to consider someone not speaking (%)</label>
+                        <input id="pp_world_init_others" type="number" min="0" max="100" step="5" class="text_pole" style="max-width:5em;" />
+                    </div>
+                    <div class="pp-settings-block">
+                        <label>
+                            <input id="pp_char_leap_ask" type="checkbox" />
+                            <span>Ask before a character leaps on their own</span>
+                        </label>
+                        <small>Off: their leap just happens (the chat branches).</small>
+                        <label>
+                            <input id="pp_char_leap_discharge" type="checkbox" />
+                            <span>Discharge before a character's leap</span>
+                        </label>
+                        <label>
+                            <input id="pp_char_leap_cutscene" type="checkbox" />
+                            <span>Cutscene when a character time leaps</span>
+                        </label>
+                        <label>
+                            <input id="pp_char_dmail_cutscene" type="checkbox" />
+                            <span>Cutscene when a character sends a D-Mail</span>
+                        </label>
+                    </div>
+                    <div class="pp-settings-block">
+                        <label for="pp_world_force_who">Make them do it</label>
+                        <select id="pp_world_force_who"></select>
+                        <select id="pp_world_force_act">
+                            <option value="dmail">Send a D-Mail</option>
+                            <option value="leap">Time leap</option>
+                        </select>
+                        <textarea id="pp_world_force_guidance" class="text_pole" rows="2" spellcheck="true" placeholder="Optional guidance — e.g. stop Mayuri from going to the station / go back to before the argument"></textarea>
+                        <button id="pp_world_force_go" class="menu_button" type="button">Make it happen</button>
+                        <small>Also <code>/chardmail Name guidance</code> and <code>/charleap Name guidance</code>. Forced leaps don't ask.</small>
+                        <button id="pp_world_check_now" class="menu_button" type="button">Check now</button>
+                        <small>Runs the "would they?" check for the character above right now (no cooldown). It is still their call — usually no. Also <code>/worldcheck [Name]</code>.</small>
+                    </div>
+            </section>
+
+            <section class="pp-menu-cat" data-cat="board" data-title="@channel" data-icon="＠">
+                <p class="pp-menu-lead">An anonymous textboard on the phone. Posts are written only when you open a board or thread, or press Load more.</p>
+                    <div class="pp-settings-block">
+                        <label>
+                            <input id="pp_board_on" type="checkbox" />
+                            <span>Board app on the home screen</span>
+                        </label>
+                        <label for="pp_board_name">Site name</label>
+                        <input id="pp_board_name" type="text" class="text_pole" maxlength="24" />
+                        <small>Also <code>/board</code> or <code>/board occult</code>. Make your own boards from its front page — a board's topic steers everything posted there.</small>
+                    </div>
+                    <h3 class="pp-menu-sub">Who posts</h3>
+                    <div class="pp-settings-block">
+                        <label>
+                            <input id="pp_board_chars" type="checkbox" />
+                            <span>Characters post too</span>
+                        </label>
+                        <small>Their cards decide whether they'd use the site and under what handle (or anonymously). Regulars turn up in replies in their own voice; <b>Post as…</b> makes anyone post. Change it per character:</small>
+                        <div id="pp_board_regulars" class="pp-board-regulars"></div>
+                        <label>
+                            <input id="pp_board_traveler" type="checkbox" />
+                            <span>A poster from the future</span>
+                        </label>
+                        <small>Now and then a tripcode poster claims to be a time traveler — and seems to know your worldline.</small>
+                        <label for="pp_board_traveler_handle">Their handle</label>
+                        <input id="pp_board_traveler_handle" type="text" class="text_pole" maxlength="40" />
+                    </div>
+                    <h3 class="pp-menu-sub">Story</h3>
+                    <div class="pp-settings-block">
+                        <label>
+                            <input id="pp_board_story" type="checkbox" />
+                            <span>Threads react to the story</span>
+                        </label>
+                        <small>Recent chat, the worldline and the story time feed the board, so rumors of what you've been up to can surface.</small>
+                    </div>
+            </section>
+            <section class="pp-menu-cat" data-cat="phones" data-title="Phones" data-icon="▯">
+                <p class="pp-menu-lead">Handsets for you and every character.</p>
+                    <h3 class="pp-menu-sub">Address book &amp; Data folder</h3>
+                    <div class="pp-settings-block">
+                        <label><input id="pp_book_enabled" type="checkbox" /><span>Address book</span></label>
+                        <small>Your contacts in each chat, under the names you saved them as (only the phone shows them; the story keeps real names). Each contact can have its own ringtone and mail tone.</small>
+                        <label><input id="pp_book_ask" type="checkbox" /><span>Ask who's in my phone when a chat starts</span></label>
+                        <small>Off: everyone in the chat starts as a contact. Anyone else can be added later from the Address book, or from their mail or call.</small>
+                    </div>
+                    <div class="pp-settings-block">
+                        <label><input id="pp_data_enabled" type="checkbox" /><span>Data folder</span></label>
+                        <small>Every photo sent or received by mail. Keep a copy so it survives deletion and worldline shifts, or set one as this chat's wallpaper.</small>
+                    </div>
+                    <h3 class="pp-menu-sub">Other people's phones</h3>
+                    <div class="pp-settings-block">
+                        <label><input id="pp_phone_grab" type="checkbox" /><span>Grab a phone</span></label>
+                        <small>"Grab a phone" on your home screen and <code>/grabphone &lt;name&gt;</code>: look through a character's mail and calls, or send mail as them.</small>
+                    </div>
+                    <div class="pp-settings-block">
+                        <label><input id="pp_phone_show_tag" type="checkbox" /><span>Characters can show you their phone</span></label>
+                        <small>Characters may write <code>&lt;phone owner="Name"&gt;&lt;mail from="…" subject="…"&gt;…&lt;/mail&gt;&lt;/phone&gt;</code>; their phone pops open on that mail.</small>
+                    </div>
+                    <div class="pp-settings-block">
+                        <label><input id="pp_snoop_inject" type="checkbox" /><span>Tell the chat what you saw</span></label>
+                        <small>A note in the prompt of what you read or sent on other phones. The owners only know if the story says so.</small>
+                        <label for="pp_snoop_max">Entries kept</label>
+                        <input id="pp_snoop_max" type="number" min="1" max="20" step="1" class="text_pole" style="max-width:5em;" />
+                        <label for="pp_snoop_depth">Inject depth</label>
+                        <input id="pp_snoop_depth" type="number" min="0" max="99" step="1" class="text_pole" style="max-width:5em;" />
+                    </div>
+                    <div class="pp-settings-block">
+                        <label for="pp_phone_ai_mode">AI design starts on</label>
+                        <select id="pp_phone_ai_mode">
+                            <option value="style">AI picks one of the styles</option>
+                            <option value="free">Freeform — no styles, designs from scratch</option>
+                        </select>
+                        <small>Each phone's own dropdown can still pick a specific style, the AI's choice, or freeform.</small>
+                    </div>
+                    <div id="pp-menu-phones" class="pp-menu-phones"></div>
+                                <h3 class="pp-menu-sub">Lab members</h3>
+                    <div class="pp-settings-block">
+                        <div id="pp_labmem_panel" class="pp-labmem-panel"></div>
+                        <small>Member numbers show as badges on their mail. Also <code>/labmem Kurisu 4 Assistant</code>.</small>
+                        <label>
+                            <input id="pp_labmem_inject" type="checkbox" />
+                            <span>Tell the AI who the lab members are</span>
+                        </label>
+                    </div>
+            </section>
+
+            <section class="pp-menu-cat" data-cat="tips" data-title="TIPS" data-icon="?">
+                <p class="pp-menu-lead">The glossary. Terms the story mentions get a short entry, as in the VN.</p>
+                    <div class="pp-settings-block">
+                        <label>
+                            <input id="pp_tips_on" type="checkbox" />
+                            <span>Collect TIPS</span>
+                        </label>
+                        <small>Every few character messages, one short check looks for new terms in the categories below. Entries are for you only — nothing is sent to the roleplay.</small>
+                        <label for="pp_tips_every">Check every (character messages)</label>
+                        <input id="pp_tips_every" type="number" min="1" max="50" step="1" class="text_pole" />
+                    </div>
+                    <h3 class="pp-menu-sub">What gets explained</h3>
+                    <div class="pp-settings-block">
+                        <div id="pp_tips_cats" class="pp-tips-cats"></div>
+                        <label for="pp_tips_custom">More categories (comma-separated)</label>
+                        <input id="pp_tips_custom" type="text" class="text_pole" placeholder="e.g. Food, Military" />
+                    </div>
+                    <h3 class="pp-menu-sub">Entries</h3>
+                    <div class="pp-settings-block">
+                        <div class="pp-tips-explain">
+                            <input id="pp_tips_explain" type="text" class="text_pole" placeholder="Explain a term…" />
+                            <select id="pp_tips_explain_cat"></select>
+                            <button type="button" class="menu_button" id="pp_tips_explain_go">Explain</button>
+                            <button type="button" class="menu_button" id="pp_tips_scan" title="Look through the recent chat now">Scan chat</button>
+                        </div>
+                        <div id="pp_tips_list" class="pp-tips-list"></div>
+                    </div>
+            </section>
+            <section class="pp-menu-cat" data-cat="help" data-title="Lab notes" data-icon="✎">
+                <p class="pp-menu-lead">Shortcuts and commands.</p>
                     <div class="pp-settings-block">
                         <button id="pp_open_phone_btn" class="menu_button" type="button">Open phone</button>
                         <button id="pp_test_mail_btn" class="menu_button" type="button">Test mail</button>
@@ -583,9 +1030,5 @@
                         <code>/phone</code> · <code>/mail</code> · <code>/mailsend subject=…</code> ·
                         <code>send_email</code> tool · <code>&lt;email&gt;</code> tags
                     </p>
-                </div>
-            </details>
-
-        </div>
-    </div>
+            </section>
 </div>

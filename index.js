@@ -10,6 +10,10 @@ import {
     openInbox,
     isPhoneOpen,
     resetMailChipPosition,
+    openTimeleapMachine,
+    openCharacterPhone,
+    userOpenPhone,
+    refreshPhoneDock,
 } from './lib/phone.js';
 import {
     registerEmailTool,
@@ -20,11 +24,37 @@ import {
     setMailReceivedHandler,
     setMailOpenHandler,
     resolveSpeakingContact,
+    setPhoneShownHandler,
 } from './lib/email.js';
 import { getActiveCharacterName } from './lib/store.js';
 import { ensureNotifyHost } from './lib/notify.js';
 import { updateWorldlinePrompt } from './lib/dmail.js';
 import { updateCallMemoryPrompt } from './lib/callMemory.js';
+import { updateTimeleapPrompt } from './lib/timeleap.js';
+import { initMailUi } from './lib/mailUi.js';
+import { initConsequences, refreshConsequences, updateIgnorePrompt } from './lib/consequences.js';
+import { initFakeCallUi, onFakeCallMessage, openFakeCall } from './lib/fakeCall.js';
+import { initBoardUi, resetBoardNav, openBoardApp } from './lib/board.js';
+import { initTipsUi, refreshTips, noteTipsMessage, openTips } from './lib/tips.js';
+import { initLabUi, refreshLab, labMemCommand } from './lib/labMembers.js';
+import { initAddressBookUi, resetAddressBookNav } from './lib/addressBook.js';
+import { initMachineFloorUi } from './lib/timeleapApp.js';
+import './lib/dataFolderApp.js';
+import { initCardHistoryUi, cardUndoCommand } from './lib/cardHistory.js';
+import { initWorldlineUi, refreshWorldlinePanels, setConvergenceChangeHandler } from './lib/worldline.js';
+import { initStoryClockUi, syncStoryClockFlow, noteStoryMessage, onStoryChatChanged, updateStoryClockPrompt, storyTimeCommand, stampMessage, renderMessageStamps } from './lib/storyClock.js';
+import { mountMenu, openMenu, updateMenuStatus } from './lib/menu.js';
+import { registerPhonesMenu, registerPhoneCardAction } from './lib/phonesMenu.js';
+import {
+    resolveOwner,
+    addShownMails,
+    listOwnerMails,
+    logSnoop,
+    clearOwnerPhone,
+    updateSnoopPrompt,
+} from './lib/phoneData.js';
+import { USER_OWNER } from './lib/phoneSpec.js';
+import { showCutscenePrompt, maybeShowFirstRunCutscenePrompt } from './lib/cutscenePrompt.js';
 import {
     syncInitiativeScheduler,
     noteInitiativeActivity,
@@ -37,6 +67,20 @@ import {
     setCallInitiativeGenerationBusy,
     tryCallInitiative,
 } from './lib/callInitiative.js';
+import {
+    listActors,
+    resolveActor,
+    forceAct,
+    checkNow,
+    noteCharacterMessage,
+    setLeapAware,
+    listLeapAware,
+    updateLeapAwarePrompt,
+    handleLeapMarker,
+    setWorldGenerationBusy,
+} from './lib/worldActs.js';
+import { hasDynamicAudio, listSongs, songLabel, refreshMenuMusic } from './lib/menuMusic.js';
+import { initMusicPlayer, openMusicPlayer, resetPlayerPosition } from './lib/musicPlayer.js';
 
 const LOG = `[${MODULE_NAME}]`;
 
@@ -47,7 +91,11 @@ function bindSettingsUi() {
     $('#pp_wand').prop('checked', s.showWandMenuItem);
     $('#pp_slash').prop('checked', s.enableSlashCommand);
     $('#pp_sound').prop('checked', s.soundEnabled);
+    $('#pp_reduce_flashing').prop('checked', Boolean(s.reduceFlashing));
+    $('#pp_open_shut').prop('checked', s.openShutFirst !== false);
+    $('#pp_side_dock').prop('checked', Boolean(s.phoneSideDock));
     $('#pp_inject').prop('checked', s.injectPrompt);
+    $('#pp_char_mail_chat').prop('checked', s.charMailInChat !== false);
     $('#pp_inject_worldline').prop('checked', s.dmailWorldline !== false);
     $('#pp_mail_memory_scope').val(s.mailMemoryScope === 'all' ? 'all' : 'speaker');
     $('#pp_mail_memory_max').val(s.mailMemoryMax ?? 6);
@@ -120,6 +168,7 @@ function bindSettingsUi() {
     $('#pp_call_init_tab').prop('checked', s.callInitiativeRequireTabVisible !== false);
     $('#pp_call_init_skip_busy').prop('checked', s.callInitiativeSkipIfBusy !== false);
     $('#pp_call_init_auto_open').prop('checked', s.callInitiativeAutoOpen !== false);
+    $('#pp_call_init_reason').val(s.callInitiativeGuidance || '');
     $('#pp_call_init_contacts').val(
         ['active', 'all', 'weighted'].includes(s.callInitiativeContacts) ? s.callInitiativeContacts : 'active',
     );
@@ -127,6 +176,33 @@ function bindSettingsUi() {
     $('#pp_call_init_quiet_start').val(s.callInitiativeQuietStart ?? 23);
     $('#pp_call_init_quiet_end').val(s.callInitiativeQuietEnd ?? 8);
     $('#pp_dmail_sound').prop('checked', s.dmailSpectacleSound !== false);
+    $('#pp_dmail_cutscene').val(s.dmailCutscene === 'progressive' ? 'progressive' : 'original');
+    $('#pp_timeleap_enabled').prop('checked', s.timeleapEnabled !== false);
+    $('#pp_phone_grab').prop('checked', s.phoneGrab !== false);
+    $('#pp_phone_ai_mode').val(s.phoneAiMode === 'free' ? 'free' : 'style');
+    $('#pp_phone_show_tag').prop('checked', s.phoneShowTag !== false);
+    $('#pp_snoop_inject').prop('checked', s.snoopInject !== false);
+    $('#pp_snoop_max').val(s.snoopInjectMax ?? 8);
+    $('#pp_snoop_depth').val(s.snoopPromptDepth ?? 3);
+    $('#pp_timeleap_inject').prop('checked', s.timeleapInject !== false);
+    $('#pp_timeleap_depth').val(s.timeleapPromptDepth ?? 2);
+    $('#pp_timeleap_max').val(s.timeleapMaxMemories ?? 5);
+    $('#pp_timeleap_limit').val(s.timeleapLimitHours ?? 48);
+    $('#pp_timeleap_keep_phone').prop('checked', Boolean(s.timeleapKeepFuturePhone));
+    $('#pp_timeleap_sound').prop('checked', s.timeleapSound !== false);
+    $('#pp_timeleap_cutscene').val(s.timeleapCutscene === 'progressive' ? 'progressive' : 'original');
+    $('#pp_world_init').prop('checked', Boolean(s.worldInitiativeEnabled));
+    $('#pp_world_init_dmail').prop('checked', s.worldInitiativeDmail !== false);
+    $('#pp_world_init_leap').prop('checked', s.worldInitiativeLeap !== false);
+    $('#pp_world_init_every').val(s.worldInitiativeEveryMessages ?? 4);
+    $('#pp_world_init_cooldown').val(s.worldInitiativeCooldownSec ?? 600);
+    $('#pp_world_init_others').val(Math.round((s.worldInitiativeOthersChance ?? 0.3) * 100));
+    $('#pp_char_leap_ask').prop('checked', s.charLeapAsk !== false);
+    $('#pp_char_leap_cutscene').prop('checked', s.charLeapCutscene !== false);
+    $('#pp_char_leap_discharge').prop('checked', s.charLeapDischarge !== false);
+    $('#pp_timeleap_discharge').prop('checked', s.timeleapDischarge !== false);
+    $('#pp_char_dmail_cutscene').prop('checked', s.charDmailCutscene !== false);
+    $('#pp_home_meter').prop('checked', s.homeDivergenceMeter !== false);
     $('#pp_inject_call_memory').prop('checked', Boolean(s.injectCallMemory));
     $('#pp_call_summarize').prop('checked', Boolean(s.callSummarizeOnEnd));
 
@@ -228,7 +304,12 @@ async function loadSettingsPanel() {
         }
     }
 
+    // Settings sections live in the system menu dialog; move them before binding.
+    registerPhonesMenu();
+    mountMenu();
     bindSettingsUi();
+    $('#pp_open_menu_btn').on('click', () => openMenu());
+    updateMenuStatus();
 
     onToggle('enabled', '#pp_enabled', (s) => {
         updateFabVisibility();
@@ -250,7 +331,59 @@ async function loadSettingsPanel() {
     });
     onToggle('showWandMenuItem', '#pp_wand', () => updateWandItem());
     onToggle('enableSlashCommand', '#pp_slash');
-    onToggle('soundEnabled', '#pp_sound');
+    onToggle('soundEnabled', '#pp_sound', () => refreshMenuMusic());
+    onToggle('reduceFlashing', '#pp_reduce_flashing', (st) => {
+        st.reduceFlashingAsked = true;
+        saveSettings();
+    });
+
+    // Menu music (Dynamic Audio's song library)
+    $('#pp_menu_song_enabled').prop('checked', Boolean(getSettings().menuSongEnabled));
+    const fillMenuSongs = async () => {
+        const sel = $('#pp_menu_song');
+        const current = String(getSettings().menuSong || '');
+        const installed = hasDynamicAudio();
+        const songs = installed ? await listSongs() : [];
+        sel.empty().append($('<option></option>').val('').text(installed ? (songs.length ? '— choose a song —' : '— no songs in Dynamic Audio —') : '— Dynamic Audio not installed —'));
+        for (const path of songs) {
+            sel.append($('<option></option>').val(path).text(songLabel(path)));
+        }
+        if (current && !songs.includes(current)) {
+            sel.append($('<option></option>').val(current).text(`${songLabel(current)} (missing)`));
+        }
+        sel.val(current);
+        sel.prop('disabled', !installed);
+        $('#pp_menu_song_enabled').prop('disabled', !installed);
+        $('#pp_menu_song_refresh').prop('disabled', !installed);
+    };
+    // Dynamic Audio may load after us: fill once things settle, and on demand.
+    setTimeout(() => void fillMenuSongs(), 2500);
+    $('#pp_menu_song_refresh').on('click', () => void fillMenuSongs());
+    $('#pp_menu_song').on('focus', () => {
+        if ($('#pp_menu_song option').length <= 1) {
+            void fillMenuSongs();
+        }
+    });
+    onToggle('menuSongEnabled', '#pp_menu_song_enabled', () => refreshMenuMusic());
+
+    // Lab Radio
+    $('#pp_radio_enabled').prop('checked', getSettings().musicPlayerEnabled !== false);
+    onToggle('musicPlayerEnabled', '#pp_radio_enabled');
+    $('#pp_radio_open').on('click', () => {
+        if (!openMusicPlayer()) {
+            toast('Lab Radio needs the Dynamic Audio extension', 'warning', 'LAB RADIO');
+        }
+    });
+    $('#pp_radio_reset').on('click', () => resetPlayerPosition());
+    initMusicPlayer();
+    $('#pp_menu_song').on('change', () => {
+        getSettings().menuSong = String($('#pp_menu_song').val() || '');
+        saveSettings();
+        refreshMenuMusic();
+    });
+    onToggle('openShutFirst', '#pp_open_shut');
+    onToggle('phoneSideDock', '#pp_side_dock', () => refreshPhoneDock());
+    onToggle('charMailInChat', '#pp_char_mail_chat', () => updateMailPrompt());
     onToggle('injectPrompt', '#pp_inject', () => {
         syncInjectFields();
         updateMailPrompt();
@@ -636,6 +769,10 @@ async function loadSettingsPanel() {
     onToggle('callInitiativeRequireTabVisible', '#pp_call_init_tab');
     onToggle('callInitiativeSkipIfBusy', '#pp_call_init_skip_busy');
     onToggle('callInitiativeAutoOpen', '#pp_call_init_auto_open');
+    $('#pp_call_init_reason').on('input', () => {
+        getSettings().callInitiativeGuidance = String($('#pp_call_init_reason').val() || '');
+        saveSettings();
+    });
     $('#pp_call_init_contacts').on('change', () => {
         const s = getSettings();
         const v = String($('#pp_call_init_contacts').val() || 'active');
@@ -665,6 +802,139 @@ async function loadSettingsPanel() {
     });
 
     onToggle('dmailSpectacleSound', '#pp_dmail_sound');
+    $('#pp_dmail_cutscene').on('change', () => {
+        const st = getSettings();
+        st.dmailCutscene = $('#pp_dmail_cutscene').val() === 'progressive' ? 'progressive' : 'original';
+        st.dmailCutsceneChosen = true;
+        saveSettings();
+    });
+    $('#pp_dmail_cutscene_compare').on('click', async () => {
+        const choice = await showCutscenePrompt();
+        $('#pp_dmail_cutscene').val(choice);
+    });
+
+    onToggle('timeleapEnabled', '#pp_timeleap_enabled');
+    onToggle('phoneGrab', '#pp_phone_grab', () => refreshIfOpen());
+    $('#pp_phone_ai_mode').on('change', () => {
+        getSettings().phoneAiMode = $('#pp_phone_ai_mode').val() === 'free' ? 'free' : 'style';
+        saveSettings();
+    });
+    onToggle('phoneShowTag', '#pp_phone_show_tag', () => updateSnoopPrompt());
+    onToggle('snoopInject', '#pp_snoop_inject', () => updateSnoopPrompt());
+    for (const [sel, key, max, dflt] of [['#pp_snoop_max', 'snoopInjectMax', 20, 8], ['#pp_snoop_depth', 'snoopPromptDepth', 99, 3]]) {
+        $(sel).on('change', () => {
+            let n = Math.floor(Number($(sel).val()));
+            n = Number.isFinite(n) ? Math.max(key === 'snoopInjectMax' ? 1 : 0, Math.min(max, n)) : dflt;
+            getSettings()[key] = n;
+            $(sel).val(n);
+            saveSettings();
+            updateSnoopPrompt();
+        });
+    }
+    onToggle('timeleapInject', '#pp_timeleap_inject', () => updateTimeleapPrompt());
+    onToggle('timeleapKeepFuturePhone', '#pp_timeleap_keep_phone');
+    onToggle('timeleapSound', '#pp_timeleap_sound');
+    const leapInt = (selector, key, min, max, fallback) => {
+        $(selector).on('change', () => {
+            const st = getSettings();
+            let n = Number($(selector).val());
+            if (!Number.isFinite(n)) {
+                n = fallback;
+            }
+            n = Math.max(min, Math.min(max, Math.floor(n)));
+            st[key] = n;
+            $(selector).val(n);
+            saveSettings();
+            updateTimeleapPrompt();
+        });
+    };
+    leapInt('#pp_timeleap_depth', 'timeleapPromptDepth', 0, 99, 2);
+    leapInt('#pp_timeleap_max', 'timeleapMaxMemories', 1, 20, 5);
+    leapInt('#pp_timeleap_limit', 'timeleapLimitHours', 0, 8760, 48);
+    $('#pp_timeleap_cutscene').on('change', () => {
+        const st = getSettings();
+        st.timeleapCutscene = $('#pp_timeleap_cutscene').val() === 'progressive' ? 'progressive' : 'original';
+        st.timeleapCutsceneChosen = true;
+        saveSettings();
+    });
+    $('#pp_timeleap_cutscene_compare').on('click', async () => {
+        const choice = await showCutscenePrompt({ kind: 'timeleap' });
+        $('#pp_timeleap_cutscene').val(choice);
+    });
+    // Characters: D-Mail & Time Leap
+    onToggle('worldInitiativeEnabled', '#pp_world_init');
+    onToggle('worldInitiativeDmail', '#pp_world_init_dmail');
+    onToggle('worldInitiativeLeap', '#pp_world_init_leap');
+    // Who knows about time leaping (per chat).
+    $(document).on('change', '#pp_leap_aware input[data-key]', async (e) => {
+        const el = /** @type {HTMLInputElement} */ (e.currentTarget);
+        await setLeapAware(el.getAttribute('data-key') || '', el.checked);
+    });
+    document.addEventListener('pt:menu-category', () => renderLeapAwareList());
+    renderLeapAwareList();
+    onToggle('charLeapAsk', '#pp_char_leap_ask');
+    onToggle('charLeapCutscene', '#pp_char_leap_cutscene');
+    onToggle('charLeapDischarge', '#pp_char_leap_discharge');
+    onToggle('timeleapDischarge', '#pp_timeleap_discharge');
+    onToggle('charDmailCutscene', '#pp_char_dmail_cutscene');
+    const worldNum = (selector, key, min, max, fallback, scale = 1) => {
+        $(selector).on('change', () => {
+            const st = getSettings();
+            let n = Number($(selector).val());
+            if (!Number.isFinite(n)) {
+                n = fallback;
+            }
+            n = Math.max(min, Math.min(max, Math.floor(n)));
+            st[key] = n / scale;
+            $(selector).val(n);
+            saveSettings();
+        });
+    };
+    worldNum('#pp_world_init_every', 'worldInitiativeEveryMessages', 1, 50, 4);
+    worldNum('#pp_world_init_cooldown', 'worldInitiativeCooldownSec', 0, 86400, 600);
+    worldNum('#pp_world_init_others', 'worldInitiativeOthersChance', 0, 100, 30, 100);
+    const fillForceWho = () => {
+        const sel = $('#pp_world_force_who');
+        const was = sel.val();
+        const actors = listActors();
+        sel.empty();
+        for (const c of actors) {
+            sel.append($('<option></option>').val(c.key).text(c.name));
+        }
+        if (was && actors.some((c) => c.key === was)) {
+            sel.val(was);
+        }
+    };
+    fillForceWho();
+    $('#pp_world_force_who').on('focus mousedown', fillForceWho);
+    $('#pp_world_force_go').on('click', async () => {
+        fillForceWho();
+        const contact = listActors().find((c) => c.key === $('#pp_world_force_who').val());
+        if (!contact) {
+            toast('No character in this chat', 'warning', 'PHONEWAVE');
+            return;
+        }
+        const act = $('#pp_world_force_act').val() === 'leap' ? 'leap' : 'dmail';
+        const btn = $('#pp_world_force_go');
+        btn.prop('disabled', true);
+        try {
+            await forceAct(contact, act, String($('#pp_world_force_guidance').val() || '').trim());
+        } finally {
+            btn.prop('disabled', false);
+        }
+    });
+    $('#pp_world_check_now').on('click', async () => {
+        fillForceWho();
+        const contact = listActors().find((c) => c.key === $('#pp_world_force_who').val()) || null;
+        const btn = $('#pp_world_check_now');
+        btn.prop('disabled', true);
+        try {
+            await checkNow(contact);
+        } finally {
+            btn.prop('disabled', false);
+        }
+    });
+    onToggle('homeDivergenceMeter', '#pp_home_meter');
     onToggle('injectCallMemory', '#pp_inject_call_memory', (st) => {
         if (st.injectCallMemory) {
             updateCallMemoryPrompt();
@@ -674,7 +944,9 @@ async function loadSettingsPanel() {
     });
     onToggle('callSummarizeOnEnd', '#pp_call_summarize');
 
-    $('#pp_open_phone_btn').on('click', () => openPhone());
+    $('#pp_open_phone_btn').on('click', () => {
+        userOpenPhone();
+    });
     $('#pp_test_mail_btn').on('click', async () => {
         await receiveEmail({
             from: getActiveCharacterName() || 'Unknown',
@@ -692,6 +964,7 @@ function updateWandItem() {
     const show = s.enabled && s.showWandMenuItem;
     if (!show) {
         existing?.remove();
+        document.getElementById('pp-wand-menu-item')?.remove();
         return;
     }
     if (existing) {
@@ -712,10 +985,23 @@ function updateWandItem() {
         const open = (ev) => {
             ev?.preventDefault?.();
             ev?.stopPropagation?.();
-            openPhone();
+            userOpenPhone();
         };
         btn.addEventListener('click', open);
         wandRoot.appendChild(btn);
+
+        const menuBtn = document.createElement('div');
+        menuBtn.id = 'pp-wand-menu-item';
+        menuBtn.className = 'list-group-item flex-container flexGap5 interactable';
+        menuBtn.title = 'Phone Trigger settings';
+        menuBtn.setAttribute('tabindex', '0');
+        menuBtn.innerHTML = `<div class="fa-solid fa-gear extensionsMenuExtensionButton"></div><span>Phone Trigger menu</span>`;
+        menuBtn.addEventListener('click', (ev) => {
+            ev.preventDefault();
+            ev.stopPropagation();
+            openMenu();
+        });
+        wandRoot.appendChild(menuBtn);
         return;
     }
 
@@ -778,6 +1064,179 @@ function registerSlashCommands() {
     }));
 
     Parser.addCommandObject(SlashCommand.fromProps({
+        name: 'grabphone',
+        callback: (_named, unnamed) => {
+            if (!getSettings().enableSlashCommand) {
+                return 'Phone slash commands disabled';
+            }
+            const owner = resolveOwner(String(unnamed || '').trim());
+            if (!owner) {
+                toast('Whose phone? /grabphone <name>', 'warning', 'PHONE');
+                return '';
+            }
+            openCharacterPhone(owner.key, owner.name);
+            return `Holding ${owner.name}'s phone`;
+        },
+        aliases: ['snoop'],
+        unnamedArgumentList: SlashCommandArgument?.fromProps ? [
+            SlashCommandArgument.fromProps({
+                description: 'Whose phone (a chat character, or any name from the story)',
+                typeList: [ARGUMENT_TYPE.STRING],
+                isRequired: true,
+            }),
+        ] : [],
+        helpString: 'Take a character\'s phone and look through it (or act as them).',
+    }));
+
+    Parser.addCommandObject(SlashCommand.fromProps({
+        name: 'phonemenu',
+        callback: () => {
+            openMenu();
+            return 'Phone Trigger menu opened';
+        },
+        aliases: ['ptmenu'],
+        helpString: 'Open the Phone Trigger settings menu.',
+    }));
+
+    /** Newer commands: one optional free-text argument. */
+    const simple = (name, callback, helpString, aliases = []) => {
+        Parser.addCommandObject(SlashCommand.fromProps({
+            name,
+            callback: async (_named, text) => {
+                if (!getSettings().enableSlashCommand) {
+                    return 'Phone slash commands disabled';
+                }
+                return String(await callback(String(text ?? '').trim()) ?? '');
+            },
+            aliases,
+            unnamedArgumentList: [
+                SlashCommandArgument.fromProps({ description: 'arguments', typeList: [ARGUMENT_TYPE.STRING], isRequired: false }),
+            ],
+            helpString,
+        }));
+    };
+    simple('worldlines', async (text) => {
+        (await import('./lib/worldlineMap.js')).openWorldlineMap(/^check|earlier/i.test(text) ? { section: 'earlier' } : {});
+        return '';
+    }, 'Open the worldline map. <code>/worldlines check</code> opens it on the earlier D-Mails.', ['wlmap']);
+    simple('board', async (text) => {
+        if (getSettings().boardEnabled === false) {
+            return 'The board app is off';
+        }
+        await openBoardApp(text);
+        return '';
+    }, 'Open the @channel board app (optionally a board, e.g. <code>/board occult</code>).', ['atchannel']);
+    simple('tips', async () => {
+        await openTips();
+        return '';
+    }, 'Open the TIPS glossary.');
+    simple('labmem', (text) => labMemCommand(text),
+        'Lab members. <code>/labmem</code> lists them; <code>/labmem Kurisu 4 Assistant</code> sets a number and title.');
+    simple('cardundo', (text) => cardUndoCommand(text),
+        'Undo Phone Trigger\'s last rewrite of a character card (the active character, or a name).');
+    simple('fakecall', (text) => {
+        openFakeCall(text);
+        return '';
+    }, 'Take a fake phone call (optional: who you pretend to talk to).');
+    simple('storytime', (text) => storyTimeCommand(text),
+        'Story clock. No argument reports it; <code>pass 2h</code>, <code>sleep</code>, <code>set 2010-08-13 19:56</code>, <code>day 3</code>.',
+        ['clock']);
+    for (const extra of extraCommands) {
+        simple(extra.name, extra.callback, extra.help, extra.aliases || []);
+    }
+
+    Parser.addCommandObject(SlashCommand.fromProps({
+        name: 'timeleap',
+        callback: () => {
+            if (!getSettings().enableSlashCommand) {
+                return 'Phone slash commands disabled';
+            }
+            openTimeleapMachine();
+            return 'Time Leap Machine opened';
+        },
+        aliases: ['tlm'],
+        helpString: 'Open the Time Leap Machine (same as calling PhoneWave).',
+    }));
+
+    Parser.addCommandObject(SlashCommand.fromProps({
+        name: 'music',
+        callback: () => {
+            if (!getSettings().enableSlashCommand) {
+                return 'Phone slash commands disabled';
+            }
+            if (!openMusicPlayer()) {
+                toast('Lab Radio needs the Dynamic Audio extension', 'warning', 'LAB RADIO');
+                return '';
+            }
+            return 'Lab Radio open';
+        },
+        aliases: ['radio'],
+        helpString: 'Open Lab Radio, the music player (needs Dynamic Audio).',
+    }));
+
+    Parser.addCommandObject(SlashCommand.fromProps({
+        name: 'worldcheck',
+        callback: async (_named, unnamed) => {
+            if (!getSettings().enableSlashCommand) {
+                return 'Phone slash commands disabled';
+            }
+            const name = String(unnamed || '').trim();
+            const contact = name ? resolveActor(name) : null;
+            if (name && !contact) {
+                toast(`Who? /worldcheck [character]`, 'warning', 'PHONEWAVE');
+                return '';
+            }
+            return checkNow(contact);
+        },
+        unnamedArgumentList: SlashCommandArgument?.fromProps ? [
+            SlashCommandArgument.fromProps({
+                description: 'Character to consider (default: whoever is speaking)',
+                typeList: [ARGUMENT_TYPE.STRING],
+                isRequired: false,
+            }),
+        ] : [],
+        helpString: 'Ask now whether a character would send a D-Mail or time leap (skips the cooldown; usually they won\'t).',
+    }));
+
+    // /chardmail Name guidance… · /charleap Name guidance…
+    for (const [name, act, help] of [
+        ['chardmail', 'dmail', 'Make a character send a D-Mail now. /chardmail Name optional guidance'],
+        ['charleap', 'leap', 'Make a character time leap now. /charleap Name optional guidance'],
+    ]) {
+        Parser.addCommandObject(SlashCommand.fromProps({
+            name,
+            callback: async (_named, unnamed) => {
+                if (!getSettings().enableSlashCommand) {
+                    return 'Phone slash commands disabled';
+                }
+                const text = String(unnamed || '').trim();
+                // The longest cast name that starts the text wins (names can have spaces).
+                const actors = listActors().sort((a, b) => b.name.length - a.name.length);
+                let contact = actors.find((c) => text.toLowerCase().startsWith(c.name.toLowerCase())) || null;
+                let guidance = contact ? text.slice(contact.name.length).trim() : '';
+                if (!contact) {
+                    const [first, ...rest] = text.split(/\s+/);
+                    contact = resolveActor(first);
+                    guidance = rest.join(' ');
+                }
+                if (!contact) {
+                    toast(`Who? /${name} <character> [guidance]`, 'warning', 'PHONEWAVE');
+                    return '';
+                }
+                return forceAct(contact, /** @type {'dmail' | 'leap'} */ (act), guidance);
+            },
+            unnamedArgumentList: SlashCommandArgument?.fromProps ? [
+                SlashCommandArgument.fromProps({
+                    description: 'Character name, then optional guidance',
+                    typeList: [ARGUMENT_TYPE.STRING],
+                    isRequired: true,
+                }),
+            ] : [],
+            helpString: help,
+        }));
+    }
+
+    Parser.addCommandObject(SlashCommand.fromProps({
         name: 'mailsend',
         callback: async (namedArgs, unnamedArgs) => {
             if (!getSettings().enableSlashCommand) {
@@ -823,6 +1282,45 @@ function registerSlashCommands() {
     }));
 }
 
+/**
+ * Slash commands registered by newer feature modules.
+ * @type {{ name: string, callback: (text: string) => any, help: string, aliases?: string[] }[]}
+ */
+const extraCommands = [];
+
+/** Newer features bind their own menu controls and prompts. */
+function initFeatureUi() {
+    const steps = [
+        () => initStoryClockUi(),
+        () => syncStoryClockFlow(),
+        () => updateStoryClockPrompt(),
+        () => initMailUi(),
+        () => initConsequences(),
+        () => initFakeCallUi(),
+        () => initBoardUi(),
+        () => initTipsUi(),
+        () => initLabUi(),
+        () => initAddressBookUi(),
+        () => initMachineFloorUi(),
+        () => initCardHistoryUi(),
+        () => initWorldlineUi(() => updateWorldlinePrompt()),
+        () => setConvergenceChangeHandler(() => updateWorldlinePrompt()),
+        () => document.getElementById('pp_open_worldline_map')?.addEventListener('click', () => {
+            void import('./lib/worldlineMap.js').then((m) => m.openWorldlineMap());
+        }),
+        () => document.getElementById('pp_check_earlier_dmails')?.addEventListener('click', () => {
+            void import('./lib/worldlineMap.js').then((m) => m.openWorldlineMap({ section: 'earlier' }));
+        }),
+    ];
+    for (const step of steps) {
+        try {
+            step();
+        } catch (err) {
+            console.error(LOG, 'feature init failed', err);
+        }
+    }
+}
+
 function registerEvents() {
     const ctx = getContext();
     const { eventSource, event_types } = ctx;
@@ -842,6 +1340,10 @@ function registerEvents() {
         if (getSettings().injectCallMemory) {
             updateCallMemoryPrompt();
         }
+        updateTimeleapPrompt();
+        updateLeapAwarePrompt();
+        renderLeapAwareList();
+        updateSnoopPrompt();
         noteInitiativeActivity();
         noteCallInitiativeActivity();
         syncInitiativeScheduler();
@@ -849,6 +1351,17 @@ function registerEvents() {
     });
 
     eventSource.on(event_types.CHAT_CHANGED, () => {
+        onStoryChatChanged();
+        // SillyTavern renders the chat after this event: draw story stamps once it has.
+        setTimeout(() => renderMessageStamps(), 300);
+        setTimeout(() => renderMessageStamps(), 1500);
+        refreshConsequences();
+        resetBoardNav();
+        refreshTips();
+        refreshLab();
+        resetAddressBookNav();
+        refreshWorldlinePanels();
+        updateMenuStatus();
         updateMailPrompt();
         if (getSettings().dmailWorldline !== false) {
             updateWorldlinePrompt();
@@ -856,6 +1369,10 @@ function registerEvents() {
         if (getSettings().injectCallMemory) {
             updateCallMemoryPrompt();
         }
+        updateTimeleapPrompt();
+        updateLeapAwarePrompt();
+        renderLeapAwareList();
+        updateSnoopPrompt();
         refreshIfOpen();
         noteInitiativeActivity();
         noteCallInitiativeActivity();
@@ -864,8 +1381,27 @@ function registerEvents() {
     });
 
     eventSource.on(event_types.MESSAGE_RECEIVED, async (messageId) => {
+        noteStoryMessage();
+        stampMessage(Number(messageId));
+        onFakeCallMessage();
         noteInitiativeActivity();
         noteCallInitiativeActivity();
+        try {
+            // A character spoke: now and then, does anyone have reason to reach into the past?
+            const msg = getContext().chat?.[Number(messageId)];
+            if (msg && !msg.is_user && !msg.is_system) {
+                noteTipsMessage();
+                const speaker = resolveSpeakingContact(msg) || null;
+                // A leap-aware character's <timeleap/> marker: stripped, and they leap.
+                const marked = /<timeleap\b/i.test(String(msg.mes || ''));
+                handleLeapMarker(Number(messageId), speaker);
+                if (!marked) {
+                    noteCharacterMessage(speaker);
+                }
+            }
+        } catch (err) {
+            console.debug(LOG, 'world initiative note failed', err);
+        }
         try {
             await ingestEmailsFromMessage(messageId);
             refreshIfOpen();
@@ -874,14 +1410,22 @@ function registerEvents() {
         }
     });
 
+    for (const ev of ['MORE_MESSAGES_LOADED', 'MESSAGE_SWIPED', 'MESSAGE_EDITED', 'MESSAGE_UPDATED', 'MESSAGE_DELETED']) {
+        if (event_types[ev]) {
+            eventSource.on(event_types[ev], () => setTimeout(() => renderMessageStamps(), 50));
+        }
+    }
     if (event_types.MESSAGE_SENT) {
-        eventSource.on(event_types.MESSAGE_SENT, () => {
+        eventSource.on(event_types.MESSAGE_SENT, (messageId) => {
+            noteStoryMessage();
+            stampMessage(Number(messageId));
             noteInitiativeActivity();
             noteCallInitiativeActivity();
         });
     }
     if (event_types.USER_MESSAGE_RENDERED) {
         eventSource.on(event_types.USER_MESSAGE_RENDERED, () => {
+            renderMessageStamps();
             noteInitiativeActivity();
             noteCallInitiativeActivity();
         });
@@ -891,15 +1435,20 @@ function registerEvents() {
     const refreshSpeakerMemory = (...args) => {
         try {
             const hint = args.find((a) => a && (typeof a === 'object' || typeof a === 'string')) || args[0];
-            updateMailPrompt(resolveSpeakingContact(hint));
+            const speaker = resolveSpeakingContact(hint);
+            updateMailPrompt(speaker);
+            updateTimeleapPrompt(speaker);
+            updateLeapAwarePrompt(speaker);
         } catch (err) {
             console.debug(LOG, 'mail memory refresh failed', err);
         }
     };
     if (event_types.GENERATION_STARTED) {
         eventSource.on(event_types.GENERATION_STARTED, (...args) => {
+            updateIgnorePrompt();
             setInitiativeGenerationBusy(true);
             setCallInitiativeGenerationBusy(true);
+            setWorldGenerationBusy(true);
             refreshSpeakerMemory(...args);
         });
     }
@@ -912,6 +1461,7 @@ function registerEvents() {
     const clearGenBusy = () => {
         setInitiativeGenerationBusy(false);
         setCallInitiativeGenerationBusy(false);
+        setWorldGenerationBusy(false);
     };
     if (event_types.GENERATION_ENDED) {
         eventSource.on(event_types.GENERATION_ENDED, clearGenBusy);
@@ -922,13 +1472,73 @@ function registerEvents() {
     // Some ST versions emit CHARACTER_MESSAGE_RENDERED after DOM paint
     if (event_types.CHARACTER_MESSAGE_RENDERED) {
         eventSource.on(event_types.CHARACTER_MESSAGE_RENDERED, () => {
+            renderMessageStamps();
             clearGenBusy();
             refreshIfOpen();
         });
     }
 }
 
+/** The Time Leap menu's "who knows about time leaping" checklist for this chat. */
+function renderLeapAwareList() {
+    const host = document.getElementById('pp_leap_aware');
+    if (!host) {
+        return;
+    }
+    const aware = listLeapAware();
+    const actors = listActors();
+    host.innerHTML = actors.length
+        ? actors.map((c) => `<label><input type="checkbox" data-key="${escapeAttr(c.key)}" ${aware.includes(c.key) ? 'checked' : ''} /> <span>${escapeAttr(c.name)}</span></label>`).join('')
+        : '<small>No characters in this chat.</small>';
+}
+
+/** @param {string} v */
+function escapeAttr(v) {
+    return String(v ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
 setMailOpenHandler(() => openInbox());
+
+// A character shows their phone: <phone owner="…" show="latest"/> or with inline <mail> tags.
+setPhoneShownHandler(async (shows) => {
+    if (getSettings().phoneShowTag === false) {
+        return;
+    }
+    let last = null;
+    for (const show of shows) {
+        const owner = resolveOwner(show.owner);
+        if (!owner) {
+            continue;
+        }
+        const ids = await addShownMails(owner.key, owner.name, show.mails);
+        let mailId = ids[ids.length - 1] || '';
+        if (!mailId) {
+            const subject = show.show && show.show !== 'latest' ? show.show.toLowerCase() : '';
+            const mails = listOwnerMails(owner.key, owner.name);
+            mailId = (subject && mails.find((m) => m.subject.toLowerCase().includes(subject))?.id) || mails[0]?.id || '';
+        }
+        await logSnoop(owner.key, 'shown', `was shown ${owner.name}'s phone${mailId ? ' and read what was on screen' : ''}`);
+        last = { ...owner, mailId };
+    }
+    if (last) {
+        openCharacterPhone(last.key, last.name, last.mailId ? { mailId: last.mailId } : {});
+    }
+});
+
+registerPhoneCardAction('open', (owner) => (owner === USER_OWNER
+    ? ''
+    : '<button type="button" class="pp-menu-btn" data-phone-action="open">◆ Open phone</button><button type="button" class="pp-menu-btn" data-phone-action="clear">Clear contents</button>'), async (owner, action) => {
+    const who = resolveOwner(owner);
+    if (!who) {
+        return;
+    }
+    if (action === 'open') {
+        openCharacterPhone(who.key, who.name);
+    } else if (action === 'clear' && confirm(`Clear everything on ${who.name}'s phone in this chat? It will be regenerated next time.`)) {
+        await clearOwnerPhone(who.key);
+        toast(`${who.name}'s phone cleared`, 'info', 'PHONE');
+    }
+});
 
 setMailReceivedHandler((email) => {
     refreshIfOpen();
@@ -955,6 +1565,7 @@ jQuery(async () => {
     registerEmailTool();
     registerSlashCommands();
     registerEvents();
+    initFeatureUi();
     updateMailPrompt();
     if (getSettings().dmailWorldline !== false) {
         updateWorldlinePrompt();
@@ -962,6 +1573,8 @@ jQuery(async () => {
     if (getSettings().injectCallMemory) {
         updateCallMemoryPrompt();
     }
+    updateTimeleapPrompt();
+    updateSnoopPrompt();
     updateWandItem();
 
     // Retry wand item — menu may mount late
@@ -971,6 +1584,7 @@ jQuery(async () => {
     noteCallInitiativeActivity();
     syncInitiativeScheduler();
     syncCallInitiativeScheduler();
+    maybeShowFirstRunCutscenePrompt();
 
     console.log(LOG, 'loaded');
 });
@@ -986,6 +1600,8 @@ export function onActivate() {
     if (getSettings().injectCallMemory) {
         updateCallMemoryPrompt();
     }
+    updateTimeleapPrompt();
+    updateSnoopPrompt();
     noteInitiativeActivity();
     noteCallInitiativeActivity();
     syncInitiativeScheduler();
