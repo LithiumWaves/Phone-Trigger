@@ -40,7 +40,6 @@ SillyTavern extension that recreates the Steins;Gate **Phone Trigger** loop: ope
 - **@channel** — an anonymous textboard app where characters post too
 - **Address book** — per chat: pick who starts in your phone, save them under your own names (the story keeps real names), add the rest later from their mail or call; each contact can have its own ringtone and mail tone
 - **Data folder** — every photo sent or received by mail; keep copies that survive deletion and worldline shifts, or make one the chat's wallpaper
-- **PhoneWave setup minigames** — optional (off by default): before your own D-Mails and leaps, set the machine up as in the VN — the Braun tube downstairs, the microwave timer, calling the PhoneWave, the discharge; the headgear and Enter for a leap
 - **Machine completed** — optional per-chat date (none by default): nobody can time leap to before the Time Leap Machine existed
 - **Fake call**, **TIPS** glossary, **lab members**, and optional consequences for ignored mail and calls
 
@@ -88,7 +87,7 @@ Body
 
 Mail replies are generated independently of the main chat character (To: contact card + editable prompt). A short delay (default 3–8s) runs before the reply arrives. Optional chat→mail summary keeps replies story-aware; optional mail→chat injection can be limited to the speaking character so group members do not share private mail.
 
-Mail to **PhoneWave (name subject to change)** is a D-Mail: no character reply. **Spectacle** plays the divergence meter cutscene (video + audio) in the browser top layer and does not create worldline facts. **Propose** opens an edit gate before writers run. **Worldline (soft)** injects facts into the LLM prompt only; **Apply (hard)** optionally confirms a lorebook write and/or a smooth character-card rewrite. Soft and hard can both be on; Propose delays writers until you confirm. Compose shows sender/participants, selectable past context, **36-character ASCII** limit (on by default), **redirect phone** (own inbox vs character mail memory), and optional **arrival datetime**. Deliveries are always **three split parts** (e.g. 36 → 12+12+12). Character-routed D-Mails land in that character’s Mail memory and stay unchecked by default. They stay out of the Outbox unless **Show in outbox** is enabled.
+Mail to **PhoneWave (name subject to change)** is a D-Mail: no character reply. **Spectacle** plays the divergence meter cutscene (video + audio) in the browser top layer and does not create worldline facts. **Propose** opens an edit gate before writers run. **Worldline (soft)** injects facts into the LLM prompt only; **Apply (hard)** optionally confirms a lorebook write and/or a smooth character-card rewrite. Soft and hard can both be on; Propose delays writers until you confirm. Compose shows sender/participants, selectable past context, **36-character ASCII** limit (on by default), **redirect phone** (own inbox, a character's mail memory, or **someone else — no inbox**: name who receives it, e.g. an NPC with no card; nothing lands on any phone here, only the worldline changes), and optional **arrival datetime**. Deliveries are always **three split parts** (e.g. 36 → 12+12+12). Character-routed D-Mails land in that character’s Mail memory and stay unchecked by default. They stay out of the Outbox unless **Show in outbox** is enabled.
 
 ### Divergence meter
 
@@ -184,18 +183,6 @@ Each contact can have its own **ringtone** and **mail tone** (presets or a URL, 
 ### Data folder
 
 Menu (page 2) → **Data folder**: a grid of every photo that came or went by mail. Open one for **Keep**, **Set as wallpaper** and Save. A kept copy stays even if the mail is deleted or a D-Mail erases it from this worldline. *Set as wallpaper* is for this chat only; Settings → Wallpaper shows it and can stop using it, and picking any other wallpaper replaces it.
-
-### Setting up the PhoneWave yourself
-
-Off by default (Extensions → D-Mail → *Set up the machine yourself*). When on, your own D-Mails and time leaps start with short minigames based on how the lab works the machine in the VN:
-
-- **Braun tube** — the lifter only works while Mr. Braun's 42-inch CRT is on downstairs (shop hours in story time, 10:00–20:00 by default). When the shop is closed, wait until it opens (the story clock moves on) or cancel.
-- **Timer** (D-Mail) — type the microwave timer: each second sends the mail one hour back, and that becomes its arrival time. If you set *Arrive at*, it tells you what to type.
-- **Call it** (D-Mail) — the PhoneWave starts when its phone is called: dial its number.
-- **Send** / **Enter** — the discharge surges; press while the needle is in the band. For a D-Mail, too early fizzles and too late overloads (three overloads and it needs to cool down: the D-Mail isn't sent, the draft stays). For a leap there's no failing: the charge builds again until you hit it.
-- **Headgear** (time leap) — tap the three marked points (or drag the electrodes onto them).
-
-**Skip setup** goes straight on, **Cancel** stops without sending or leaping. Keys work too (digits, Backspace, Space / Enter). *Reduce flashing* calms the sparks. Characters' own D-Mails and leaps never use the minigames.
 
 ### Machine completed
 
