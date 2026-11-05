@@ -8910,3 +8910,49 @@ dialog.pp-menu .pp-wd-del {
         width: 100%;
     }
 }
+
+/* —— Discharge phenomenon (before a time leap) —— */
+.pp-discharge {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: none;
+    z-index: 2147482990;
+    background: transparent;
+    overflow: hidden;
+    transition: opacity 0.4s ease;
+}
+
+.pp-discharge::backdrop {
+    background: transparent;
+}
+
+.pp-discharge.pp-discharge-out {
+    opacity: 0;
+}
+
+.pp-discharge-canvas,
+.pp-discharge-wash,
+.pp-discharge-black {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.pp-discharge-wash {
+    background: radial-gradient(ellipse at 50% 45%, rgba(190, 205, 255, 0.95), rgba(110, 140, 235, 0.85) 70%);
+    opacity: 0;
+    mix-blend-mode: screen;
+}
+
+.pp-discharge-black {
+    background: #000;
+    opacity: 0;
+}

@@ -192,6 +192,8 @@ function bindSettingsUi() {
     $('#pp_world_init_others').val(Math.round((s.worldInitiativeOthersChance ?? 0.3) * 100));
     $('#pp_char_leap_ask').prop('checked', s.charLeapAsk !== false);
     $('#pp_char_leap_cutscene').prop('checked', s.charLeapCutscene !== false);
+    $('#pp_char_leap_discharge').prop('checked', s.charLeapDischarge !== false);
+    $('#pp_timeleap_discharge').prop('checked', s.timeleapDischarge !== false);
     $('#pp_char_dmail_cutscene').prop('checked', s.charDmailCutscene !== false);
     $('#pp_home_meter').prop('checked', s.homeDivergenceMeter !== false);
     $('#pp_inject_call_memory').prop('checked', Boolean(s.injectCallMemory));
@@ -855,6 +857,8 @@ async function loadSettingsPanel() {
     onToggle('worldUrgentAct', '#pp_world_urgent');
     onToggle('charLeapAsk', '#pp_char_leap_ask');
     onToggle('charLeapCutscene', '#pp_char_leap_cutscene');
+    onToggle('charLeapDischarge', '#pp_char_leap_discharge');
+    onToggle('timeleapDischarge', '#pp_timeleap_discharge');
     onToggle('charDmailCutscene', '#pp_char_dmail_cutscene');
     const worldNum = (selector, key, min, max, fallback, scale = 1) => {
         $(selector).on('change', () => {
