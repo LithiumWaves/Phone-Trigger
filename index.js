@@ -43,7 +43,7 @@ import { initMachineFloorUi } from './lib/timeleapApp.js';
 import './lib/dataFolderApp.js';
 import { initCardHistoryUi, cardUndoCommand } from './lib/cardHistory.js';
 import { initWorldlineUi, refreshWorldlinePanels, setConvergenceChangeHandler } from './lib/worldline.js';
-import { initStoryClockUi, syncStoryClockFlow, noteStoryMessage, onStoryChatChanged, updateStoryClockPrompt, storyTimeCommand, stampMessage, renderMessageStamps } from './lib/storyClock.js';
+import { initStoryClockUi, syncStoryClockFlow, onStoryMessage, onStoryChatChanged, updateStoryClockPrompt, storyTimeCommand, renderMessageStamps } from './lib/storyClock.js';
 import { mountMenu, openMenu, updateMenuStatus } from './lib/menu.js';
 import { registerPhonesMenu, registerPhoneCardAction } from './lib/phonesMenu.js';
 import {
@@ -1452,8 +1452,7 @@ function registerEvents() {
     });
 
     eventSource.on(event_types.MESSAGE_RECEIVED, async (messageId) => {
-        noteStoryMessage();
-        stampMessage(Number(messageId));
+        onStoryMessage(Number(messageId));
         onFakeCallMessage();
         noteInitiativeActivity();
         noteCallInitiativeActivity();
@@ -1488,8 +1487,7 @@ function registerEvents() {
     }
     if (event_types.MESSAGE_SENT) {
         eventSource.on(event_types.MESSAGE_SENT, (messageId) => {
-            noteStoryMessage();
-            stampMessage(Number(messageId));
+            onStoryMessage(Number(messageId));
             noteInitiativeActivity();
             noteCallInitiativeActivity();
         });
