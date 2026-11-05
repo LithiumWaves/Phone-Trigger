@@ -966,18 +966,59 @@ async function loadSettingsPanel() {
     });
 }
 
-/** "Stand out" look for the wand menu's Phone Trigger menu item. */
+/** "Stand out" look for the wand menu's Phone Trigger menu and Time leap check items. */
 function syncWandMenuStyle() {
-    const item = document.getElementById('pp-wand-menu-item');
-    if (!item) {
+    const standout = getSettings().wandMenuStyle !== 'plain';
+    for (const [id, loud, quiet] of [
+        ['pp-wand-menu-item', 'Phone Trigger · Menu', 'Phone Trigger menu'],
+        ['pp-wand-check-item', 'Phone Trigger · Time leap check', 'Time leap check'],
+    ]) {
+        const item = document.getElementById(id);
+        if (!item) {
+            continue;
+        }
+        item.classList.toggle('pp-wand-standout', standout);
+        const label = item.querySelector('.pp-wand-menu-label');
+        if (label) {
+            label.textContent = standout ? loud : quiet;
+        }
+    }
+}
+
+/** Wand item: ask now whether a character would send a D-Mail or time leap. */
+function addWandCheckItem(wandRoot) {
+    if (document.getElementById('pp-wand-check-item')) {
         return;
     }
-    const standout = getSettings().wandMenuStyle !== 'plain';
-    item.classList.toggle('pp-wand-standout', standout);
-    const label = item.querySelector('.pp-wand-menu-label');
-    if (label) {
-        label.textContent = standout ? 'Phone Trigger · Menu' : 'Phone Trigger menu';
-    }
+    const btn = document.createElement('div');
+    btn.id = 'pp-wand-check-item';
+    btn.className = 'list-group-item flex-container flexGap5 interactable';
+    btn.title = 'Ask now whether a character would send a D-Mail or time leap';
+    btn.setAttribute('tabindex', '0');
+    btn.innerHTML = `<div class="fa-solid fa-hourglass-half extensionsMenuExtensionButton"></div><span class="pp-wand-menu-label">Time leap check</span>`;
+    let busy = false;
+    const run = async (ev) => {
+        ev?.preventDefault?.();
+        ev?.stopPropagation?.();
+        if (busy) {
+            return;
+        }
+        busy = true;
+        btn.classList.add('pp-wand-busy');
+        try {
+            await checkNow();
+        } finally {
+            busy = false;
+            btn.classList.remove('pp-wand-busy');
+        }
+    };
+    btn.addEventListener('click', run);
+    btn.addEventListener('keydown', (ev) => {
+        if (ev.key === 'Enter' || ev.key === ' ') {
+            void run(ev);
+        }
+    });
+    wandRoot.appendChild(btn);
 }
 
 function updateWandItem() {
@@ -987,9 +1028,13 @@ function updateWandItem() {
     if (!show) {
         existing?.remove();
         document.getElementById('pp-wand-menu-item')?.remove();
+        document.getElementById('pp-wand-check-item')?.remove();
         return;
     }
     if (existing) {
+        if (existing.parentElement) {
+            addWandCheckItem(existing.parentElement);
+        }
         syncWandMenuStyle();
         return;
     }
@@ -1025,6 +1070,7 @@ function updateWandItem() {
             openMenu();
         });
         wandRoot.appendChild(menuBtn);
+        addWandCheckItem(wandRoot);
         syncWandMenuStyle();
         return;
     }
@@ -1163,7 +1209,7 @@ function registerSlashCommands() {
         return '';
     }, 'Take a fake phone call (optional: who you pretend to talk to).');
     simple('storytime', (text) => storyTimeCommand(text),
-        'Story clock. No argument reports it; <code>pass 2h</code>, <code>sleep</code>, <code>set 2010-08-13 19:56</code>.',
+        'Story clock. No argument reports it; <code>pass 2h</code>, <code>sleep</code>, <code>set 2010-08-13 19:56</code>, <code>stamp</code> (date older messages), <code>history</code>.',
         ['clock']);
     for (const extra of extraCommands) {
         simple(extra.name, extra.callback, extra.help, extra.aliases || []);
