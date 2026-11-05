@@ -84,6 +84,7 @@ function bindSettingsUi() {
     $('#pp_wand').prop('checked', s.showWandMenuItem);
     $('#pp_slash').prop('checked', s.enableSlashCommand);
     $('#pp_sound').prop('checked', s.soundEnabled);
+    $('#pp_reduce_flashing').prop('checked', Boolean(s.reduceFlashing));
     $('#pp_open_shut').prop('checked', s.openShutFirst !== false);
     $('#pp_side_dock').prop('checked', Boolean(s.phoneSideDock));
     $('#pp_inject').prop('checked', s.injectPrompt);
@@ -325,6 +326,10 @@ async function loadSettingsPanel() {
     onToggle('showWandMenuItem', '#pp_wand', () => updateWandItem());
     onToggle('enableSlashCommand', '#pp_slash');
     onToggle('soundEnabled', '#pp_sound', () => refreshMenuMusic());
+    onToggle('reduceFlashing', '#pp_reduce_flashing', (st) => {
+        st.reduceFlashingAsked = true;
+        saveSettings();
+    });
 
     // Menu music (Dynamic Audio's song library)
     $('#pp_menu_song_enabled').prop('checked', Boolean(getSettings().menuSongEnabled));

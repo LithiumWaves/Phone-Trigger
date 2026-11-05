@@ -8956,3 +8956,57 @@ dialog.pp-menu .pp-wd-del {
     background: #000;
     opacity: 0;
 }
+
+/* —— Worldline vertigo (end of the D-Mail cutscene) —— */
+.pp-vertigo-target {
+    transform-origin: 50% 50%;
+    will-change: transform, filter;
+}
+
+.pp-vertigo-ghost {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    mix-blend-mode: screen;
+}
+
+.pp-vertigo-veil {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    pointer-events: none;
+}
+
+/* Reduce flashing: the original clips play dimmer and softer */
+.pp-dmail-fx.pp-calm .pp-dmail-video {
+    filter: brightness(0.72) contrast(0.85) saturate(0.9);
+}
+
+/* —— First-boot photosensitivity question —— */
+.pp-flash-prompt .pp-flash-panel {
+    width: min(520px, 100%);
+}
+
+.pp-flash-note {
+    margin: 0 0 12px;
+    font-size: 12px;
+    color: var(--sg-amber);
+}
+
+.pp-flash-actions {
+    display: flex;
+    gap: 10px;
+    margin: 6px 0 14px;
+}
+
+.pp-flash-actions .pp-sg-select {
+    flex: 1;
+}
+
+.pp-flash-actions .pp-flash-pick {
+    border-color: rgba(255, 150, 60, 0.75);
+    color: var(--sg-amber);
+}
