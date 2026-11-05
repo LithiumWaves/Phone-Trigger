@@ -32,6 +32,7 @@ import { updateWorldlinePrompt } from './lib/dmail.js';
 import { updateCallMemoryPrompt } from './lib/callMemory.js';
 import { updateTimeleapPrompt } from './lib/timeleap.js';
 import { initMailUi } from './lib/mailUi.js';
+import { initContextMenu } from './lib/contextMenu.js';
 import { initConsequences, refreshConsequences, updateIgnorePrompt } from './lib/consequences.js';
 import { initFakeCallUi, onFakeCallMessage, openFakeCall } from './lib/fakeCall.js';
 import { initBoardUi, resetBoardNav, openBoardApp } from './lib/board.js';
@@ -330,6 +331,13 @@ async function loadSettingsPanel() {
         toast('Chip position reset', 'info');
     });
     onToggle('showWandMenuItem', '#pp_wand', () => updateWandItem());
+    $('#pp_wand_menu_style').val(getSettings().wandMenuStyle === 'plain' ? 'plain' : 'standout').on('change', () => {
+        getSettings().wandMenuStyle = $('#pp_wand_menu_style').val() === 'plain' ? 'plain' : 'standout';
+        saveSettings();
+        syncWandMenuStyle();
+    });
+    $('#pp_chip_menu_gear').prop('checked', getSettings().chipMenuGear !== false);
+    onToggle('chipMenuGear', '#pp_chip_menu_gear', () => updateFabVisibility());
     onToggle('enableSlashCommand', '#pp_slash');
     onToggle('soundEnabled', '#pp_sound', () => refreshMenuMusic());
     onToggle('reduceFlashing', '#pp_reduce_flashing', (st) => {
@@ -958,6 +966,20 @@ async function loadSettingsPanel() {
     });
 }
 
+/** "Stand out" look for the wand menu's Phone Trigger menu item. */
+function syncWandMenuStyle() {
+    const item = document.getElementById('pp-wand-menu-item');
+    if (!item) {
+        return;
+    }
+    const standout = getSettings().wandMenuStyle !== 'plain';
+    item.classList.toggle('pp-wand-standout', standout);
+    const label = item.querySelector('.pp-wand-menu-label');
+    if (label) {
+        label.textContent = standout ? 'Phone Trigger · Menu' : 'Phone Trigger menu';
+    }
+}
+
 function updateWandItem() {
     const s = getSettings();
     const existing = document.getElementById('pp-wand-item');
@@ -968,6 +990,7 @@ function updateWandItem() {
         return;
     }
     if (existing) {
+        syncWandMenuStyle();
         return;
     }
 
@@ -995,13 +1018,14 @@ function updateWandItem() {
         menuBtn.className = 'list-group-item flex-container flexGap5 interactable';
         menuBtn.title = 'Phone Trigger settings';
         menuBtn.setAttribute('tabindex', '0');
-        menuBtn.innerHTML = `<div class="fa-solid fa-gear extensionsMenuExtensionButton"></div><span>Phone Trigger menu</span>`;
+        menuBtn.innerHTML = `<div class="fa-solid fa-gear extensionsMenuExtensionButton"></div><span class="pp-wand-menu-label">Phone Trigger menu</span>`;
         menuBtn.addEventListener('click', (ev) => {
             ev.preventDefault();
             ev.stopPropagation();
             openMenu();
         });
         wandRoot.appendChild(menuBtn);
+        syncWandMenuStyle();
         return;
     }
 
@@ -1295,6 +1319,7 @@ function initFeatureUi() {
         () => syncStoryClockFlow(),
         () => updateStoryClockPrompt(),
         () => initMailUi(),
+        () => initContextMenu(),
         () => initConsequences(),
         () => initFakeCallUi(),
         () => initBoardUi(),

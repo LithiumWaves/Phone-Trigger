@@ -9817,3 +9817,133 @@ body.pt-no-msg-stamps .pt-story-stamp {
 .pp-phone[data-mail-theme="classic"] .pp-receiving-from {
     color: #555;
 }
+
+/* ═══════════ MAIL chip ⚙ — opens the system menu ═══════════ */
+.pp-mail-chip-gear {
+    display: inline-grid;
+    place-items: center;
+    width: 18px;
+    height: 18px;
+    margin: -3px -6px -3px 1px;
+    border-left: 1px solid rgba(158, 196, 255, 0.3);
+    padding-left: 5px;
+    color: #9ec4ff;
+    font-size: 12px;
+    letter-spacing: 0;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.pp-mail-chip-gear[hidden] {
+    display: none;
+}
+
+.pp-mail-chip-gear:hover {
+    color: #fff;
+    text-shadow: 0 0 6px #9ec4ff;
+}
+
+/* ═══════════ Wand menu: "Phone Trigger · Menu" stands out ═══════════ */
+#pp-wand-menu-item.pp-wand-standout {
+    position: relative;
+    border-left: 3px solid #d3232a;
+    background: linear-gradient(90deg, rgba(211, 35, 42, 0.22), rgba(211, 35, 42, 0.04) 70%, transparent);
+    font-weight: 700;
+}
+
+#pp-wand-menu-item.pp-wand-standout:hover,
+#pp-wand-menu-item.pp-wand-standout:focus-visible {
+    background: linear-gradient(90deg, rgba(211, 35, 42, 0.42), rgba(211, 35, 42, 0.12) 70%, transparent);
+    outline: none;
+}
+
+#pp-wand-menu-item.pp-wand-standout .extensionsMenuExtensionButton {
+    width: 1.25em;
+    height: 1.25em;
+    border-radius: 50%;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='7.6' fill='%23d3232a'/%3E%3Cpath d='M4 5.6h8v5.2H4z' fill='%23fff' stroke='%23fff' stroke-width='1.1' stroke-linejoin='round' transform='rotate(-14 8 8)'/%3E%3Cpath d='M4 5.6l4 3 4-3' fill='none' stroke='%23d3232a' stroke-width='1.1' stroke-linejoin='round' transform='rotate(-14 8 8)'/%3E%3C/svg%3E") center / contain no-repeat;
+    box-shadow: 0 0 6px rgba(211, 35, 42, 0.55);
+}
+
+#pp-wand-menu-item.pp-wand-standout .extensionsMenuExtensionButton::before {
+    content: none;
+}
+
+/* ═══════════ Menu → Inject context ═══════════ */
+.pp-ctx-feed {
+    margin: 8px 0 14px;
+}
+
+.pp-ctx-feed-title {
+    margin: 0 0 4px;
+    font-size: 0.95em;
+    opacity: 0.9;
+}
+
+.pp-ctx-note {
+    margin: 2px 0;
+    opacity: 0.7;
+    font-size: 0.9em;
+}
+
+.pp-ctx-tools {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    margin: 2px 0 6px;
+    font-size: 0.85em;
+}
+
+.pp-ctx-tools span {
+    flex: 1 1 100%;
+    opacity: 0.7;
+}
+
+.pp-ctx-tools .menu_button {
+    width: auto;
+    margin: 0;
+    padding: 3px 10px;
+}
+
+.pp-ctx-list {
+    max-height: 260px;
+    overflow-y: auto;
+    border: 1px solid rgba(158, 196, 255, 0.18);
+    border-radius: 3px;
+}
+
+.pp-ctx-pick {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: 8px;
+    align-items: center;
+    padding: 5px 8px;
+    border-bottom: 1px solid rgba(158, 196, 255, 0.08);
+    cursor: pointer;
+}
+
+.pp-ctx-pick:last-child {
+    border-bottom: none;
+}
+
+.pp-ctx-pick:hover {
+    background: rgba(158, 196, 255, 0.07);
+}
+
+.pp-ctx-pick input {
+    grid-row: span 2;
+    margin: 0;
+}
+
+.pp-ctx-meta {
+    font-size: 0.8em;
+    opacity: 0.65;
+}
+
+.pp-ctx-text {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
