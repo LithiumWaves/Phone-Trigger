@@ -175,7 +175,7 @@ Opening the phone shows its standby screen: the wallpaper, a big clock with the 
 
 ### Address book
 
-Menu (page 2) → **Address book**. The first time the phone opens in a chat it asks who is already in your phone, and under what name (Phones → *Ask who's in my phone when a chat starts*; off means everyone starts as a contact). Saved names show everywhere on the handset — inbox, read view, calls, the outer display, notifications — while prompts and the story keep everyone's real name. PhoneWave can be renamed too.
+Menu (page 2) → **Address book**. The first time the phone opens in a new chat (no mail or calls yet) it asks who is already in your phone, and under what name (Phones → *Ask who's in my phone when a chat starts*; off means everyone starts as a contact). Saved names show everywhere on the handset — inbox, read view, calls, the outer display, notifications — while prompts and the story keep everyone's real name. PhoneWave can be renamed too.
 
 People who aren't in your phone can still mail and call you: they show as *not in contacts* with **＋ Add to contacts**. The Address book's **＋ Add** lists everyone in the chat you haven't added. Compose and the dialer only list your contacts (and whoever you're replying to).
 
