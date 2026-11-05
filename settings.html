@@ -804,6 +804,9 @@
                     <div class="pp-settings-block">
                         <label for="pp_timeleap_limit">Hours per leap (further back chains several leaps; 0 = no limit)</label>
                         <input id="pp_timeleap_limit" type="number" min="0" max="8760" step="1" class="text_pole" />
+                        <label for="pp_tlm_built">Machine completed (this chat) — nobody can leap to before it</label>
+                        <input id="pp_tlm_built" type="datetime-local" class="text_pole" />
+                        <small>Story time. Empty = no limit (the default). Also in TLM.EXE → CONFIG.</small>
                         <label>
                             <input id="pp_timeleap_keep_phone" type="checkbox" />
                             <span>Keep future mail and calls on the new branch</span>

@@ -38,6 +38,7 @@ import { initBoardUi, resetBoardNav, openBoardApp } from './lib/board.js';
 import { initTipsUi, refreshTips, noteTipsMessage, openTips } from './lib/tips.js';
 import { initLabUi, refreshLab, labMemCommand } from './lib/labMembers.js';
 import { initAddressBookUi, resetAddressBookNav } from './lib/addressBook.js';
+import { initMachineFloorUi } from './lib/timeleapApp.js';
 import './lib/dataFolderApp.js';
 import { initCardHistoryUi, cardUndoCommand } from './lib/cardHistory.js';
 import { initWorldlineUi, refreshWorldlinePanels, setConvergenceChangeHandler } from './lib/worldline.js';
@@ -1300,6 +1301,7 @@ function initFeatureUi() {
         () => initTipsUi(),
         () => initLabUi(),
         () => initAddressBookUi(),
+        () => initMachineFloorUi(),
         () => initCardHistoryUi(),
         () => initWorldlineUi(() => updateWorldlinePrompt()),
         () => setConvergenceChangeHandler(() => updateWorldlinePrompt()),
