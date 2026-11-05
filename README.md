@@ -202,6 +202,10 @@ As in the VN, character mail underlines a few **keywords** — tap one and your 
 
 On the SG-001 the mail screens use the VN's **Classic** look by default: white screens with a blue title bar, one-line inbox rows (`8/ 2  Sender`), red To/frm/sub tags, and the *Sending mail → Mail sent.* animation. Pick **Dark** (Mail settings → *Mail screen theme*, or the phone's Settings → *Mail theme*) for the navy LCD. Custom phones keep their own screen colours.
 
+**Inject context** (Phone Trigger menu → *Inject context*) decides what mail and calls know about each other. It has three feeds: **E-mails → calls**, **Past calls → mail replies** and **Past calls → new calls**. Each one is *Auto* (only items with the same person, newest first, with adjustable caps), *Manual* (exactly the mails or calls you tick in the menu's list, for everyone) or *Off*. Picks are saved per chat. Call templates can place the blocks with `{{mail_context}}` and `{{call_memory}}`; otherwise they're added at the end.
+
+Can't find the menu? In SillyTavern's wand list, **Phone Trigger · Menu** has a red accent (Menu → System can set it back to plain), and the MAIL chip has a small ⚙ that opens the menu (it can be turned off there too).
+
 **Photos:** attach one from the compose screen (it's shrunk to fit the chat file; add a caption so they know what it shows). With *Characters can send photos* on, they sometimes attach one: SillyTavern's image generation (`/sd`) develops it when installed, otherwise its description shows.
 
 **People notice** (optional, Mail settings): mail left unread and calls not returned for a few story hours become a note for the AI, and characters may mail you about it. **Closeness** (optional) moves with the words you tap, your replies and the tone of their mail.

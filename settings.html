@@ -44,6 +44,20 @@
                         <small>Adds a Phone Trigger item to the magic wand / Extensions menu.</small>
                     </div>
                     <div class="pp-settings-block">
+                        <label for="pp_wand_menu_style"><span>Wand "Phone Trigger menu" item</span></label>
+                        <select id="pp_wand_menu_style">
+                            <option value="standout">Stand out — red accent and mail badge</option>
+                            <option value="plain">Plain — like other extensions</option>
+                        </select>
+                    </div>
+                    <div class="pp-settings-block">
+                        <label>
+                            <input id="pp_chip_menu_gear" type="checkbox" />
+                            <span>⚙ Menu button on the MAIL chip</span>
+                        </label>
+                        <small>A small gear on the chip opens this menu; the rest of the chip still opens the phone.</small>
+                    </div>
+                    <div class="pp-settings-block">
                         <label>
                             <input id="pp_slash" type="checkbox" />
                             <span>Slash commands</span>
@@ -306,7 +320,7 @@
                             <input id="pp_inject_call_memory" type="checkbox" />
                             <span>Inject call memory into chat</span>
                         </label>
-                        <small>Same as phone Settings → Call memory. Summaries/transcripts of finished calls.</small>
+                        <small>Same as phone Settings → Call memory. Summaries/transcripts of finished calls. To feed calls into mail and other calls, see <b>Inject context</b>.</small>
                     </div>
                     <div class="pp-settings-block">
                         <label>
@@ -315,6 +329,47 @@
                         </label>
                         <small>LLM-compacts the transcript after each call (keeps summary, drops full turns).</small>
                     </div>
+            </section>
+
+            <section class="pp-menu-cat" data-cat="context" data-title="Inject context" data-icon="⇄">
+                <p class="pp-menu-lead">What mail and calls know about each other. <b>Auto</b> uses only items with the same person; <b>Manual</b> uses exactly what you tick below, for everyone.</p>
+                    <h3 class="pp-menu-sub">Feeds</h3>
+                    <div class="pp-settings-block">
+                        <label for="pp_ctxmailtocall"><span>E-mails → calls</span></label>
+                        <select id="pp_ctxmailtocall">
+                            <option value="auto">Auto — mails with whoever you're calling</option>
+                            <option value="manual">Manual — the mails I pick</option>
+                            <option value="off">Off</option>
+                        </select>
+                        <small>On a call, the character remembers what you've mailed each other. Fills <code>{{mail_context}}</code> in the call prompt, or is added at the end.</small>
+                    </div>
+                    <div class="pp-settings-block">
+                        <label for="pp_ctxcalltomail"><span>Past calls → mail replies</span></label>
+                        <select id="pp_ctxcalltomail">
+                            <option value="auto">Auto — calls with whoever is writing</option>
+                            <option value="manual">Manual — the calls I pick</option>
+                            <option value="off">Off</option>
+                        </select>
+                        <small>Mail replies (and mail they send on their own) remember earlier phone calls.</small>
+                    </div>
+                    <div class="pp-settings-block">
+                        <label for="pp_ctxcalltocall"><span>Past calls → new calls</span></label>
+                        <select id="pp_ctxcalltocall">
+                            <option value="auto">Auto — earlier calls with the same person</option>
+                            <option value="manual">Manual — the calls I pick</option>
+                            <option value="off">Off</option>
+                        </select>
+                        <small>A new call remembers earlier ones. Fills <code>{{call_memory}}</code> in the call prompt, or is added at the end.</small>
+                    </div>
+                    <div class="pp-settings-block">
+                        <label for="pp_ctx_mail_max"><span>E-mails per call (Auto)</span></label>
+                        <input id="pp_ctx_mail_max" type="number" class="text_pole" min="1" max="30" step="1" style="max-width:5em;" />
+                        <label for="pp_ctx_call_max"><span>Past calls per prompt (Auto)</span></label>
+                        <input id="pp_ctx_call_max" type="number" class="text_pole" min="1" max="20" step="1" style="max-width:5em;" />
+                        <small>Calls are kept per chat (Memory → Calls). Summarize calls on hang-up to keep these short.</small>
+                    </div>
+                    <h3 class="pp-menu-sub">Picked items (this chat)</h3>
+                    <div id="pp-ctx-picker" class="pp-ctx-picker"></div>
             </section>
 
             <section class="pp-menu-cat" data-cat="initiative" data-title="Initiative" data-icon="✦">
