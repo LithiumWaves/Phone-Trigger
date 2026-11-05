@@ -37,6 +37,8 @@ import { initFakeCallUi, onFakeCallMessage, openFakeCall } from './lib/fakeCall.
 import { initBoardUi, resetBoardNav, openBoardApp } from './lib/board.js';
 import { initTipsUi, refreshTips, noteTipsMessage, openTips } from './lib/tips.js';
 import { initLabUi, refreshLab, labMemCommand } from './lib/labMembers.js';
+import { initAddressBookUi, resetAddressBookNav } from './lib/addressBook.js';
+import './lib/dataFolderApp.js';
 import { initCardHistoryUi, cardUndoCommand } from './lib/cardHistory.js';
 import { initWorldlineUi, refreshWorldlinePanels, setConvergenceChangeHandler } from './lib/worldline.js';
 import { initStoryClockUi, syncStoryClockFlow, noteStoryMessage, onStoryChatChanged, updateStoryClockPrompt, storyTimeCommand, stampMessage, renderMessageStamps } from './lib/storyClock.js';
@@ -1297,6 +1299,7 @@ function initFeatureUi() {
         () => initBoardUi(),
         () => initTipsUi(),
         () => initLabUi(),
+        () => initAddressBookUi(),
         () => initCardHistoryUi(),
         () => initWorldlineUi(() => updateWorldlinePrompt()),
         () => setConvergenceChangeHandler(() => updateWorldlinePrompt()),
@@ -1354,6 +1357,7 @@ function registerEvents() {
         resetBoardNav();
         refreshTips();
         refreshLab();
+        resetAddressBookNav();
         refreshWorldlinePanels();
         updateMenuStatus();
         updateMailPrompt();
