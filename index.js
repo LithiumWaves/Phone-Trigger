@@ -1163,7 +1163,7 @@ function registerSlashCommands() {
         return '';
     }, 'Take a fake phone call (optional: who you pretend to talk to).');
     simple('storytime', (text) => storyTimeCommand(text),
-        'Story clock. No argument reports it; <code>pass 2h</code>, <code>sleep</code>, <code>set 2010-08-13 19:56</code>, <code>day 3</code>.',
+        'Story clock. No argument reports it; <code>pass 2h</code>, <code>sleep</code>, <code>set 2010-08-13 19:56</code>.',
         ['clock']);
     for (const extra of extraCommands) {
         simple(extra.name, extra.callback, extra.help, extra.aliases || []);

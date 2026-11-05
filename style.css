@@ -6468,18 +6468,6 @@ dialog.pp-menu .pp-wd-del {
     text-align: center;
 }
 
-.pp-sclock-day {
-    font: 500 9px/1 var(--pp-font);
-    letter-spacing: 0.3em;
-    color: var(--pp-lcd-dim);
-}
-
-.pp-sclock-day b {
-    color: var(--pp-unread);
-    font-size: 12px;
-    letter-spacing: 0.05em;
-}
-
 .pp-sclock-time {
     margin: 4px 0 2px;
     font: 600 34px/1 var(--pp-font);
@@ -7173,6 +7161,37 @@ dialog.pp-menu .pp-wd-del {
     color: inherit;
     font: inherit;
     cursor: pointer;
+}
+
+.pp-cv-knows {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 3px;
+    margin-top: 2px;
+    font-size: 0.8em;
+}
+
+.pp-cv-knows em {
+    opacity: 0.7;
+    font-style: normal;
+}
+
+.pp-cv-knower {
+    padding: 0 5px;
+    border: 1px solid rgba(201, 160, 255, 0.3);
+    border-radius: 8px;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    opacity: 0.55;
+    cursor: pointer;
+}
+
+.pp-cv-knower.pp-on {
+    border-color: #c9a0ff;
+    background: rgba(201, 160, 255, 0.25);
+    opacity: 1;
 }
 
 .pp-cv-empty {

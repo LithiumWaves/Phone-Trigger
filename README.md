@@ -24,14 +24,14 @@ SillyTavern extension that recreates the Steins;Gate **Phone Trigger** loop: ope
 - **Notifications** — Steins;Gate-styled mail alerts + chip unread badge
 - **Send animation** — compose shows an e-mail-client send sequence
 - **Wallpaper & sounds** — presets (the default **SG-001** is a vector remake of Okabe's blueprint wallpaper) or custom URLs
-- **Standby screen & main menu** — a clean standby screen (clock, Day, meter, notifications) and a 3×3 pixel-icon menu on OK / MENU
+- **Standby screen & main menu** — a clean standby screen (clock, date, meter, notifications) and a 3×3 pixel-icon menu on OK / MENU
 - **Character → user** — characters can mail you straight from the chat whenever it fits (`<email subject="…">…</email>` tags or the `send_email` tool); on by default (Context → *Characters can e-mail you from the chat*)
 - **User → character** — compose in-phone or `/mailsend`
 - **Independent replies** — mail generation uses raw/OpenRouter (not the active chat turn), with a configurable delay and editable prompt template
 - **Active-chat To:** — PhoneWave plus group members (or the solo chat character) appear in compose
 - **Context toggles** — optional chat→mail summary; optional mail→chat memory with a phone **Memory** picker per character; optional worldline inject after D-Mail
 - **Guided receive** — faint signal bars on Inbox open a From / Guide panel to force inbound mail
-- **Story clock** — the chat keeps its own date, time and Day (chat messages show their story time beside the real timestamp); manual, real-time or per-message flow; Pass time and Sleep; **Re-date history…** (under the story log) moves an older chat's real-time dates onto the story calendar, all at once or one event at a time
+- **Story clock** — the chat keeps its own date and time (chat messages show their story time beside the real timestamp); manual, real-time or per-message flow; Pass time and Sleep; **Re-date history…** (under the story log) moves an older chat's real-time dates onto the story calendar, all at once or one event at a time
 - **Phone Trigger keywords** — character mail underlines a few words; tap one and your reply is written about it
 - **Photo mail** — attach photos to mail; characters can send described photos (developed by `/sd` when installed)
 - **Undoing D-Mails** — a D-Mail that contradicts an earlier one cancels it and the meter goes back
@@ -65,7 +65,7 @@ SillyTavern extension that recreates the Steins;Gate **Phone Trigger** loop: ope
 | `/worldcheck [name]` | Ask now whether a character would send a D-Mail or time leap |
 | `/music` (`/radio`) | Open Lab Radio, the music player (needs Dynamic Audio) |
 | `/phonemenu` (`/ptmenu`) | Open the settings menu |
-| `/storytime` (`/clock`) | Story clock: `pass 2h`, `sleep`, `set 2010-08-13 19:56`, `day 3`, `history` (re-date) (no argument reports it) |
+| `/storytime` (`/clock`) | Story clock: `pass 2h`, `sleep`, `set 2010-08-13 19:56`, `history` (re-date) (no argument reports it) |
 | `/worldlines` (`/wlmap`) | Open the worldline map |
 | `/board [name]` (`/atchannel`) | Open @channel (optionally a board, e.g. `/board occult`) |
 | `/fakecall [who]` | Take a fake call |
@@ -170,7 +170,7 @@ Mail is stored in chat metadata. Wallpaper / sounds / reply prompt are extension
 
 ### Standby screen and main menu
 
-Opening the phone shows its standby screen: the wallpaper, a big clock with the date and Day, a slim divergence meter, and small chips only when something is waiting (new mail, missed calls, a call in progress, a worldline shift — tap one to go there). Press **OK** (or the **MENU** soft key) for the main menu: a 3×3 grid of pixel icons for Mail, Call, Grab a phone, @channel, Clock, Worldline map, Time Leap, D-Mail and Settings, with a second page for the Address book and Data folder. The D-pad moves through it (on the SG-001 the big side wedges are left/right while the menu is open, and the red End key returns to standby), number keys 1–9 jump straight to an item on the page you're on, and Back from any item returns to the menu.
+Opening the phone shows its standby screen: the wallpaper, a big clock with the date, a slim divergence meter, and small chips only when something is waiting (new mail, missed calls, a call in progress, a worldline shift — tap one to go there). Press **OK** (or the **MENU** soft key) for the main menu: a 3×3 grid of pixel icons for Mail, Call, Grab a phone, @channel, Clock, Worldline map, Time Leap, D-Mail and Settings, with a second page for the Address book and Data folder. The D-pad moves through it (on the SG-001 the big side wedges are left/right while the menu is open, and the red End key returns to standby), number keys 1–9 jump straight to an item on the page you're on, and Back from any item returns to the menu.
 
 ### Address book
 
@@ -194,7 +194,7 @@ When D-Mail Apply rewrites a character card, the text it replaced is kept (and t
 
 ### Story clock
 
-Each chat keeps its own date and time (Menu → **Clock**, or tap the clock on the phone's home screen). Set the date, time and **Day** directly; **Pass time** (+15 m, +1 h, +3 h or any amount) and **Sleep** (until the wake hour, Day +1). Choose how it flows: **Manual**, **Real time** (X real minutes = 1 story hour, only while the chat is open) or **Messages** (X messages = 1 story hour). Phone clocks, mail dates and the menu follow it, time leaps move it back, and an optional line tells the AI the time. A **story log** records mail, calls, D-Mails, leaps and sleeps with their story time.
+Each chat keeps its own date and time (Menu → **Clock**, or tap the clock on the phone's home screen). Set the date and time directly; **Pass time** (+15 m, +1 h, +3 h or any amount) and **Sleep** (until the wake hour). Choose how it flows: **Manual**, **Real time** (X real minutes = 1 story hour, only while the chat is open) or **Messages** (X messages = 1 story hour). Phone clocks, mail dates and the menu follow it, time leaps move it back, and an optional line tells the AI the time. A **story log** records mail, calls, D-Mails, leaps and sleeps with their story time.
 
 ### Mail on the handset
 
@@ -222,7 +222,7 @@ D-Mail screen → **Worldline map**, Menu → D-Mail, or `/worldlines`. D-Mails 
 
 ### Convergence & milestones
 
-**Convergence points** (D-Mail settings or the phone's D-Mail screen) are outcomes the worldline reaches however anyone tries to stop them — until the divergence crosses into another attractor field. Optionally count how often each is reached (checked after each time leap). **Milestones** (optional): crossing a field makes the meter's first tube hesitate, and a target reading of your choice makes the home meter glow.
+**Convergence points** (D-Mail settings or the phone's D-Mail screen) are outcomes the worldline reaches however anyone tries to stop them — until the divergence crosses into another attractor field. Each point has a **Knows** row: tap you or a chat character to mark who knows it's fated; by default nobody does, so the AI treats it as narrator knowledge and doesn't write anyone as having lived through it before. Optionally count how often each is reached (checked after each time leap). **Milestones** (optional): crossing a field makes the meter's first tube hesitate, and a target reading of your choice makes the home meter glow.
 
 ### @channel
 
