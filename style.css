@@ -9188,3 +9188,398 @@ body.pt-no-msg-stamps .pt-story-stamp {
 .pp-photo-viewer-bar {
     flex-wrap: wrap;
 }
+
+/* —— PhoneWave setup minigames —— */
+.pp-ms .pp-ms-panel {
+    width: min(480px, 100%);
+    padding: 20px 18px 14px;
+}
+
+.pp-ms-head {
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    color: var(--sg-orange);
+}
+
+.pp-ms-steps {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 4px 14px;
+    margin: 10px 0 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: ms;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--sg-dim);
+}
+
+.pp-ms-steps li {
+    counter-increment: ms;
+}
+
+.pp-ms-steps li::before {
+    content: counter(ms) " ";
+    color: var(--sg-line);
+}
+
+.pp-ms-steps li.pp-ms-now {
+    color: var(--sg-amber);
+}
+
+.pp-ms-steps li.pp-ms-done {
+    color: var(--sg-ink);
+    text-decoration: line-through;
+    text-decoration-color: rgba(255, 140, 60, 0.5);
+}
+
+.pp-ms-stage {
+    min-height: 220px;
+    margin-top: 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.pp-ms-text {
+    margin: 0;
+    font-size: 12.5px;
+    line-height: 1.45;
+    color: var(--sg-ink);
+}
+
+.pp-ms-small {
+    margin: 0;
+    font-size: 11px;
+    color: var(--sg-dim);
+}
+
+.pp-ms-small b {
+    color: var(--sg-amber);
+}
+
+.pp-ms-row,
+.pp-ms-foot {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}
+
+.pp-ms-foot {
+    margin-top: 12px;
+}
+
+.pp-ms-row .pp-wa-btn,
+.pp-ms-foot .pp-wa-btn {
+    flex: 1;
+}
+
+.pp-ms-status {
+    min-height: 16px;
+    margin-top: 8px;
+    font-size: 11.5px;
+    color: var(--sg-dim);
+}
+
+.pp-ms-status.pp-ms-ok {
+    color: #9dffb0;
+}
+
+.pp-ms-status.pp-ms-bad {
+    color: #ff8a6a;
+}
+
+/* Braun tube */
+.pp-ms-crt {
+    position: relative;
+    width: 150px;
+    height: 110px;
+    border-radius: 18px / 14px;
+    border: 6px solid #2a1d16;
+    background: #050403;
+    box-shadow: inset 0 0 22px #000, 0 0 0 2px #120c09;
+    overflow: hidden;
+}
+
+.pp-ms-crt i {
+    position: absolute;
+    inset: 0;
+    background:
+        repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.06) 0 1px, transparent 1px 3px),
+        radial-gradient(ellipse at 50% 50%, rgba(160, 210, 255, 0.55), rgba(40, 70, 110, 0.2) 60%, transparent 75%);
+    opacity: 0;
+    transform: scaleY(0.02);
+}
+
+.pp-ms-crt-on i {
+    animation: pp-ms-crt-on 1.1s ease-out forwards;
+}
+
+@keyframes pp-ms-crt-on {
+    0% { opacity: 0; transform: scaleY(0.02) scaleX(0.3); }
+    35% { opacity: 1; transform: scaleY(0.02) scaleX(1); }
+    100% { opacity: 1; transform: none; }
+}
+
+/* Microwave */
+.pp-ms-oven {
+    display: flex;
+    gap: 8px;
+    padding: 10px;
+    border: 1px solid var(--sg-line);
+    border-radius: 6px;
+    background: linear-gradient(180deg, #2b2724, #191614);
+}
+
+.pp-ms-oven-door {
+    width: 150px;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    background: radial-gradient(ellipse at 50% 60%, rgba(255, 190, 90, 0.16), rgba(0, 0, 0, 0.85) 70%), #0c0a08;
+    box-shadow: inset 0 0 0 2px #3a332d;
+}
+
+.pp-ms-plate {
+    width: 84px;
+    height: 26px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 220, 170, 0.35);
+    background: repeating-conic-gradient(rgba(255, 220, 170, 0.18) 0 20deg, transparent 20deg 40deg);
+}
+
+.pp-ms-plate-spin {
+    animation: pp-ms-spin-back 1.2s linear infinite;
+}
+
+@keyframes pp-ms-spin-back {
+    to { transform: rotate(-360deg); }
+}
+
+.pp-ms-oven-side {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.pp-ms-lcd {
+    padding: 4px 8px;
+    border-radius: 2px;
+    background: #0d1a10;
+    color: #8dff9a;
+    font: 700 20px/1 "IBM Plex Mono", Consolas, monospace;
+    letter-spacing: 0.08em;
+    text-align: right;
+    text-shadow: 0 0 8px rgba(120, 255, 140, 0.6);
+}
+
+.pp-ms-pad {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px;
+}
+
+.pp-ms-pad-phone {
+    width: min(210px, 100%);
+}
+
+.pp-ms-key {
+    min-width: 36px;
+    min-height: 30px;
+    padding: 4px;
+    border: 1px solid var(--sg-line);
+    border-radius: 3px;
+    background: rgba(20, 8, 4, 0.85);
+    color: var(--sg-ink);
+    font: 600 12px/1 "IBM Plex Mono", Consolas, monospace;
+    cursor: pointer;
+    touch-action: manipulation;
+}
+
+.pp-ms-key:hover,
+.pp-ms-key:focus-visible {
+    border-color: rgba(255, 150, 60, 0.7);
+    outline: none;
+}
+
+.pp-ms-key:active {
+    transform: translateY(1px);
+}
+
+.pp-ms-key-go {
+    color: var(--sg-amber);
+    border-color: rgba(255, 140, 50, 0.6);
+    font-size: 10px;
+}
+
+/* Dial */
+.pp-ms-dial {
+    font: 700 20px/1.2 "IBM Plex Mono", Consolas, monospace;
+    letter-spacing: 0.12em;
+    color: var(--sg-amber);
+}
+
+.pp-ms-dial i {
+    font-style: normal;
+    color: var(--sg-dim);
+}
+
+.pp-ms-dash {
+    color: var(--sg-dim);
+}
+
+/* Gauge */
+.pp-ms-gauge {
+    position: relative;
+    width: 100%;
+    height: 22px;
+    border: 1px solid var(--sg-line);
+    background: linear-gradient(90deg, rgba(60, 120, 255, 0.15), rgba(255, 120, 40, 0.25) 75%, rgba(255, 40, 20, 0.45));
+}
+
+.pp-ms-band {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    background: rgba(140, 255, 160, 0.28);
+    box-shadow: inset 0 0 0 1px rgba(140, 255, 160, 0.7);
+}
+
+.pp-ms-needle {
+    position: absolute;
+    top: -4px;
+    bottom: -4px;
+    width: 3px;
+    margin-left: -1px;
+    background: #fff4dc;
+    box-shadow: 0 0 8px rgba(255, 200, 120, 0.9);
+}
+
+.pp-ms-big {
+    min-width: 180px;
+    padding: 14px 24px;
+    border: 1px solid rgba(255, 140, 50, 0.75);
+    border-radius: 4px;
+    background: linear-gradient(180deg, rgba(255, 120, 30, 0.35), rgba(120, 40, 10, 0.5));
+    color: var(--sg-amber);
+    font: 700 18px/1 "IBM Plex Mono", Consolas, monospace;
+    letter-spacing: 0.2em;
+    cursor: pointer;
+    touch-action: manipulation;
+}
+
+.pp-ms-big:disabled {
+    opacity: 0.4;
+}
+
+.pp-ms-stage.pp-ms-hot .pp-ms-big {
+    box-shadow: 0 0 18px rgba(255, 140, 40, 0.6);
+}
+
+.pp-ms-stage.pp-ms-hot .pp-ms-plate-spin {
+    border-color: rgba(190, 230, 255, 0.8);
+    box-shadow: 0 0 14px rgba(140, 200, 255, 0.7);
+}
+
+.pp-ms-stage.pp-ms-flash {
+    animation: pp-ms-flash 0.38s ease-out;
+}
+
+@keyframes pp-ms-flash {
+    0% { filter: brightness(2.2); }
+    100% { filter: none; }
+}
+
+/* Headgear */
+.pp-ms-head-wrap {
+    position: relative;
+    width: 170px;
+    height: 170px;
+}
+
+.pp-ms-headsvg {
+    width: 100%;
+    height: 100%;
+    fill: rgba(255, 200, 150, 0.08);
+    stroke: rgba(255, 170, 100, 0.55);
+    stroke-width: 1.2;
+}
+
+.pp-ms-band-arc {
+    fill: none;
+    stroke: rgba(160, 160, 170, 0.7);
+    stroke-width: 3;
+}
+
+.pp-ms-pt {
+    position: absolute;
+    width: 26px;
+    height: 26px;
+    margin: -13px 0 0 -13px;
+    border: 2px dashed rgba(140, 255, 160, 0.8);
+    border-radius: 50%;
+    background: transparent;
+    cursor: pointer;
+    animation: pp-ms-pulse 1.2s ease-in-out infinite;
+}
+
+.pp-ms-pt.pp-ms-on {
+    border-style: solid;
+    background: radial-gradient(circle, #cfd6dc 0 40%, #6a7580 41% 100%);
+    animation: none;
+}
+
+@keyframes pp-ms-pulse {
+    50% { transform: scale(1.15); }
+}
+
+.pp-ms-tray {
+    display: flex;
+    gap: 12px;
+}
+
+.pp-ms-pad-el {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #cfd6dc 0 40%, #6a7580 41% 100%);
+    cursor: grab;
+    touch-action: none;
+}
+
+.pp-ms-pad-el.pp-ms-used {
+    opacity: 0.15;
+    cursor: default;
+}
+
+.pp-ms-ghost {
+    position: fixed;
+    z-index: 2147483100;
+    margin: -11px 0 0 -11px;
+    pointer-events: none;
+}
+
+.pp-ms-calm .pp-ms-plate-spin,
+.pp-ms-calm .pp-ms-pt {
+    animation: none;
+}
+
+.pp-ms-calm .pp-ms-stage.pp-ms-flash {
+    animation: none;
+}
+
+.pp-ms-calm .pp-ms-crt-on i {
+    animation-duration: 0.01s;
+}
+
+@media (max-width: 420px) {
+    .pp-ms-oven {
+        flex-direction: column;
+        align-items: center;
+    }
+}

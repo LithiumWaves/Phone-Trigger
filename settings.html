@@ -701,6 +701,17 @@
             </section>
             <section class="pp-menu-cat" data-cat="dmail" data-title="D-Mail" data-icon="⌁">
                 <p class="pp-menu-lead">Mail to the past through PhoneWave.</p>
+                    <h3 class="pp-menu-sub">Set up the machine yourself</h3>
+                    <div class="pp-settings-block">
+                        <label><input id="pp_ms_enabled" type="checkbox" /><span>PhoneWave setup minigames</span></label>
+                        <small>Off by default. When you send a D-Mail or time leap yourself, set the machine up first, as in the VN: check the Braun tube downstairs, set the microwave timer, call the PhoneWave, and send in the discharge; for a leap, put on the headgear and hit Enter at the peak. Skip is always there.</small>
+                        <label><input id="pp_ms_dmail" type="checkbox" /><span>For D-Mails</span></label>
+                        <label><input id="pp_ms_leap" type="checkbox" /><span>For time leaps</span></label>
+                        <label><input id="pp_ms_braun" type="checkbox" /><span>The 42-inch Braun tube must be on</span></label>
+                        <label for="pp_ms_hours">Mr. Braun's shop hours (story time)</label>
+                        <input id="pp_ms_hours" type="text" class="text_pole" placeholder="10:00-20:00" style="max-width:9em;" />
+                        <small>Outside these hours the lifter won't work: wait until the shop opens, or cancel.</small>
+                    </div>
                     <div class="pp-settings-block">
                         <label>
                             <input id="pp_inject_worldline" type="checkbox" />
@@ -807,6 +818,7 @@
                         <label for="pp_tlm_built">Machine completed (this chat) — nobody can leap to before it</label>
                         <input id="pp_tlm_built" type="datetime-local" class="text_pole" />
                         <small>Story time. Empty = no limit (the default). Also in TLM.EXE → CONFIG.</small>
+                        <small>Setup minigames for your own leaps: D-Mail → <i>Set up the machine yourself</i>.</small>
                         <label>
                             <input id="pp_timeleap_keep_phone" type="checkbox" />
                             <span>Keep future mail and calls on the new branch</span>

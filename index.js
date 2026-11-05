@@ -39,6 +39,7 @@ import { initTipsUi, refreshTips, noteTipsMessage, openTips } from './lib/tips.j
 import { initLabUi, refreshLab, labMemCommand } from './lib/labMembers.js';
 import { initAddressBookUi, resetAddressBookNav } from './lib/addressBook.js';
 import { initMachineFloorUi } from './lib/timeleapApp.js';
+import { initMachineSetupUi } from './lib/machineSetup.js';
 import './lib/dataFolderApp.js';
 import { initCardHistoryUi, cardUndoCommand } from './lib/cardHistory.js';
 import { initWorldlineUi, refreshWorldlinePanels, setConvergenceChangeHandler } from './lib/worldline.js';
@@ -1302,6 +1303,7 @@ function initFeatureUi() {
         () => initLabUi(),
         () => initAddressBookUi(),
         () => initMachineFloorUi(),
+        () => initMachineSetupUi(),
         () => initCardHistoryUi(),
         () => initWorldlineUi(() => updateWorldlinePrompt()),
         () => setConvergenceChangeHandler(() => updateWorldlinePrompt()),
