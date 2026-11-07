@@ -6,7 +6,7 @@ SillyTavern extension that recreates the Steins;Gate **Phone Trigger** loop: ope
 
 - **System menu** — every setting in a Steins;Gate-style full-screen menu (Extensions drawer → **Open Phone Trigger menu**, the wand menu, `/phonemenu`, or phone Settings → Full menu)
 - **Designed phones** — 24 fashion styles (Jirai-kei, Scene, Gyaru, Gothic Lolita, Decora…) or an AI design to suit you or any character: four bodies, prints, finishes, key styles, rhinestones, charms and draggable stickers on the cover, front and keypad; phones open shut so you see the cover, and swipe up to flip them open
-- **Other people's phones** — grab a character's phone (or anyone's, like FB) to read, edit or delete their mail, check their call log, or send mail as them; characters can show you their phone with a `<phone>` tag
+- **Other people's phones** — grab a character's phone (or anyone's, like FB) to read, edit or delete their mail, check their call log, or send mail and make calls as them; characters can show you their phone with a `<phone>` tag
 - **Phone UI** — draggable MAIL chip, Extensions wand menu, `/phone`
 - **Handset chassis** — Okabe Rintarou's SG001 (truss crown, grey screen panel, gunmetal barrel hinge, wedge-key cluster, kana-printed keypad) with working multi-tap keypad (T9-style Latin)
 - **Mobile** — `<dialog showModal()>` top layer + scale-to-fit (S25 Ultra–safe)
@@ -14,7 +14,8 @@ SillyTavern extension that recreates the Steins;Gate **Phone Trigger** loop: ope
 - **Mail** — inbox / outbox / read / compose; optional tap-to-reply phrases; trash on open mail
 - **Calls** — dial a character and talk in the phone UI (not the main chat); optional call initiative (incoming rings); generation via unique prompt, main chat presets, or both
 - **Character initiative** — optional VN-style unsolicited mail with interval, chance, idle, caps, quiet hours, and contact rules (off by default)
-- **D-Mail** — permanent contact **PhoneWave (name subject to change)** (hideable); Spectacle (FX only) / Worldline / Propose / Apply; clearable worldline facts
+- **Time travel switch** — Menu → System → *Time travel* (or phone Settings → Time travel) hides D-Mail, the Time Leap Machine, the divergence meter, the worldline map and characters reaching into the past, for a plain phone; D-Mail and Time Leap can also be switched off one at a time
+- **D-Mail** — permanent contact **PhoneWave (name subject to change)** (can be switched off); Spectacle (FX only) / Worldline / Propose / Apply; clearable worldline facts
 - **Time Leap Machine** — call **PhoneWave** to open TLM.EXE; you or a character leaps back to a chosen message (48 h per leap; further back chains several leaps, each counted), the chat branches there, and only the leaper remembers the abandoned future; **Original** or **Progressive** cutscene; before it, the **discharge phenomenon** (lightning building over the chat into a flash and black), on by default for your leaps and characters' separately
 - **Divergence meter** — per-chat divergence picked by the AI for each D-Mail; choose the **Original** cutscene (default) or a **Progressive** nixie-tube remake that lands on the new value (asked once on first boot); meter on the phone home screen The D-Mail ends in a **worldline vertigo**: the picture swims, sways and splits into double vision as reality shifts.
 - **Reduce flashing** — photosensitivity option, asked on first boot (Menu → System): softer lightning, cutscene flashes and vertigo, dimmer clips; also follows your system's reduced-motion setting
@@ -118,13 +119,15 @@ Your designed phone replaces the SG001 everywhere — mail, calls, D-Mail and Ti
 
 On their phone you can read everything and **send mail as them**. Mail to you lands in your inbox as from them; mail to anyone else goes in their Sent, and that person's reply arrives in their inbox.
 
+**Calls** (or the green key) opens their dialer and call log. Calling from it **pretends to be them**: their number shows, so whoever picks up thinks it is the owner unless you give yourself away. Pick someone they know, tap a call-log entry to ring back, or choose *Someone else…* for anyone in the story. The call goes in their call log, and (with *Tell the chat what you saw* on) the chat learns you made it; it stays out of your own call memory.
+
 Open any of their mails to **Edit** or **Delete** it. Your own mail with them changes only on their phone; your copy stays. With **Tell the chat what you saw** on, each edit or delete asks whether to tell the chat (it goes in the note of what you did on their phone) or keep it a hidden action; with it off, it is always hidden. The red key hands the phone back.
 
 ### Characters reaching into the past
 
 Characters can send D-Mails and time leap too:
 
-- **From their phone.** Grab it and use **D-Mail** (or pick PhoneWave in the To list) or **Time Leap**. Their Time Leap Machine only lets them leap.
+- **From their phone.** Grab it and mail **PhoneWave** for a D-Mail, or call **PhoneWave** from their Calls screen for the Time Leap Machine, just like on yours. Their Time Leap Machine only lets them leap.
 - **When you make them.** Settings → Time Leap → *Make them do it*, or `/chardmail Kurisu stop Mayuri taking the train` / `/charleap Kurisu`. Guidance is optional.
 - **On their own** (off by default). Every few character messages, a short check asks whether someone in the chat — usually whoever just spoke, sometimes someone who isn't — has a real reason: they know the technology exists, and something urgent needs preventing or undoing. The answer is almost always no.
 - **Who knows about time leaping** (per chat). Settings → Time Leap: tick the characters who know. Each reply, they get a two-line note on how to leap: ending the reply with `<timeleap back="N" why="…"/>` (N = how many messages ago to return to). When they do, the marker is removed and they leap (with the usual *Let them leap* prompt if that is on).

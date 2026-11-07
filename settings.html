@@ -25,6 +25,35 @@
 <div id="pp-menu-sections" hidden>
             <section class="pp-menu-cat" data-cat="system" data-title="System" data-icon="⚙">
                 <p class="pp-menu-lead">Launchers, sounds and alerts.</p>
+                    <h3 class="pp-menu-sub">Time travel</h3>
+                    <div class="pp-settings-block">
+                        <label>
+                            <input id="pp_time_travel" type="checkbox" />
+                            <span>Time travel</span>
+                        </label>
+                        <small>
+                            D-Mail, the Time Leap Machine, the divergence meter, the worldline map, and characters reaching
+                            into the past. Off = a plain phone for mail, calls, other people's phones, @channel and the rest.
+                        </small>
+                    </div>
+                    <div class="pp-settings-block pp-tt-only">
+                        <label>
+                            <input id="pp_dmail_enabled" type="checkbox" />
+                            <span>D-Mail</span>
+                        </label>
+                        <small>Mail <b>PhoneWave</b> (from your phone or anyone's) to send a D-Mail; characters can send them too.</small>
+                    </div>
+                    <div class="pp-settings-block pp-tt-only">
+                        <label>
+                            <input id="pp_timeleap_enabled" type="checkbox" />
+                            <span>Time Leap Machine</span>
+                        </label>
+                        <small>
+                            Call <b>PhoneWave</b> (from your phone or anyone's, or <code>/timeleap</code>) to open TLM.EXE: pick who leaps
+                            (you or a character), the message to arrive at, and the story times. The chat is branched at that
+                            message; the leaper keeps compressed memories of the abandoned future.
+                        </small>
+                    </div>
                     <h3 class="pp-menu-sub">Extension &amp; UI</h3>
                     <div class="pp-settings-block">
                         <label>
@@ -839,17 +868,7 @@
 
             <section class="pp-menu-cat" data-cat="timeleap" data-title="Time Leap" data-icon="⟲">
                 <p class="pp-menu-lead">Memories sent back through PhoneWave.</p>
-                    <div class="pp-settings-block">
-                        <label>
-                            <input id="pp_timeleap_enabled" type="checkbox" />
-                            <span>Time Leap Machine</span>
-                        </label>
-                        <small>
-                            Call <b>PhoneWave</b> from the phone (or <code>/timeleap</code>) to open TLM.EXE: pick who leaps
-                            (you or a character), the message to arrive at, and the story times. The chat is branched at that
-                            message; the leaper keeps compressed memories of the abandoned future.
-                        </small>
-                    </div>
+                    <p class="pp-settings-note">Switch the machine on or off under System → Time travel.</p>
                     <div class="pp-settings-block">
                         <label>
                             <input id="pp_timeleap_inject" type="checkbox" />

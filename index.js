@@ -1,5 +1,5 @@
 import { MODULE_NAME, EXTENSION_FOLDER, LEGACY_EXTENSION_FOLDER, DEFAULT_SETTINGS, DEFAULT_MAIL_REPLY_PROMPT, DEFAULT_MAIL_FORCE_PROMPT, DEFAULT_MAIL_INITIATIVE_PROMPT, DEFAULT_CALL_PROMPT, DEFAULT_MAIL_MEMORY_PROMPT, DEFAULT_MAIL_MEMORY_ENTRY, DEFAULT_MAIL_SEND_INSTRUCTIONS } from './lib/constants.js';
-import { getSettings, saveSettings, getContext, toast } from './lib/settings.js';
+import { getSettings, saveSettings, getContext, toast, timeTravelOn, dmailOn, timeleapOn, phoneWaveOn } from './lib/settings.js';
 import {
     initPhoneChrome,
     openPhone,
@@ -44,7 +44,7 @@ import './lib/dataFolderApp.js';
 import { initCardHistoryUi, cardUndoCommand } from './lib/cardHistory.js';
 import { initWorldlineUi, refreshWorldlinePanels, setConvergenceChangeHandler } from './lib/worldline.js';
 import { initStoryClockUi, syncStoryClockFlow, onStoryMessage, onStoryChatChanged, updateStoryClockPrompt, storyTimeCommand, renderMessageStamps } from './lib/storyClock.js';
-import { mountMenu, openMenu, updateMenuStatus } from './lib/menu.js';
+import { mountMenu, openMenu, updateMenuStatus, syncFeatureTabs } from './lib/menu.js';
 import { registerPhonesMenu, registerPhoneCardAction } from './lib/phonesMenu.js';
 import {
     resolveOwner,
@@ -178,7 +178,7 @@ function bindSettingsUi() {
     $('#pp_call_init_quiet_end').val(s.callInitiativeQuietEnd ?? 8);
     $('#pp_dmail_sound').prop('checked', s.dmailSpectacleSound !== false);
     $('#pp_dmail_cutscene').val(s.dmailCutscene === 'progressive' ? 'progressive' : 'original');
-    $('#pp_timeleap_enabled').prop('checked', s.timeleapEnabled !== false);
+    syncFeatureSwitches();
     $('#pp_phone_grab').prop('checked', s.phoneGrab !== false);
     $('#pp_phone_ai_mode').val(s.phoneAiMode === 'free' ? 'free' : 'style');
     $('#pp_phone_show_tag').prop('checked', s.phoneShowTag !== false);
@@ -265,6 +265,34 @@ function syncCallInitiativeFields() {
     const quiet = Boolean($('#pp_call_init_quiet').prop('checked'));
     $('.pp-call-init-quiet-only').toggle(on && quiet);
 }
+
+/** The Time travel / D-Mail / Time Leap checkboxes follow the settings (they also change on the phone). */
+function syncFeatureSwitches() {
+    const s = getSettings();
+    $('#pp_time_travel').prop('checked', s.timeTravelEnabled !== false);
+    $('#pp_dmail_enabled').prop('checked', s.showPhoneWave !== false);
+    $('#pp_timeleap_enabled').prop('checked', s.timeleapEnabled !== false);
+    $('.pp-tt-only').toggle(s.timeTravelEnabled !== false);
+}
+
+/** Time travel, D-Mail or Time Leap was switched: everything that shows or injects them follows. */
+function onFeaturesChanged() {
+    syncFeatureSwitches();
+    try {
+        if (!timeTravelOn() || getSettings().dmailWorldline !== false) {
+            updateWorldlinePrompt(); // empty while time travel is off
+        }
+        updateTimeleapPrompt();
+        updateLeapAwarePrompt();
+    } catch (err) {
+        console.warn(LOG, 'refreshing time travel prompts failed', err);
+    }
+    syncFeatureTabs();
+    updateMenuStatus();
+    updateWandItem();
+    refreshIfOpen();
+}
+document.addEventListener('pt:features-changed', () => onFeaturesChanged());
 
 function onToggle(key, selector, after) {
     $(selector).on('input', () => {
@@ -821,7 +849,9 @@ async function loadSettingsPanel() {
         $('#pp_dmail_cutscene').val(choice);
     });
 
-    onToggle('timeleapEnabled', '#pp_timeleap_enabled');
+    onToggle('timeTravelEnabled', '#pp_time_travel', () => onFeaturesChanged());
+    onToggle('showPhoneWave', '#pp_dmail_enabled', () => onFeaturesChanged());
+    onToggle('timeleapEnabled', '#pp_timeleap_enabled', () => onFeaturesChanged());
     onToggle('phoneGrab', '#pp_phone_grab', () => refreshIfOpen());
     $('#pp_phone_ai_mode').on('change', () => {
         getSettings().phoneAiMode = $('#pp_phone_ai_mode').val() === 'free' ? 'free' : 'style';
@@ -987,6 +1017,10 @@ function syncWandMenuStyle() {
 
 /** Wand item: ask now whether a character would send a D-Mail or time leap. */
 function addWandCheckItem(wandRoot) {
+    if (!phoneWaveOn()) {
+        document.getElementById('pp-wand-check-item')?.remove();
+        return;
+    }
     if (document.getElementById('pp-wand-check-item')) {
         return;
     }
@@ -1186,6 +1220,9 @@ function registerSlashCommands() {
         }));
     };
     simple('worldlines', async (text) => {
+        if (!timeTravelOn()) {
+            return 'Time travel is switched off';
+        }
         (await import('./lib/worldlineMap.js')).openWorldlineMap(/^check|earlier/i.test(text) ? { section: 'earlier' } : {});
         return '';
     }, 'Open the worldline map. <code>/worldlines check</code> opens it on the earlier D-Mails.', ['wlmap']);
@@ -1221,6 +1258,9 @@ function registerSlashCommands() {
             if (!getSettings().enableSlashCommand) {
                 return 'Phone slash commands disabled';
             }
+            if (!timeleapOn()) {
+                return 'The Time Leap Machine is switched off';
+            }
             openTimeleapMachine();
             return 'Time Leap Machine opened';
         },
@@ -1250,6 +1290,9 @@ function registerSlashCommands() {
             if (!getSettings().enableSlashCommand) {
                 return 'Phone slash commands disabled';
             }
+            if (!phoneWaveOn()) {
+                return 'D-Mail and Time Leap are switched off';
+            }
             const name = String(unnamed || '').trim();
             const contact = name ? resolveActor(name) : null;
             if (name && !contact) {
@@ -1278,6 +1321,9 @@ function registerSlashCommands() {
             callback: async (_named, unnamed) => {
                 if (!getSettings().enableSlashCommand) {
                     return 'Phone slash commands disabled';
+                }
+                if (act === 'dmail' ? !dmailOn() : !timeleapOn()) {
+                    return `${act === 'dmail' ? 'D-Mail' : 'Time Leap'} is switched off`;
                 }
                 const text = String(unnamed || '').trim();
                 // The longest cast name that starts the text wins (names can have spaces).
