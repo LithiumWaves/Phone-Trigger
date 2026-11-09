@@ -36,7 +36,7 @@ SillyTavern extension that recreates the Steins;Gate **Phone Trigger** loop: ope
 - **Phone Trigger keywords** — character mail underlines a few words; tap one and your reply is written about it
 - **Photo mail** — attach photos to mail; characters can send described photos (developed by `/sd` when installed)
 - **Undoing D-Mails** — a D-Mail that contradicts an earlier one cancels it and the meter goes back
-- **Worldline map** — every D-Mail, undo and leap on an oscilloscope-style chart of attractor fields
+- **Worldline map** — every D-Mail, undo and leap on an oscilloscope-style chart of attractor fields; **Add by hand** (in its log) adds a D-Mail fact without moving the meter, or a worldline shift to a new reading without a fact; either can be removed with ×
 - **Convergence & milestones** — outcomes the worldline keeps reaching; field crossings and a target reading
 - **@channel** — an anonymous textboard app where characters post too
 - **Address book** — per chat: pick who starts in your phone, save them under your own names (the story keeps real names), add the rest later from their mail or call; each contact can have its own ringtone and mail tone

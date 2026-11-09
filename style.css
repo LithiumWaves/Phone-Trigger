@@ -7617,6 +7617,39 @@ dialog.pp-menu .pp-wd-del {
     color: #9fb4d6;
 }
 
+.pt-wm-ev-li-manual {
+    position: relative;
+}
+
+.pt-wm-ev-li-manual .pt-wm-ev {
+    padding-right: 26px;
+}
+
+.pt-wm-ev-manual {
+    border-left-style: dashed;
+}
+
+.pt-wm-ev-del {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 18px;
+    height: 18px;
+    padding: 0;
+    border: 1px solid rgba(255, 140, 120, 0.4);
+    border-radius: 2px;
+    background: rgba(40, 14, 12, 0.7);
+    color: #ffb4a0;
+    font: 600 12px/1 "IBM Plex Mono", Consolas, monospace;
+    cursor: pointer;
+}
+
+.pt-wm-ev-del:hover {
+    border-color: #ff8f78;
+    color: #fff;
+}
+
+.pt-wm-add-box summary,
 .pt-wm-cv-box summary {
     display: flex;
     align-items: center;
@@ -7625,10 +7658,12 @@ dialog.pp-menu .pp-wd-del {
     cursor: pointer;
 }
 
+.pt-wm-add-box summary::-webkit-details-marker,
 .pt-wm-cv-box summary::-webkit-details-marker {
     display: none;
 }
 
+.pt-wm-add-box summary::before,
 .pt-wm-cv-box summary::before {
     content: "▸";
     color: #c9a0ff;
@@ -7636,10 +7671,12 @@ dialog.pp-menu .pp-wd-del {
     transition: transform 0.15s;
 }
 
+.pt-wm-add-box[open] summary::before,
 .pt-wm-cv-box[open] summary::before {
     transform: rotate(90deg);
 }
 
+.pt-wm-add-box summary h3,
 .pt-wm-cv-box summary h3 {
     margin: 0;
 }
@@ -7655,6 +7692,49 @@ dialog.pp-menu .pp-wd-del {
 .pt-wm-cv-box summary:focus-visible {
     outline: 1px solid #c9a0ff;
     outline-offset: 2px;
+}
+
+.pt-wm-add {
+    display: grid;
+    gap: 6px;
+    margin: 10px 0 4px;
+    padding: 8px;
+    border: 1px solid rgba(120, 170, 255, 0.14);
+    border-radius: 2px;
+    background: rgba(16, 28, 50, 0.4);
+}
+
+.pt-wm-add h4 {
+    margin: 0;
+    color: #ffcf9a;
+    font: 600 9.5px/1 "IBM Plex Mono", Consolas, monospace;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+}
+
+.pt-wm-add .pt-wm-muted {
+    margin: 0;
+}
+
+.pt-wm-add .pt-wm-btn {
+    justify-self: start;
+}
+
+.pt-wm-input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 5px 7px;
+    border: 1px solid rgba(120, 170, 255, 0.25);
+    border-radius: 2px;
+    background: rgba(4, 10, 20, 0.7);
+    color: #dbe7ff;
+    font: 400 11px/1.35 "IBM Plex Mono", Consolas, monospace;
+    resize: vertical;
+}
+
+.pt-wm-input:focus {
+    outline: 1px solid #ffaa55;
+    outline-offset: 0;
 }
 
 .pt-wm-cv-box > .pt-wm-muted {
