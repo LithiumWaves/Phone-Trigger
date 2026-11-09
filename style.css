@@ -7720,6 +7720,20 @@ dialog.pp-menu .pp-wd-del {
     justify-self: start;
 }
 
+.pt-wm-field {
+    display: grid;
+    gap: 3px;
+    color: #9fb4d6;
+    font: 400 9.5px/1.2 "IBM Plex Mono", Consolas, monospace;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.pt-wm-field select {
+    text-transform: none;
+    letter-spacing: 0;
+}
+
 .pt-wm-input {
     width: 100%;
     box-sizing: border-box;
