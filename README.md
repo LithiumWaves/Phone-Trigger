@@ -28,7 +28,7 @@ SillyTavern extension that recreates the Steins;Gate **Phone Trigger** loop: ope
 - **Standby screen & main menu** — a clean standby screen (clock, date, meter, notifications) and a 3×3 pixel-icon menu on OK / MENU
 - **Character → user** — characters can mail you straight from the chat whenever it fits (`<email subject="…">…</email>` tags or the `send_email` tool); on by default (Context → *Characters can e-mail you from the chat*)
 - **User → character** — compose in-phone or `/mailsend`
-- **Independent replies** — mail generation uses raw/OpenRouter (not the active chat turn), with a configurable delay and editable prompt template
+- **Independent replies** — mail generation uses raw/OpenRouter (not the active chat turn), with a configurable delay and editable prompt template; or Menu → Mail → *How mail is written* → **Use my chat preset** writes character mail through SillyTavern's chat pipeline with your active preset (Main LLM backend)
 - **Active-chat To:** — PhoneWave plus group members (or the solo chat character) appear in compose
 - **Context toggles** — optional chat→mail summary; optional mail→chat memory with a phone **Memory** picker per character; optional worldline inject after D-Mail
 - **Guided receive** — faint signal bars on Inbox open a From / Guide panel to force inbound mail

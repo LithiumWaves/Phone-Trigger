@@ -144,6 +144,7 @@ function bindSettingsUi() {
     $('#pp_initiative_use_force').prop('checked', Boolean(s.mailInitiativeUseForcePrompt));
     $('#pp_initiative_prompt').val(s.mailInitiativePrompt || DEFAULT_MAIL_INITIATIVE_PROMPT);
 
+    $('#pp_mail_mode').val(s.mailGenerationMode === 'preset' ? 'preset' : 'unique');
     $('#pp_call_enabled').prop('checked', s.callEnabled !== false);
     $('#pp_call_mode').val(
         ['unique', 'main', 'both'].includes(s.callGenerationMode) ? s.callGenerationMode : 'unique',
@@ -693,6 +694,10 @@ async function loadSettingsPanel() {
         syncCallFields();
         syncCallInitiativeFields();
         syncCallInitiativeScheduler();
+    });
+    $('#pp_mail_mode').on('change', () => {
+        getSettings().mailGenerationMode = $('#pp_mail_mode').val() === 'preset' ? 'preset' : 'unique';
+        saveSettings();
     });
     $('#pp_call_mode').on('change', () => {
         const s = getSettings();

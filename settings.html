@@ -173,6 +173,21 @@
                             <option value="openrouter">OpenRouter</option>
                         </select>
                     </div>
+                    <div class="pp-settings-block">
+                        <label for="pp_mail_mode"><span>How mail is written</span></label>
+                        <select id="pp_mail_mode">
+                            <option value="unique">Mail prompt only</option>
+                            <option value="preset">Use my chat preset</option>
+                        </select>
+                        <small>
+                            <strong>Mail prompt only</strong> sends just the mail prompt below, without your chat preset (its
+                            main prompt, jailbreak, post-history instructions and prefill are not included).
+                            <strong>Use my chat preset</strong> writes replies, forced and initiative mail (and replies on other
+                            people's phones) through SillyTavern's chat pipeline with your active preset, the mail prompt
+                            as the instruction, like calls in <em>Main</em> mode. Bigger requests; Main LLM backend only
+                            (with OpenRouter, the mail prompt is used alone). If it comes back empty, the mail prompt alone is tried.
+                        </small>
+                    </div>
                     <div class="pp-settings-block pp-openrouter-only">
                         <label for="pp_or_key"><span>OpenRouter API key</span></label>
                         <input id="pp_or_key" type="password" class="text_pole" autocomplete="off" spellcheck="false" />
