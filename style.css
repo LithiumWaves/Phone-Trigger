@@ -9161,6 +9161,19 @@ dialog.pp-menu .pp-wd-del {
     pointer-events: none;
 }
 
+/* Someone else's D-Mail (Multiplayer): the vertigo over the whole page, no cutscene */
+.pp-vertigo-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 99990;
+    pointer-events: none;
+    transition: opacity 650ms ease-out;
+}
+
+.pp-vertigo-screen.pp-vertigo-screen-out {
+    opacity: 0;
+}
+
 /* Reduce flashing: the original clips play dimmer and softer */
 .pp-dmail-fx.pp-calm .pp-dmail-video {
     filter: brightness(0.72) contrast(0.85) saturate(0.9);

@@ -833,6 +833,14 @@
                         <button id="pp_dmail_cutscene_compare" class="menu_button" type="button">Compare cutscenes</button>
                     </div>
                     <div class="pp-settings-block">
+                        <label for="pp_mp_others_dmail">When another player sends a D-Mail</label>
+                        <select id="pp_mp_others_dmail">
+                            <option value="cutscene">Play the cutscene</option>
+                            <option value="vertigo">Vertigo only (the screen swims, no cutscene)</option>
+                        </select>
+                        <small>Multiplayer rooms (ST-Multiplayer 1.6.0+). Your own D-Mails always play the cutscene.</small>
+                    </div>
+                    <div class="pp-settings-block">
                         <label>
                             <input id="pp_home_meter" type="checkbox" />
                             <span>Divergence meter on home screen</span>
@@ -922,6 +930,14 @@
                             <option value="progressive">Progressive (counts back to your destination)</option>
                         </select>
                         <button id="pp_timeleap_cutscene_compare" class="menu_button" type="button">Compare cutscenes</button>
+                    </div>
+                    <div class="pp-settings-block">
+                        <label for="pp_mp_others_leap">When another player time leaps</label>
+                        <select id="pp_mp_others_leap">
+                            <option value="none">Nothing — just the rewound chat</option>
+                            <option value="cutscene">Play the cutscene</option>
+                        </select>
+                        <small>Multiplayer rooms (ST-Multiplayer 1.6.0+). Only the leaper remembers; the host runs the leap and everyone's chat follows.</small>
                     </div>
 
                     <h3 class="pp-menu-sub">Characters: D-Mail &amp; Time Leap</h3>

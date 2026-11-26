@@ -40,6 +40,7 @@ import { initTipsUi, refreshTips, noteTipsMessage, openTips } from './lib/tips.j
 import { initLabUi, refreshLab, labMemCommand } from './lib/labMembers.js';
 import { initAddressBookUi, resetAddressBookNav } from './lib/addressBook.js';
 import { initMachineFloorUi } from './lib/timeleapApp.js';
+import { initMultiplayer } from './lib/multiplayer.js';
 import './lib/dataFolderApp.js';
 import { initCardHistoryUi, cardUndoCommand } from './lib/cardHistory.js';
 import { initWorldlineUi, refreshWorldlinePanels, setConvergenceChangeHandler } from './lib/worldline.js';
@@ -179,6 +180,8 @@ function bindSettingsUi() {
     $('#pp_call_init_quiet_end').val(s.callInitiativeQuietEnd ?? 8);
     $('#pp_dmail_sound').prop('checked', s.dmailSpectacleSound !== false);
     $('#pp_dmail_cutscene').val(s.dmailCutscene === 'progressive' ? 'progressive' : 'original');
+    $('#pp_mp_others_dmail').val(s.mpOthersDmail === 'vertigo' ? 'vertigo' : 'cutscene');
+    $('#pp_mp_others_leap').val(s.mpOthersLeap === 'cutscene' ? 'cutscene' : 'none');
     syncFeatureSwitches();
     $('#pp_phone_grab').prop('checked', s.phoneGrab !== false);
     $('#pp_phone_ai_mode').val(s.phoneAiMode === 'free' ? 'free' : 'style');
@@ -849,6 +852,14 @@ async function loadSettingsPanel() {
         st.dmailCutsceneChosen = true;
         saveSettings();
     });
+    $('#pp_mp_others_dmail').on('change', () => {
+        getSettings().mpOthersDmail = $('#pp_mp_others_dmail').val() === 'vertigo' ? 'vertigo' : 'cutscene';
+        saveSettings();
+    });
+    $('#pp_mp_others_leap').on('change', () => {
+        getSettings().mpOthersLeap = $('#pp_mp_others_leap').val() === 'cutscene' ? 'cutscene' : 'none';
+        saveSettings();
+    });
     $('#pp_dmail_cutscene_compare').on('click', async () => {
         const choice = await showCutscenePrompt();
         $('#pp_dmail_cutscene').val(choice);
@@ -1424,6 +1435,7 @@ function initFeatureUi() {
         () => initLabUi(),
         () => initAddressBookUi(),
         () => initMachineFloorUi(),
+        () => initMultiplayer(),
         () => initCardHistoryUi(),
         () => initWorldlineUi(() => updateWorldlinePrompt()),
         () => setConvergenceChangeHandler(() => updateWorldlinePrompt()),

@@ -42,7 +42,23 @@ SillyTavern extension that recreates the Steins;Gate **Phone Trigger** loop: ope
 - **Address book** — per chat: pick who starts in your phone, save them under your own names (the story keeps real names), add the rest later from their mail or call; each contact can have its own ringtone and mail tone
 - **Data folder** — every photo sent or received by mail; keep copies that survive deletion and worldline shifts, or make one the chat's wallpaper
 - **Machine completed** — optional per-chat date (none by default): nobody can time leap to before the Time Leap Machine existed
+- **Multiplayer** — with [ST-Multiplayer](https://github.com/LithiumWaves/ST-Muliplayer) 1.6.0+, the other players are in your address book: mail them and call them (live typed calls, no AI). Anyone can send a D-Mail or time leap; the host runs it and everyone's chat follows. You choose what someone else's D-Mail looks like on your screen (the cutscene, or just the vertigo) and someone else's leap (nothing but the rewound chat, or the cutscene). See [Multiplayer](#multiplayer)
 - **Fake call**, **TIPS** glossary, **lab members**, and optional consequences for ignored mail and calls
+
+## Multiplayer
+
+Works with [ST-Multiplayer](https://github.com/LithiumWaves/ST-Muliplayer) **1.6.0 or newer** (it adds the extension channel Phone Trigger uses). Every player needs Phone Trigger installed.
+
+- **Contacts** — while you're in a room, every other player appears in your address book, compose *To:* and call list under their persona name. You can save them under your own name like any contact.
+- **Mail** — goes straight to that player's inbox (with photos). No AI reply: they write back themselves.
+- **Calls** — their phone rings with your ringtone settings; once they answer, both of you type lines into the call screen. Busy, declined, missed and hang-up all work both ways.
+- **D-Mail** — any player can send one. The host's Phone Trigger works out the worldline change with the host's model and keeps the record (a player's D-Mail is made true at once, no Propose screen); everybody's meter follows.
+  - The sender always gets the full cutscene.
+  - Everyone else: **Menu → D-Mail → When another player sends a D-Mail** — *Play the cutscene* (default) or *Vertigo only* (the page swims and washes out, no clip). Reduce flashing applies.
+- **Time Leap** — any player can leap. The host compresses the memories, branches the chat at the same message and the room follows into the branch. Only the leaper remembers: on the host the memories are filed under that player's name.
+  - The leaper gets the discharge and cutscene as usual.
+  - Everyone else: **Menu → Time Leap → When another player time leaps** — *Nothing, just the rewound chat* (default) or *Play the cutscene*.
+- D-Mails and leaps only go through the host while you're in the room's shared chat; in a chat of your own they stay local as before.
 
 ## Install
 
