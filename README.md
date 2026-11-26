@@ -58,6 +58,7 @@ Works with [ST-Multiplayer](https://github.com/LithiumWaves/ST-Muliplayer) **1.6
 - **Time Leap** — any player can leap. The host compresses the memories, branches the chat at the same message and the room follows into the branch. Only the leaper remembers: on the host the memories are filed under that player's name.
   - The leaper gets the discharge and cutscene as usual.
   - Everyone else: **Menu → Time Leap → When another player time leaps** — *Nothing, just the rewound chat* (default) or *Play the cutscene*.
+- **Worldline map** — a player's map shows the host's worldline: every D-Mail, undo, leap and hand-added entry, the meter reading and convergence points. It's read only (the host makes the changes) and an open map follows them as they happen.
 - D-Mails and leaps only go through the host while you're in the room's shared chat; in a chat of your own they stay local as before.
 
 ## Install
